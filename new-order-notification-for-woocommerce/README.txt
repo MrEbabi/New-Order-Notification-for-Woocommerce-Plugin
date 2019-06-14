@@ -15,16 +15,13 @@ Woocommerce custom order page with recent orders for showing a popup notificatio
 * POPUP NOTIFICATION WHEN A NEW ORDER RECEIVED
 
 
-* ENABLE/DISABLE SOUND PLAYING
+* NOTIFICATION KEEPS SHOWING UNTIL YOU ACKNOWLEDGE THE NEW ORDER
 
 
-* UPLOAD YOUR ALARM SOUND TO PLAY WITH POPUP NOTIFICATION
+* SET YOUR ALARM SOUND TO PLAY WITH POPUP NOTIFICATION
 
 
-* NOTIFICATION KEEPS SHOWING UNTIL YOU CONFIRM THE NEW ORDER
-
-
-* SET THE REFRESH TIME OF NEW ORDER CONTROLLER
+* SET THE REFRESH TIME OF NEW ORDER PAGE
 
 
 **Woocommerce custom order page with recent orders for showing a popup notification with sound when a new order received.**
@@ -43,8 +40,9 @@ Yes, the plugin is tested with Wordpress 5.2.1 and Woocommerce 3.6.4 and works f
 Yes, but the notification system only works with custom order page named New Order.
 
 == Screenshots ==
-1. Settings Page for Popup Notification
+1. New Order Notification Recent Order Table
 2. Popup Notification Preview When a New Order Received
+3. Settings for Notifications
 
 == Changelog ==
 **=1.0.0=**

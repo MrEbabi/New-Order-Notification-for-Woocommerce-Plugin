@@ -26,9 +26,10 @@
         }
         .cnt223{
         min-width: 300px;
-        width: 300px;
+        width: 400px;
         min-height: 150px;
-        margin: 10px auto;
+        margin-left: 600px ;
+        margin-top: 200px;
         background: #f3f3f3;
         position: relative;
         z-index: 103;
@@ -38,10 +39,10 @@
         }
         .cnt223 p{
         clear: both;
-            color: #555555;
-            /* text-align: justify; */
-            font-size: 20px;
-            font-family: sans-serif;
+        color: #555555;
+        /* text-align: justify; */
+        font-size: 20px;
+        font-family: sans-serif;
         }
         .cnt223 p a{
         color: #d91900;
@@ -80,4 +81,39 @@
           text-align: center;
           background-color: #4CAF50;
           color: white;
+        }
+        
+        
+        #settings {
+          font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+          border-collapse: collapse;
+          margin-top: 2%;
+          width: 25%;
+        }
+        
+        #settings td, #settings th {
+          width: 20%;
+          border: 1px solid #ddd;
+        }
+        
+        #settings tr:nth-child(even){background-color: #f2f2f2;}
+        
+        #settings tr:hover {background-color: #ddd;}
+        
+        #settings th {
+          padding-top: 12px;
+          padding-bottom: 12px;
+          text-align: center;
+          background-color: #80CBCC;
+          color: white;
+        }
+        
+        #settings input {
+            width: 90%;
+            text-align: center;
+        }
+        
+        #settings input[type=submit] {
+            width: 100%;
+            background-color: white;
         }

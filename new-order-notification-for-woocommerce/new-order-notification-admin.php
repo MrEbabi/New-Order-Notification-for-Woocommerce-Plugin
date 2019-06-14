@@ -3,28 +3,18 @@
 add_action( 'admin_menu', 'new_order_notification' );
 
 function new_order_notification() {
-    add_menu_page( 'New Order', 'New Order', 'manage_options' , 'new_order_notification' , 'new_order_notification_menu', 'dashicons-star-filled' , '53');
-    add_submenu_page('new_order_notification', 'Notification Settings', 'Notification Settings', 'manage_options', 'new_order_notification_submenu', 'new_order_notification_submenu');
+    add_menu_page( 'New Order Notification', 'New Order Notification', 'manage_options' , 'new_order_notification' , 'new_order_notification_menu', 'dashicons-warning' , '153');
 }
 
 function new_order_notification_menu()
 {
     $query = new WC_Order_Query( array(
-        'limit' => 1,
+        'limit' => 6,
         'orderby' => 'date',
         'order' => 'DESC',
         'return' => 'ids',
     ) );
     $last_order = $query->get_orders();
-    
-    $query = new WC_Order_Query( array(
-        'limit' => 21,
-        'orderby' => 'date',
-        'order' => 'DESC',
-        'return' => 'ids',
-    ) );
-    $last_20_orders = $query->get_orders();
-    $last_20_orders = array_shift($last_20_orders);
     
     $recent_orders = wc_get_orders( array(
         'limit' => 10,
@@ -32,29 +22,53 @@ function new_order_notification_menu()
         'order' => 'DESC',
     ) );
     
-    $isCreated = get_option('_new_order_option');
-    if(!$isCreated)
+    $query = new WC_Order_Query( array(
+        'offset'    =>  1,
+        'limit' => 5,
+        'orderby' => 'date',
+        'order' => 'DESC',
+        'return' => 'ids',
+    ) );
+    $to_check_orders = $query->get_orders();
+    
+    $options = get_option('_new_order_option');
+    if(!$options)
     {
+        $musicUrlMp3 = plugins_url('assets/order-music.mp3',__FILE__ );
+        $refreshTime = 10;
+        $order_header = "Order Notification - New Order";
+        $order_text = "Check Details: ";
+        $confirm = "ACKNOWLEDGE THIS NOTIFICATION";
+        
         add_option('_new_order_option', array(
         'last_order'   =>  $last_order[0],
+        'check_deleted' =>  $to_check_orders,
+        'refresh_time'  =>  $refreshTime,
+        'mp3_url'   =>  $musicUrlMp3,
+        'order_header'  =>  $order_header,
+        'order_text'    =>  $order_text,
+        'confirm'   =>  $confirm,
         ));
+    }
+    else
+    {
+        $musicUrlMp3 = $options['mp3_url'];
+        $refreshTime = $options['refresh_time'];
+        $order_header = $options['order_header'];
+        $order_text = $options['order_text'];
+        $confirm = $options['confirm'];
     }
     
     $isNew = false;
-    $options = get_option('_new_order_option');
+    $isAnyDeletion = false;
+    if(in_array($last_order[0], $options['check_deleted'])) $isAnyDeletion = true;
     
-    if($last_order[0] != $options['last_order']) $isNew = true;
+    if($last_order[0] != $options['last_order'] && (!$isAnyDeletion)) $isNew = true;
     
     $websiteUrl = get_site_url();
     $websiteUrl .= "/wp-admin/post.php?post=";
     $websiteUrl .= $last_order[0];
     $websiteUrl .= "&action=edit";
-    
-    $musicUrlMp3 = get_site_url();
-    $musicUrlMp3 .= "/wp-content/uploads/order-music.mp3";
-    
-    $musicUrlOgg = get_site_url();
-    $musicUrlOgg = "/wp-content/uploads/order-music.ogg";
     
     
     if($isNew)
@@ -81,15 +95,14 @@ function new_order_notification_menu()
             });
         </script>
         <?php
-        update_option('_new_order_option', array(
-        'last_order'   =>  $last_order[0],
-        ));
-        $popupcontent = "<audio controls autoplay><source src='".esc_html($musicUrlOgg)."' type='audio/ogg'><source src='".esc_html($musicUrlMp3)."' type='audio/mpeg'>Your browser does not support the audio element.</audio>";
-        $popupcontent .= "<div class='popup'><div class='cnt223'><h1>Order Notification</h1><p>New Order: <a href='".esc_html($websiteUrl)."' target='_blank'>".esc_html($last_order[0])."</a><br/><br/><a href='' class='close'>CONFIRM THE ORDER</a></p></div></div>";
+        
+        $popupcontent = "<audio controls autoplay><source src='".esc_html($options['mp3_url'])."' type='audio/mpeg'>Your browser does not support the audio element.</audio>";
+        $popupcontent .= "<div class='popup'><div class='cnt223'><h1>Order Notification - New Order</h1><p>Check Details: <a href='".esc_html($websiteUrl)."' target='_blank'>".esc_html($last_order[0])."</a><br/><br/><a href='' class='close'>ACKNOWLEDGE THIS NOTIFICATION</a></p></div></div>";
         echo $popupcontent;
     }
-    
+    $content = "<h1>New Order Notification for Woocommerce</h1>";
     $content .= "<table id='customers'>";
+    $content .= "<tr><th>Recent Orders</th></tr>";
     $content .= "<tr><th>Order No</th><th>Order Date</th><th>Order Status</th><th>Check Details</th></tr>";
     foreach($recent_orders as $recent_order)
     {
@@ -106,19 +119,47 @@ function new_order_notification_menu()
         
         $content .= "<tr><td>".esc_html($order_id)."</td><td>".esc_html($order_date[0])." - ".esc_html($order_date[1])."</td><td>".esc_html(ucfirst($order_status))."</td><td><a href='".esc_html($order_link)."'>Order ".esc_html($order_id)."</a></td></tr>";
     }
-    $content .= "</table>";
     
+    $content .= "</table><br><br><br><br>";
+    
+    $content .= "<form action='' method='post' name='notificationSettingsForm'>";
+    $content .= "<table id='settings'>";
+    $content .= "<tr><th>Settings for Notifications</th></tr>";
+    $content .= "<tr><th>Refresh Time (in seconds): </th><th><input type='number' min='0' step='1' name='inputForTime' placeholder='".esc_html($options['refresh_time'])."'></th></tr>";
+    $content .= "<tr><th>MP3 File URL (ends with .mp3): </th><th><input type='text' name='inputForMp3' placeholder='".esc_html($options['mp3_url'])."'></th></tr>";
+    $content .= "<tr><th>Notification Header: </th><th><input type='text' name='inputForHeader' placeholder='".esc_html($options['order_header'])."'></th></tr>";
+    $content .= "<tr><th>Notification Text: </th><th><input type='text' name='inputForText' placeholder='".esc_html($options['order_text'])."'></th></tr>";
+    $content .= "<tr><th>Confirmation Text: </th><th><input type='text' name='inputForConfirm' placeholder='".esc_html($options['confirm'])."'></th></tr>";
+    $content .= wp_nonce_field('notification_settings_form', 'nonce_of_notificationSettingsForm');
+    $content .= "<tr><th><input type='submit' value='Reset to Default' name='resetSettings'></th><th><input type='submit' value='Save Settings' name='saveSettings'></th></tr>";
+    $content .= "</table></form>";
     echo $content;
+    
+    if(wp_verify_nonce($_POST['nonce_of_notificationSettingsForm'], 'notification_settings_form') && isset($_POST['saveSettings']))
+    {
+        if( isset($_POST['inputForTime']) && !empty($_POST['inputForTime']) ) $refreshTime = sanitize_text_field($_POST['inputForTime']);
+        if( isset($_POST['inputForMp3']) && !empty($_POST['inputForMp3']) ) $musicUrlMp3 = sanitize_text_field($_POST['inputForMp3']);
+        if( isset($_POST['inputForHeader']) && !empty($_POST['inputForHeader']) ) $order_header = sanitize_text_field($_POST['inputForHeader']);
+        if( isset($_POST['inputForText']) && !empty($_POST['inputForText']) ) $order_text = sanitize_text_field($_POST['inputForText']);
+        if( isset($_POST['inputForConfirm']) && !empty($_POST['inputForConfirm']) ) $confirm = sanitize_text_field($_POST['inputForConfirm']);
+    }
+    
+    update_option('_new_order_option', array(
+        'last_order'   =>  $last_order[0],
+        'check_deleted' =>  $to_check_orders,
+        'refresh_time'  =>  $refreshTime,
+        'mp3_url'   =>  $musicUrlMp3,
+        'order_header'  =>  $order_header,
+        'order_text'    =>  $order_text,
+        'confirm'   =>  $confirm,
+        ));
     
     if(!$isNew)
     {
-        $time = 10;
-        header("Refresh:".$time."");
+        $time = $options['refresh_time'];
+        header("Refresh:".esc_html($time)."");
     }
 }
 
-function new_order_notification_submenu()
-{
-    echo "test";
-}
+
 ?>
