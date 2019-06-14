@@ -99,6 +99,15 @@ function new_order_notification_menu()
         $popupcontent = "<audio controls autoplay><source src='".esc_html($options['mp3_url'])."' type='audio/mpeg'>Your browser does not support the audio element.</audio>";
         $popupcontent .= "<div class='popup'><div class='cnt223'><h1>Order Notification - New Order</h1><p>Check Details: <a href='".esc_html($websiteUrl)."' target='_blank'>".esc_html($last_order[0])."</a><br/><br/><a href='' class='close'>ACKNOWLEDGE THIS NOTIFICATION</a></p></div></div>";
         echo $popupcontent;
+        update_option('_new_order_option', array(
+            'last_order'   =>  $last_order[0],
+            'check_deleted' =>  $to_check_orders,
+            'refresh_time'  =>  $refreshTime,
+            'mp3_url'   =>  $musicUrlMp3,
+            'order_header'  =>  $order_header,
+            'order_text'    =>  $order_text,
+            'confirm'   =>  $confirm,
+            ));
     }
     $content = "<h1>New Order Notification for Woocommerce</h1>";
     $content .= "<table id='customers'>";
@@ -122,8 +131,8 @@ function new_order_notification_menu()
     
     $content .= "</table><br><br><br><br>";
     
-    $content .= "<form action='' method='post' name='notificationSettingsForm'>";
     $content .= "<table id='settings'>";
+    $content .= "<form action='' method='post' id='notificationSettingsForm'>";
     $content .= "<tr><th>Settings for Notifications</th></tr>";
     $content .= "<tr><th>Refresh Time (in seconds): </th><th><input type='number' min='0' step='1' name='inputForTime' placeholder='".esc_html($options['refresh_time'])."'></th></tr>";
     $content .= "<tr><th>MP3 File URL (ends with .mp3): </th><th><input type='text' name='inputForMp3' placeholder='".esc_html($options['mp3_url'])."'></th></tr>";
@@ -133,32 +142,60 @@ function new_order_notification_menu()
     $content .= wp_nonce_field('notification_settings_form', 'nonce_of_notificationSettingsForm');
     $content .= "<tr><th><input type='submit' value='Reset to Default' name='resetSettings'></th><th><input type='submit' value='Save Settings' name='saveSettings'></th></tr>";
     $content .= "</table></form>";
-    echo $content;
     
-    if(wp_verify_nonce($_POST['nonce_of_notificationSettingsForm'], 'notification_settings_form') && isset($_POST['saveSettings']))
+    $isPosted = false;
+    
+    if(wp_verify_nonce($_POST['nonce_of_notificationSettingsForm'], 'notification_settings_form'))
     {
-        if( isset($_POST['inputForTime']) && !empty($_POST['inputForTime']) ) $refreshTime = sanitize_text_field($_POST['inputForTime']);
-        if( isset($_POST['inputForMp3']) && !empty($_POST['inputForMp3']) ) $musicUrlMp3 = sanitize_text_field($_POST['inputForMp3']);
-        if( isset($_POST['inputForHeader']) && !empty($_POST['inputForHeader']) ) $order_header = sanitize_text_field($_POST['inputForHeader']);
-        if( isset($_POST['inputForText']) && !empty($_POST['inputForText']) ) $order_text = sanitize_text_field($_POST['inputForText']);
-        if( isset($_POST['inputForConfirm']) && !empty($_POST['inputForConfirm']) ) $confirm = sanitize_text_field($_POST['inputForConfirm']);
+        if(isset($_POST['saveSettings']))
+        {
+            if( isset($_POST['inputForTime']) && !empty($_POST['inputForTime']) ) $refreshTime = sanitize_text_field($_POST['inputForTime']);
+            if( isset($_POST['inputForMp3']) && !empty($_POST['inputForMp3']) ) $musicUrlMp3 = sanitize_text_field($_POST['inputForMp3']);
+            if( isset($_POST['inputForHeader']) && !empty($_POST['inputForHeader']) ) $order_header = sanitize_text_field($_POST['inputForHeader']);
+            if( isset($_POST['inputForText']) && !empty($_POST['inputForText']) ) $order_text = sanitize_text_field($_POST['inputForText']);
+            if( isset($_POST['inputForConfirm']) && !empty($_POST['inputForConfirm']) ) $confirm = sanitize_text_field($_POST['inputForConfirm']);
+            
+            update_option('_new_order_option', array(
+            'last_order'   =>  $last_order[0],
+            'check_deleted' =>  $to_check_orders,
+            'refresh_time'  =>  $refreshTime,
+            'mp3_url'   =>  $musicUrlMp3,
+            'order_header'  =>  $order_header,
+            'order_text'    =>  $order_text,
+            'confirm'   =>  $confirm,
+            ));
+            $isPosted = true;
+            header("Refresh:0");
+        }
+        if(isset($_POST['resetSettings']))
+        {
+            $musicUrlMp3 = plugins_url('assets/order-music.mp3',__FILE__ );
+            $refreshTime = 10;
+            $order_header = "Order Notification - New Order";
+            $order_text = "Check Details: ";
+            $confirm = "ACKNOWLEDGE THIS NOTIFICATION";
+            
+            update_option('_new_order_option', array(
+            'last_order'   =>  $last_order[0],
+            'check_deleted' =>  $to_check_orders,
+            'refresh_time'  =>  $refreshTime,
+            'mp3_url'   =>  $musicUrlMp3,
+            'order_header'  =>  $order_header,
+            'order_text'    =>  $order_text,
+            'confirm'   =>  $confirm,
+            ));
+            $isPosted = true;
+            header("Refresh:0");
+        }
     }
-    
-    update_option('_new_order_option', array(
-        'last_order'   =>  $last_order[0],
-        'check_deleted' =>  $to_check_orders,
-        'refresh_time'  =>  $refreshTime,
-        'mp3_url'   =>  $musicUrlMp3,
-        'order_header'  =>  $order_header,
-        'order_text'    =>  $order_text,
-        'confirm'   =>  $confirm,
-        ));
-    
-    if(!$isNew)
+
+    if(!$isNew && !$isPosted)
     {
         $time = $options['refresh_time'];
         header("Refresh:".esc_html($time)."");
     }
+    
+    echo $content;
 }
 
 
