@@ -8,7 +8,7 @@ Usage:
 
 or
 
-- Download: -will be added-
+- Download: https://wordpress.org/plugins/new-order-notification-for-woocommerce/
 
 or
 
@@ -16,8 +16,7 @@ or
 
 ---
 
-Version 1.0.0 released but waiting approvement from Wordpress Plugin Review Team.
+Version 1.0.0:
 
----
-
-To Do: Notication Setting page for refresh time and upload mp3/ogg files option in admin panel.
+- New Order Notification Popup with Sound effect in a custom order page at admin panel.
+- Settings for New Order Notification Popup strings, refresh time of order controller and music file url.
