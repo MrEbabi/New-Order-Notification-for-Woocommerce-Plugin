@@ -1,4 +1,4 @@
-# Woocommerce-Order-Notification
+# Woocommerce Order Notification Plugin
 
 Woocommerce custom order page for showing a popup notification with sound when a new order received. 
 
