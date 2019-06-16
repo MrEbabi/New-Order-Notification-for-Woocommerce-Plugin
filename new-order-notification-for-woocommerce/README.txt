@@ -1,10 +1,10 @@
 === New Order Notification for Woocommerce ===
 Contributors: mrebabi
 Author URI: https://github.com/MrEbabi
-Tags: woocommerce, woocommerce order page, woocommerce notification, woocommerce order notification, woocommerce new order notification
+Tags: woocommerce, woocommerce order page, woocommerce notification, woocommerce order notification, woocommerce new order notification, woocommerce new order popup
 Requires at least: 3.1
 Tested up to: 5.2.1
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: new-order-notification-for-woocommerce
@@ -26,6 +26,15 @@ Woocommerce custom order page with recent orders for showing a popup notificatio
 
 **Woocommerce custom order page with recent orders for showing a popup notification with sound when a new order received.**
 
+1. New Order Notification for WooCommerce is providing shop managers and administrators to see the recent orders on a custom order page.
+2. This order page is customized to popup a notification when a new order received.
+3. While the popup notification is showing to the admin, a music file also plays to alert admin.
+4. This music keeps playing and popup keeps showing until the admin confirms the new order.
+5. There are settings for this custom order page, popup notification and music file.
+6. You may edit the string fields in popup notification.
+7. You may edit the refresh time of custom order page (time to check if new order is received).
+8. You may add a link to change the music file (.mp3 extension).
+
 == Installation ==
 1. Upload the entire 'new-order-notification-for-woocommerce' folder to the '/wp-content/plugins/' directory or upload as a zip file then extract it to the '/wp-content/plugins/'
 2. Activate the plugin through the 'Plugins' menu in WordPress
@@ -45,6 +54,11 @@ Yes, but the notification system only works with custom order page named New Ord
 3. Settings for Notifications
 
 == Changelog ==
+**=1.0.1=**
+-Small bug fixes.
+-CSS additions.
+-README is more detailed now.
+
 **=1.0.0=**
 -Hello World. This is the first version of the New Order Notification for Woocommerce.
 -Initialized the source code.

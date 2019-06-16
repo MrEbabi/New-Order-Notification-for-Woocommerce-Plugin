@@ -110,7 +110,7 @@ function new_order_notification_menu()
             ));
     }
     $content = "<h1>New Order Notification for Woocommerce</h1>";
-    $content .= "<table id='customers'>";
+    $content .= "<table id='customers-new-order-notification'>";
     $content .= "<tr><th>Recent Orders</th></tr>";
     $content .= "<tr><th>Order No</th><th>Order Date</th><th>Order Status</th><th>Check Details</th></tr>";
     foreach($recent_orders as $recent_order)
@@ -131,7 +131,7 @@ function new_order_notification_menu()
     
     $content .= "</table><br><br><br><br>";
     
-    $content .= "<table id='settings'>";
+    $content .= "<table id='settings-new-order-notification'>";
     $content .= "<form action='' method='post' id='notificationSettingsForm'>";
     $content .= "<tr><th>Settings for Notifications</th></tr>";
     $content .= "<tr><th>Refresh Time (in seconds): </th><th><input type='number' min='0' step='1' name='inputForTime' placeholder='".esc_html($options['refresh_time'])."'></th></tr>";

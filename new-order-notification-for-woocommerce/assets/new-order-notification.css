@@ -59,23 +59,23 @@
         .cnt223 .x:hover{
         cursor: pointer;
         }
-        #customers {
+        #customers-new-order-notification {
           font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
           border-collapse: collapse;
           width: 100%;
           margin-top: 2%;
         }
         
-        #customers td, #customers th {
+        #customers-new-order-notification td, #customers-new-order-notification th {
           border: 1px solid #ddd;
           padding: 8px;
         }
         
-        #customers tr:nth-child(even){background-color: #f2f2f2;}
+        #customers-new-order-notification tr:nth-child(even){background-color: #f2f2f2;}
         
-        #customers tr:hover {background-color: #ddd;}
+        #customers-new-order-notification tr:hover {background-color: #ddd;}
         
-        #customers th {
+        #customers-new-order-notification th {
           padding-top: 12px;
           padding-bottom: 12px;
           text-align: center;
@@ -84,23 +84,23 @@
         }
         
         
-        #settings {
+        #settings-new-order-notification {
           font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
           border-collapse: collapse;
           margin-top: 2%;
           width: 25%;
         }
         
-        #settings td, #settings th {
+        #settings-new-order-notification td, #settings-new-order-notification th {
           width: 20%;
           border: 1px solid #ddd;
         }
         
-        #settings tr:nth-child(even){background-color: #f2f2f2;}
+        #settings-new-order-notification tr:nth-child(even){background-color: #f2f2f2;}
         
-        #settings tr:hover {background-color: #ddd;}
+        #settings-new-order-notification tr:hover {background-color: #ddd;}
         
-        #settings th {
+        #settings-new-order-notification th {
           padding-top: 12px;
           padding-bottom: 12px;
           text-align: center;
@@ -108,12 +108,12 @@
           color: white;
         }
         
-        #settings input {
+        #settings-new-order-notification input {
             width: 90%;
             text-align: center;
         }
         
-        #settings input[type=submit] {
+        #settings-new-order-notification input[type=submit] {
             width: 100%;
             background-color: white;
         }
