@@ -23,6 +23,6 @@ Version 1.0.0:
 
 Version 1.0.1:
 
--Small bug fixes.
--CSS additions.
--README is more detailed now.
+- Small bug fixes.
+- CSS additions.
+- README is more detailed now.
