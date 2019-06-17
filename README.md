@@ -20,3 +20,9 @@ Version 1.0.0:
 
 - New Order Notification Popup with Sound effect in a custom order page at admin panel.
 - Settings for New Order Notification Popup strings, refresh time of order controller and music file url.
+
+Version 1.0.1:
+
+-Small bug fixes.
+-CSS additions.
+-README is more detailed now.
