@@ -26,3 +26,10 @@ Version 1.0.1:
 - Small bug fixes.
 - CSS additions.
 - README is more detailed now.
+
+---
+
+To-Do: 
+- A video tutorial for example usage.
+- Live Preview Link
+- Audio file upload button instead of link field
