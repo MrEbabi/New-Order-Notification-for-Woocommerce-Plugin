@@ -64,6 +64,8 @@
           border-collapse: collapse;
           width: 100%;
           margin-top: 2%;
+          text-align: center;
+          font-size: 18px;
         }
         
         #customers-new-order-notification td, #customers-new-order-notification th {
@@ -81,8 +83,8 @@
           text-align: center;
           background-color: #4CAF50;
           color: white;
+          font-size: 22px !important;
         }
-        
         
         #settings-new-order-notification {
           font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
@@ -115,5 +117,10 @@
         
         #settings-new-order-notification input[type=submit] {
             width: 100%;
+            background-color: white;
+        }
+        
+        #settings-new-order-notification input[type=checkbox] {
+            width: 5%;
             background-color: white;
         }
