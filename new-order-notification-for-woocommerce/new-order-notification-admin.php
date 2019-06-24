@@ -1,4 +1,4 @@
-    <?php
+<?php
 
 add_action( 'admin_menu', 'new_order_notification' );
 
