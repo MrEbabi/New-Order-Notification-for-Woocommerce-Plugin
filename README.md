@@ -27,6 +27,12 @@ Version 1.0.1:
 - CSS additions.
 - README is more detailed now.
 
+Version 1.0.2:
+
+- Settings field for selection of order statuses that the plugin will notify.
+- CSS fixes.
+- Small bug fixes.
+
 ---
 
 To-Do: 
