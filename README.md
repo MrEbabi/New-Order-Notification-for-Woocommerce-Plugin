@@ -4,7 +4,7 @@ Woocommerce custom order page for showing a popup notification with sound when a
 
 Usage: 
 
-- Download the zipped file (new-order-notification-for-woocommerce.zip) and upload it to wp-content/plugins using FTP or using Admin Panel -> Plugins -> Add New -> Upload Plugin, then extract there.
+- Download the current version from release folder and upload it to wp-content/plugins using FTP or using Admin Panel -> Plugins -> Add New -> Upload Plugin, then extract there.
 
 or
 
