@@ -37,5 +37,4 @@ Version 1.0.2:
 
 To-Do: 
 - A video tutorial for example usage.
-- Live Preview Link
 - Audio file upload button instead of link field
