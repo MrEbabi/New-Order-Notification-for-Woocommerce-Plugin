@@ -33,6 +33,11 @@ Version 1.0.2:
 - CSS fixes.
 - Small bug fixes.
 
+Version 1.0.3:
+
+- "Alert only for orders that contain specific products" option is added.
+- You may enter the product ids one by one from the related settings field.
+- Small bug and CSS fixes.
 ---
 
 To-Do: 
