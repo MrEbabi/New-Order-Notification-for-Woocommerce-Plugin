@@ -43,3 +43,4 @@ Version 1.0.3:
 To-Do: 
 - A video tutorial for example usage.
 - Audio file upload button instead of link field
+- Setup option for activating on standard order page or using a custom order page
