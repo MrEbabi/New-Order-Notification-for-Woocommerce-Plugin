@@ -4,7 +4,7 @@ Author URI: https://github.com/MrEbabi
 Tags: woocommerce, woocommerce order page, woocommerce notification, woocommerce order notification, woocommerce new order notification, woocommerce new order popup
 Requires at least: 3.1
 Tested up to: 5.2.2
-Stable tag: 1.0.3
+Stable tag: 1.1.0
 License: GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: new-order-notification-for-woocommerce
@@ -22,6 +22,7 @@ Woocommerce custom order page with recent orders for showing a popup notificatio
 
 
 * SET THE REFRESH TIME OF NEW ORDER PAGE
+
 
 * SET ALERT FOR ORDERS THAT CONTAIN SELECTED PRODUCTS
 
@@ -59,6 +60,11 @@ Yes, but the notification system only works with custom order page named New Ord
 3. Settings for Notifications
 
 == Changelog ==
+**=1.1.0=**
+-Reported bug fixed for WooCommerce Shops that have not received any (0) or enough (<10) orders yet.
+-An information message is added for WooCommerce Shops that have not received any orders.
+-Auto refresh with every 5 seconds to detect the first order of a very new WooCommerce shop.
+
 **=1.0.3=**
 -"Alert only for orders that contain specific products" option is added.
 -You may enter the product ids one by one from the related settings field.
