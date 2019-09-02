@@ -42,9 +42,9 @@ Version 1.0.3:
 
 Version 1.1.0:
 
--Reported bug fixed for WooCommerce Shops that have not received any (0) or enough (<10) orders yet.
--An information message is added for WooCommerce Shops that have not received any orders.
--Auto refresh with every 5 seconds to detect the first order of a very new WooCommerce shop.
+- Reported bug fixed for WooCommerce Shops that have not received any (0) or enough (<10) orders yet.
+- An information message is added for WooCommerce Shops that have not received any orders.
+- Auto refresh with every 5 seconds to detect the first order of a very new WooCommerce shop.
 ---
 
 To-Do: 
