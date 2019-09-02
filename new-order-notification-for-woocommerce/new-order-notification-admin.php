@@ -8,28 +8,67 @@ function new_order_notification() {
 
 function new_order_notification_menu()
 {
-    $query = new WC_Order_Query( array(
+    $checkArgs = array('status' => array_keys( wc_get_order_statuses() ), );
+    $checkOrders = wc_get_orders($checkArgs);
+    $numberOfOrders = count($checkOrders);
+    
+    if(($numberOfOrders) == 0)
+    {
+        echo "<h1>You have not received any orders yet. This page will be refreshed for every 5 seconds to check if your first order is received.</h1>";
+        header("Refresh: 5");
+        return;
+    }
+    else if($numberOfOrders < 10 && $numberOfOrders > 0)
+    {
+        $query = new WC_Order_Query( array(
+        'limit' => $numberOfOrders,
+        'orderby' => 'date',
+        'order' => 'DESC',
+        'return' => 'ids',
+        ) );
+        $last_order = $query->get_orders();
+        
+        $recent_orders = wc_get_orders( array(
+            'limit' => $numberOfOrders,
+            'orderby' => 'date',
+            'order' => 'DESC',
+        ) );
+        
+        $query = new WC_Order_Query( array(
+            'offset'    =>  1,
+            'limit' => $numberOfOrders-1,
+            'orderby' => 'date',
+            'order' => 'DESC',
+            'return' => 'ids',
+        ) );
+        $to_check_orders = $query->get_orders();
+    }
+    else
+    {
+        $query = new WC_Order_Query( array(
         'limit' => 6,
         'orderby' => 'date',
         'order' => 'DESC',
         'return' => 'ids',
-    ) );
-    $last_order = $query->get_orders();
+        ) );
+        $last_order = $query->get_orders();
+        
+        $recent_orders = wc_get_orders( array(
+            'limit' => 10,
+            'orderby' => 'date',
+            'order' => 'DESC',
+        ) );
+        
+        $query = new WC_Order_Query( array(
+            'offset'    =>  1,
+            'limit' => 5,
+            'orderby' => 'date',
+            'order' => 'DESC',
+            'return' => 'ids',
+        ) );
+        $to_check_orders = $query->get_orders();
+    }
     
-    $recent_orders = wc_get_orders( array(
-        'limit' => 10,
-        'orderby' => 'date',
-        'order' => 'DESC',
-    ) );
-    
-    $query = new WC_Order_Query( array(
-        'offset'    =>  1,
-        'limit' => 5,
-        'orderby' => 'date',
-        'order' => 'DESC',
-        'return' => 'ids',
-    ) );
-    $to_check_orders = $query->get_orders();
     
     $options = get_option('_new_order_option');
     if(!$options)
