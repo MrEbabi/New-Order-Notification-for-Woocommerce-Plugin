@@ -51,3 +51,5 @@ To-Do:
 - A video tutorial for example usage.
 - Audio file upload button instead of link field
 - Setup option for activating on standard order page or using a custom order page
+- Separate tab for settings page.
+- Access control: Shop manager can access only the New Order Notification page, Administrator can access the New Order Notification page and Settings page.
