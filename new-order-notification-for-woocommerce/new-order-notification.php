@@ -31,7 +31,7 @@ add_action( 'admin_init', 'new_order_notification_require_woocommerce' );
 function new_order_notification_require_woocommerce() {
     if ( is_admin() && current_user_can( 'activate_plugins' ) &&  !is_plugin_active( 'woocommerce/woocommerce.php' ) ) 
     {
-        add_action( 'admin_notices', 'global_coupons_require_woocommerce_notice' );
+        add_action( 'admin_notices', 'new_order_notification_require_woocommerce_notice' );
 
         deactivate_plugins( plugin_basename( __FILE__ ) ); 
 
@@ -45,7 +45,7 @@ function new_order_notification_require_woocommerce() {
 //throw admin notice if woocommerce is not active
 function new_order_notification_require_woocommerce_notice(){
     ?>
-    <style>a.global-coupons-settings{display:none;}</style>
+    <style> #toplevel_page_new_order_notification{display:none;} </style>
     <div class="error"><p>Sorry, but New Order Notification for Woocommerce requires the Woocommerce plugin to be installed and active.</p></div>
     <?php
     return;
