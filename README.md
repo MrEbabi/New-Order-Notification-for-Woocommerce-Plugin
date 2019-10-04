@@ -50,7 +50,7 @@ Version 1.1.0:
 To-Do: 
 - A video tutorial for example usage.
 - Audio file upload button instead of link field
-- Setup option for activating on standard order page or using a custom order page
+- Setup option for activating on standard order page or with a custom order page: after activation ask user to choose one, then record inside options and let users to change it on the settings page.
 - Separate tab for settings page.
 - Access control: Shop manager can access only the New Order Notification page, Administrator can access the New Order Notification page and Settings page.
 - Print a warning message if WooCommerce plugin itself is not active for now while activating the New Order Notification for WooCommerce plugin. (+)
