@@ -53,3 +53,4 @@ To-Do:
 - Setup option for activating on standard order page or using a custom order page
 - Separate tab for settings page.
 - Access control: Shop manager can access only the New Order Notification page, Administrator can access the New Order Notification page and Settings page.
+- Print a warning message if WooCommerce plugin itself is not active for now while activating the New Order Notification for WooCommerce plugin.
