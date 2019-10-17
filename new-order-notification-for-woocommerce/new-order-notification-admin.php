@@ -160,12 +160,12 @@ function new_order_notification_menu()
             if($lastOrder->get_status() == 'pending') $isNew = true;
         }
     }
-    
+    /*
     $websiteUrl = get_site_url();
     $websiteUrl .= "/wp-admin/post.php?post=";
     $websiteUrl .= $last_order[0];
     $websiteUrl .= "&action=edit";
-    
+    */
     if($isNew)
     {
         ?>
