@@ -207,6 +207,8 @@ function new_order_notification_menu()
             'product_ids'   =>  $product_ids,
             ));
     }
+    //$else statement for $isNew will be added here to provide auto refresh with refresh_time option
+    
     $content = "<h1>New Order Notification for Woocommerce</h1>";
     $content .= "<table id='customers-new-order-notification'>";
     $content .= "<tr><th>Recent Orders</th></tr>";
@@ -227,6 +229,7 @@ function new_order_notification_menu()
         $content .= "<tr><td>".esc_html($order_id)."</td><td>".esc_html($order_date[0])." - ".esc_html($order_date[1])."</td><td>".esc_html(ucfirst($order_status))."</td><td><a href='".esc_html($order_link)."'>Order ".esc_html($order_id)."</a></td></tr>";
     }
     
+    //settings part will be developed as a separate submenu page -- begin
     $content .= "</table><br><hr>";
     $content .= "<div class='settings-area'>";
     $content .= "<table id='settings-new-order-notification'>";
@@ -372,7 +375,9 @@ function new_order_notification_menu()
             header("Refresh:0");
         }
     }
+    //settings part will be developed as a separate submenu page -- end
     
+    //this if statement code block will be removed after else statement development for $isNew above
     if(!$isNew && !$isPosted)
     {
         $time = $options['refresh_time'];
