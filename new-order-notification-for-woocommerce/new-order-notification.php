@@ -9,7 +9,7 @@ License: GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: new-order-notification-for-woocommerce
 WC requires at least: 2.5
-WC tested up to:  3.8.1
+WC tested up to: 3.8.1
 */
 
 if(!defined('ABSPATH'))
