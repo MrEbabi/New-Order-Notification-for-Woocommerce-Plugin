@@ -5,7 +5,7 @@ function new_order_notification_settings()
     $user = wp_get_current_user();
     if ( !in_array( 'administrator', (array) $user->roles ) ) 
     {
-        echo "<br><br><h2>Only Administrator can access the Settings page.</h2>";
+        echo "<br><br><h2>Only Administrator can see Settings page.</h2>";
         return;
     }
     
