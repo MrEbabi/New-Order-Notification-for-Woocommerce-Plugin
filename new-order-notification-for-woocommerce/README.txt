@@ -64,6 +64,7 @@ Yes, but the notification system only works with custom order page named New Ord
 -Separate tab (submenu) for settings page.
 -Access control changes: Shop manager and Administrator can access the New Order Notification page.
 -Access control changes: Only Administrator can access the Settings page.
+-Warning message if WooCommerce plugin is not installed or activated.
 
 **=1.1.0=**
 -Reported bug fixed for WooCommerce Shops that have not received any (0) or enough (<10) orders yet.
