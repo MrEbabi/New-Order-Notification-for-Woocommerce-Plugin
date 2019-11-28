@@ -38,20 +38,23 @@ Version 1.0.3:
 - "Alert only for orders that contain specific products" option is added.
 - You may enter the product ids one by one from the related settings field.
 - Small bug and CSS fixes.
----
 
 Version 1.1.0:
 
 - Reported bug fixed for WooCommerce Shops that have not received any (0) or enough (<10) orders yet.
 - An information message is added for WooCommerce Shops that have not received any orders.
 - Auto refresh with every 5 seconds to detect the first order of a very new WooCommerce shop.
+
+Version 1.1.1:
+
+- Separate tab (submenu) for settings page.
+- Access control changes: Shop manager and Administrator can access the New Order Notification page.
+- Access control changes: Only Administrator can access the Settings page.
+- Warning message if WooCommerce plugin is not installed or activated.
 ---
 
 To-Do: 
 - A video tutorial for example usage.
 - Audio file upload button instead of link field
 - Setup option for activating on standard order page or with a custom order page: after activation ask user to choose one, then record inside options and let users to change it on the settings page.
-- Separate tab for settings page.
-- Access control: Shop manager can access only the New Order Notification page, Administrator can access the New Order Notification page and Settings page.
-- Print a warning message if WooCommerce plugin itself is not active for now while activating the New Order Notification for WooCommerce plugin. (+)
 - Better front-end for custom order page and related CSS additions.
