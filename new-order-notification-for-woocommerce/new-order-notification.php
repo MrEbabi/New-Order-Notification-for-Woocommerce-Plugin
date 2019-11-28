@@ -2,14 +2,14 @@
 /*
 Plugin Name: New Order Notification for Woocommerce
 Description: Woocommerce custom order page with recent orders for showing a popup notification with sound when a new order received.
-Version: 1.1.0
+Version: 1.1.1
 Author: Mr.Ebabi
 Author URI: https://github.com/MrEbabi
 License: GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: new-order-notification-for-woocommerce
 WC requires at least: 2.5
-WC tested up to:  3.6.4 
+WC tested up to:  3.8.1
 */
 
 if(!defined('ABSPATH'))
@@ -46,7 +46,7 @@ function new_order_notification_require_woocommerce() {
 function new_order_notification_require_woocommerce_notice(){
     ?>
     <style> #toplevel_page_new_order_notification{display:none;} </style>
-    <div class="error"><p>Sorry, but New Order Notification for Woocommerce requires the Woocommerce plugin to be installed and active.</p></div>
+    <div class="error"><p>Sorry, but New Order Notification for Woocommerce requires the Woocommerce plugin to be installed and activated.</p></div>
     <?php
     return;
 }
@@ -57,7 +57,7 @@ function new_order_notification_settings_link( $links )
     if(!is_admin()) exit();
 
 	$links[] = '<a href="' .
-		admin_url( 'admin.php?page=new_order_notification' ) .
+		admin_url( 'admin.php?page=new_order_notification_settings' ) .
 		'">' . __('Settings') . '</a>';
 	return $links;
 }
@@ -88,6 +88,7 @@ if(!class_exists('NewOrderNotification'))
         {
             add_filter('plugin_action_links_'.plugin_basename(__FILE__), 'new_order_notification_settings_link');
             require_once(dirname(__FILE__) . '/new-order-notification-admin.php');
+            require_once(dirname(__FILE__) . '/new-order-notification-settings.php');
         }
     }
 }
