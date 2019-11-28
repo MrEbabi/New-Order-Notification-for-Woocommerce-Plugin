@@ -6,7 +6,7 @@ Requires at least: 3.1
 Tested up to: 5.3
 Stable tag: 1.1.1
 License: GPL2
-License URI: https://www.gnu.org/licenses/gpl-2.0.htmls
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: new-order-notification-for-woocommerce
 
 Woocommerce custom order page with recent orders for showing a popup notification with sound when a new order received.
@@ -64,7 +64,6 @@ Yes, but the notification system only works with custom order page named New Ord
 -Separate tab (submenu) for settings page.
 -Access control changes: Shop manager and Administrator can access the New Order Notification page.
 -Access control changes: Only Administrator can access the Settings page.
--Warning message if WooCommerce plugin is not installed or activated.
 
 **=1.1.0=**
 -Reported bug fixed for WooCommerce Shops that have not received any (0) or enough (<10) orders yet.
