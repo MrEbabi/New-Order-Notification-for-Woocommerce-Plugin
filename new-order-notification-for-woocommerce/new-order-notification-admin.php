@@ -4,7 +4,7 @@ add_action( 'admin_menu', 'new_order_notification' );
 
 function new_order_notification() {
     add_menu_page( 'New Order Notification', 'New Order Notification', 'manage_woocommerce' , 'new_order_notification' , 'new_order_notification_menu', 'dashicons-warning' , '54');
-    add_submenu_page('new_order_notification', 'Settings', 'Settings', 'manage_woocommerce', 'new_order_notification_settings', 'new_order_notification_settings');
+	add_submenu_page('new_order_notification', 'Settings', 'Settings', 'manage_woocommerce', 'new_order_notification_settings', 'new_order_notification_settings');
 }
 
 function new_order_notification_menu()
