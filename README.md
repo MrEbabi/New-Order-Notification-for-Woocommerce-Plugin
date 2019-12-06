@@ -58,3 +58,4 @@ To-Do:
 - Audio file upload button instead of link field
 - Setup option for activating on standard order page or with a custom order page: after activation ask user to choose one, then record inside options and let users to change it on the settings page.
 - Better front-end for custom order page and related CSS additions.
+- Sound loop until acknowledgment is done by shop manager or admin.
