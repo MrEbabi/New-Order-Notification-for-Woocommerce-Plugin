@@ -63,3 +63,4 @@ To-Do:
 - A video tutorial for example usage.
 - Audio file upload button instead of link field
 - Setup option for activating on standard order page or with a custom order page: after activation ask user to choose one, then record inside options and let users to change it on the settings page.
+- Detailed notification popup like standard Woocommerce order preview.
