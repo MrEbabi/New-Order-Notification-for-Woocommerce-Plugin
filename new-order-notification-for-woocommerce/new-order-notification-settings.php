@@ -73,7 +73,7 @@ function new_order_notification_settings()
         $last_order = $query->get_orders();
     }
     
-    $content = "<br><br><div class='settings-area'>";
+    $content = "<br><div class='settings-area'>";
     $content .= "<table id='settings-new-order-notification'>";
     $content .= "<form action='' method='post' id='notificationSettingsForm'>";
     $content .= "<tr><th><span style='font-size:18px'>Settings for Notifications</span></th></tr>";
@@ -112,27 +112,29 @@ function new_order_notification_settings()
     $content .= wp_nonce_field('notification_settings_form', 'nonce_of_notificationSettingsForm');
     $content .= "<tr><th><input type='submit' value='Reset to Default' name='resetSettings'></th><th><input type='submit' value='Save Settings' name='saveSettings'></th></tr>";
     $content .= "</form></table></div>";
-    $content .= "<div class='settings-area' style='margin-left: 5%;'>";
-    $content .= "<table id='settings-new-order-notification'><form action='' method='post' id='notificationSettingsForm'> ";
-    $content .= "<tr><th><span style='font-size:18px'>Alert for Products with IDs:</span></th></tr>";
+    
     $productLoop = 0;
     if(count($product_ids))
     {
+        $content .= "<div class='settings-area'>";
+        $content .= "<table id='settings-new-order-notification'><form action='' method='post' id='notificationSettingsForm'> ";
+        $content .= "<tr><th><span style='font-size:18px'>Alert for Products with IDs:</span></th></tr>";
         while($productLoop < count($product_ids))
         {
             $content .= "<tr><th><input type='checkbox' value='".esc_html($options['product_ids'][$productLoop])."' name='selectProductId[]'>".esc_html($options['product_ids'][$productLoop])."</th></tr>";
             $productLoop++;
         }
+        $content .= wp_nonce_field('notification_settings_form_2', 'nonce_of_notificationSettingsForm_2');
+        $content .= "<tr><th><input type='submit' value='Remove Selected IDs' name='removeIds'></th></tr>";
+        $content .= "</form></table></div>";
     }
     else
     {
-        $content .= "<tr><th><h3>No Product IDs provided, all products are included.</h3></th></tr>";
+        $content .= "<div class='settings-area-id'>";
+        $content .= "<table id='settings-new-order-notification'>";
+        $content .= "<tr><th><h4>No Product IDs provided, all products are included.</h4></th></tr>";
+        $content .= "</table></div>";
     }
-    
-    
-    $content .= wp_nonce_field('notification_settings_form_2', 'nonce_of_notificationSettingsForm_2');
-    $content .= "<tr><th><input type='submit' value='Remove Selected IDs' name='removeIds'></th></tr>";
-    $content .= "</form></table></div>";
     
     $isPosted = false;
     
