@@ -83,15 +83,15 @@ function new_order_notification_menu()
         $order_statuses = 9;
         
         add_option('_new_order_option', array(
-        'last_order'   =>  $last_order[0],
-        'check_deleted' =>  $to_check_orders,
-        'refresh_time'  =>  $refreshTime,
-        'mp3_url'   =>  $musicUrlMp3,
-        'order_header'  =>  $order_header,
-        'order_text'    =>  $order_text,
-        'confirm'   =>  $confirm,
-        'statuses'  =>  $order_statuses,
-        'product_ids'   =>  $product_ids,
+            'last_order'   =>  $last_order[0],
+            'check_deleted' =>  $to_check_orders,
+            'refresh_time'  =>  $refreshTime,
+            'mp3_url'   =>  $musicUrlMp3,
+            'order_header'  =>  $order_header,
+            'order_text'    =>  $order_text,
+            'confirm'   =>  $confirm,
+            'statuses'  =>  $order_statuses,
+            'product_ids'   =>  $product_ids,
         ));
     }
     else
@@ -205,7 +205,7 @@ function new_order_notification_menu()
             'confirm'   =>  $confirm,
             'statuses'  =>  $order_statuses,
             'product_ids'   =>  $product_ids,
-            ));
+        ));
     }
     $content = "<h1>New Order Notification for Woocommerce</h1>";
     $content .= "<table id='customers-new-order-notification'>";
@@ -238,6 +238,5 @@ function new_order_notification_menu()
     $content .= "To be warned when a new order received, keep this page opened in your browser.";
     echo $content;
 }
-
 
 ?>
