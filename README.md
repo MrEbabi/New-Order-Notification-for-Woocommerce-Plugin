@@ -51,11 +51,15 @@ Version 1.1.1:
 - Access control changes: Shop manager and Administrator can access the New Order Notification page.
 - Access control changes: Only Administrator can access the Settings page.
 - Warning message if WooCommerce plugin is not installed or activated.
+
+Version 1.1.2:
+
+- Better CSS for Settings page.
+- Small bug fixes, speed optimizations.
+
 ---
 
 To-Do: 
 - A video tutorial for example usage.
 - Audio file upload button instead of link field
 - Setup option for activating on standard order page or with a custom order page: after activation ask user to choose one, then record inside options and let users to change it on the settings page.
-- Better front-end for custom order page and related CSS additions.
-- Sound loop until acknowledgment is done by shop manager or admin.
