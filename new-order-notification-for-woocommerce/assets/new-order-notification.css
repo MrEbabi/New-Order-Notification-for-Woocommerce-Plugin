@@ -1,7 +1,12 @@
         audio {display:none;}
         
         div.settings-area{
-            width: 47;
+            width: 71%;
+            float: left;
+        }
+        
+        div.settings-area-id{
+            width: 30%;
             float: left;
         }
         
@@ -33,7 +38,7 @@
         min-width: 300px;
         width: 400px;
         min-height: 150px;
-        margin-left: 600px ;
+        margin-left: 400px ;
         margin-top: 200px;
         background: #f3f3f3;
         position: relative;
@@ -64,6 +69,7 @@
         .cnt223 .x:hover{
         cursor: pointer;
         }
+        
         #customers-new-order-notification {
           font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
           border-collapse: collapse;
@@ -108,6 +114,7 @@
         #settings-new-order-notification tr:hover {background-color: #ddd;}
         
         #settings-new-order-notification th {
+          width: 50%;
           padding-top: 12px;
           padding-bottom: 12px;
           text-align: center;
