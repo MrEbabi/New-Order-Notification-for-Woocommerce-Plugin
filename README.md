@@ -66,3 +66,4 @@ To-Do:
 - Detailed notification popup like standard Woocommerce order preview.
 - Order notificiation popup title with order status (New Order -> Pending, On-Hold, Processing).
 - Change order status while acknowledging.
+- Show order statuses with selected Woocommerce language and provide translation feature.
