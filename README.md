@@ -61,8 +61,10 @@ Version 1.1.2:
 
 To-Do: 
 - A video tutorial for example usage.
-- Audio file upload button instead of link field
-- Setup option for activating on standard order page or with a custom order page: after activation ask user to choose one, then record inside options and let users to change it on the settings page.
+- Audio file upload button instead of link field.
+- Remove refresh feature, use hook to detect new order.
+- Notify admin on every page of admin panel.
+- Detect all new orders and show as a list with multiple confirm buttons.
 - Detailed notification popup like standard Woocommerce order preview.
 - Order notificiation popup title with order status (New Order -> Pending, On-Hold, Processing).
 - Change order status while acknowledging.
