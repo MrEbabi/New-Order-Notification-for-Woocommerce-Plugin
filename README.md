@@ -65,7 +65,7 @@ Next release:
 - Loop feature for the audio play (Wordpress Support)
 - Improvement of order status selection in settings to show all order statuses including custom ones (Mail Support)
 - Settings for formatting the view of order date and time zone selection (Wordpress Support)
-
+- Better product ID selection with dropdown options.
 
 To-Do: 
 - Usage instructions like browser and device type, browser settings for autoplay (Wordpress Support)
