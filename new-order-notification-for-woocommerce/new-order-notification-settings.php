@@ -9,6 +9,17 @@ function new_order_notification_settings()
         return;
     }
     
+    $_order_statuses = array_values(wc_get_order_statuses());
+    $_order_status_names = array();
+    $_order_status_name_index = 0;
+    foreach($_order_statuses as $_order_status)
+    {    
+        $name = trim($_order_status);
+        $name = str_replace(' ', '_', $name);
+        $name = strtolower($name);
+        array_push($_order_status_names, $name);
+    }
+    
     $options = get_option('_new_order_option');
     if(!$options)
     {
@@ -18,8 +29,7 @@ function new_order_notification_settings()
         $order_text = "Check Details: ";
         $confirm = "ACKNOWLEDGE THIS NOTIFICATION";
         $product_ids = array ();
-        //pending = 1, on-hold = 3, processing = 5, pending&on-hold = 4, pending&processing = 6, on-hold&processing = 8, pending&on-hold&processing = 9
-        $order_statuses = 9;
+        $order_statuses = $_order_status_names;
         
         add_option('_new_order_option', array(
         'last_order'   =>  $last_order[0],
@@ -73,41 +83,36 @@ function new_order_notification_settings()
         $last_order = $query->get_orders();
     }
     
+    $allProductIds = get_posts( array(
+      'posts_per_page' => -1,
+      'post_type' => array('product','product_variation'),
+      'fields' => 'ids',
+    ) );
+    
     $content = "<br><div class='settings-area'>";
     $content .= "<table id='settings-new-order-notification'>";
     $content .= "<form action='' method='post' id='notificationSettingsForm'>";
     $content .= "<tr><th><span style='font-size:18px'>Settings for Notifications</span></th></tr>";
-    $content .= "<tr><th>Alert only for orders containing products with ID: </th><th><input type='number' min=0 name='inputForProductIds' placeholder='Please enter one by one'></th></tr>";
+    $content .= "<tr><th>Alert only for orders containing products with ID: </th><th><select name='inputForProductIds'><option value='' disabled selected></option>";
+    foreach($allProductIds as $productId)
+    {
+        $content .= "<option value='".esc_html($productId)."'>".esc_html(get_the_title($productId))."</option>";
+    }
+    $content .= "</select></th></tr>";    
+    
     $content .= "<tr><th>Refresh Time (in seconds): </th><th><input type='number' min='0' step='1' name='inputForTime' placeholder='".esc_html($options['refresh_time'])."'></th></tr>";
     $content .= "<tr><th>MP3 File URL (ends with .mp3): </th><th><input type='text' name='inputForMp3' placeholder='".esc_html($options['mp3_url'])."'></th></tr>";
     $content .= "<tr><th>Notification Header: </th><th><input type='text' name='inputForHeader' placeholder='".esc_html($options['order_header'])."'></th></tr>";
     $content .= "<tr><th>Notification Text: </th><th><input type='text' name='inputForText' placeholder='".esc_html($options['order_text'])."'></th></tr>";
     $content .= "<tr><th>Confirmation Text: </th><th><input type='text' name='inputForConfirm' placeholder='".esc_html($options['confirm'])."'></th></tr>";
-    //pending = 1, on-hold = 3, processing = 5, pending&on-hold = 4, pending&processing = 6, on-hold&processing = 8, pending&on-hold&processing = 9
     $content .= "<tr><th>Notification Order Statuses: </th><th>";
-    if($options['statuses'] == 1 || $options['statuses'] == 4 || $options['statuses'] == 6 || $options['statuses'] == 9)
+    foreach($_order_statuses as $_order_status)
     {
-        $content .= "<input type='checkbox' name='inputForPending' value='1' placeholder='Pending' checked>Pending<br>";
-    }
-    else
-    {
-        $content .= "<input type='checkbox' name='inputForPending' value='1' placeholder='Pending'>Pending<br>";
-    }
-    if($options['statuses'] == 3 || $options['statuses'] == 4 || $options['statuses'] == 8 || $options['statuses'] == 9)
-    {
-        $content .= "<input type='checkbox' name='inputForOnhold' value='3' checked>On-Hold<br>";
-    }
-    else
-    {
-        $content .= "<input type='checkbox' name='inputForOnhold' value='3'>On-Hold<br>";
-    }
-    if($options['statuses'] == 5 || $options['statuses'] == 6 || $options['statuses'] == 8 || $options['statuses'] == 9)
-    {
-        $content .= "<input type='checkbox' name='inputForProcessing' value='5' placeholder='Processing' checked>Processing</th></tr>";
-    }
-    else
-    {
-        $content .= "<input type='checkbox' name='inputForProcessing' value='5' placeholder='Processing'>Processing</th></tr>";
+        if(in_array ($_order_status_names[$_order_status_name_index], $order_statuses))
+        $content .= "<input type='checkbox' name='".esc_html($_order_status_names[$_order_status_name_index])."' value='".esc_html($_order_status_names[$_order_status_name_index])."' checked>". esc_html ($_order_status) ."<br>";
+        else
+        $content .= "<input type='checkbox' name='".esc_html($_order_status_names[$_order_status_name_index])."' value='".esc_html($_order_status_names[$_order_status_name_index])."'>". esc_html ($_order_status) ."<br>";
+        $_order_status_name_index++;
     }
     $content .= wp_nonce_field('notification_settings_form', 'nonce_of_notificationSettingsForm');
     $content .= "<tr><th><input type='submit' value='Reset to Default' name='resetSettings'></th><th><input type='submit' value='Save Settings' name='saveSettings'></th></tr>";
@@ -142,16 +147,19 @@ function new_order_notification_settings()
     {
         if(isset($_POST['saveSettings']))
         {
-            $order_statuses = 0;
+            $order_statuses = array();
             $count_products = count($product_ids);
             if( isset($_POST['inputForTime']) && !empty($_POST['inputForTime']) ) $refreshTime = sanitize_text_field($_POST['inputForTime']);
             if( isset($_POST['inputForMp3']) && !empty($_POST['inputForMp3']) ) $musicUrlMp3 = sanitize_text_field($_POST['inputForMp3']);
             if( isset($_POST['inputForHeader']) && !empty($_POST['inputForHeader']) ) $order_header = sanitize_text_field($_POST['inputForHeader']);
             if( isset($_POST['inputForText']) && !empty($_POST['inputForText']) ) $order_text = sanitize_text_field($_POST['inputForText']);
             if( isset($_POST['inputForConfirm']) && !empty($_POST['inputForConfirm']) ) $confirm = sanitize_text_field($_POST['inputForConfirm']);
-            if( isset($_POST['inputForPending']) && !empty($_POST['inputForPending']) ) $order_statuses += sanitize_text_field($_POST['inputForPending']);
-            if( isset($_POST['inputForOnhold']) && !empty($_POST['inputForOnhold']) ) $order_statuses += sanitize_text_field($_POST['inputForOnhold']);
-            if( isset($_POST['inputForProcessing']) && !empty($_POST['inputForProcessing']) ) $order_statuses += sanitize_text_field($_POST['inputForProcessing']);
+            
+            foreach($_order_status_names as $_order_status_name) 
+            {
+                if( isset($_POST[$_order_status_name]) && !empty($_POST[$_order_status_name]) ) array_push($order_statuses, sanitize_text_field($_POST[$_order_status_name]));
+            }
+
             if( isset($_POST['inputForProductIds']) && !empty($_POST['inputForProductIds']) ) $product_ids[$count_products] = sanitize_text_field($_POST['inputForProductIds']);
             
             update_option('_new_order_option', array(
@@ -184,7 +192,7 @@ function new_order_notification_settings()
             'order_header'  =>  $order_header,
             'order_text'    =>  $order_text,
             'confirm'   =>  $confirm,
-            'statuses'  =>  9,
+            'statuses'  =>  $_order_status_names,
             ));
             $isPosted = true;
             header("Refresh:0");
@@ -219,7 +227,6 @@ function new_order_notification_settings()
             header("Refresh:0");
         }
     }
-    
     echo $content;
 }
 
