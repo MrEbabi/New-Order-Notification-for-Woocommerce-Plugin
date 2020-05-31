@@ -1,91 +1,102 @@
-=== New Order Notification for Woocommerce ===
-Contributors: mrebabi
+<?php
+/*
+Plugin Name: New Order Notification for Woocommerce
+Description: Woocommerce custom order page with recent orders for showing a popup notification with sound when a new order received.
+Version: 1.2.1
+Author: Mr.Ebabi
 Author URI: https://github.com/MrEbabi
-Tags: woocommerce, woocommerce order page, woocommerce notification, woocommerce order notification, woocommerce new order notification, woocommerce new order popup
-Requires at least: 3.1
-Tested up to: 5.3
-Stable tag: 1.1.2
 License: GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: new-order-notification-for-woocommerce
+WC requires at least: 2.5
+WC tested up to:  5.4.1
+*/
 
-Woocommerce custom order page with recent orders for showing a popup notification with sound when a new order received.
+if(!defined('ABSPATH'))
+{
+    die;
+}
 
-== Description==
-* POPUP NOTIFICATION WHEN A NEW ORDER RECEIVED
+defined('ABSPATH') or die('You shall not pass!');
 
-* NOTIFICATION KEEPS SHOWING UNTIL YOU ACKNOWLEDGE THE NEW ORDER
+if(!function_exists('add_action'))
+{
+    echo "You shall not pass!";
+    exit;
+}
 
-* SET YOUR ALARM SOUND TO PLAY WITH POPUP NOTIFICATION
+//require woocommerce to install global coupons for woocommerce
+add_action( 'admin_init', 'new_order_notification_require_woocommerce' );
 
-* SET THE REFRESH TIME OF NEW ORDER PAGE
+function new_order_notification_require_woocommerce() {
+    if ( is_admin() && current_user_can( 'activate_plugins' ) &&  !is_plugin_active( 'woocommerce/woocommerce.php' ) ) 
+    {
+        add_action( 'admin_notices', 'new_order_notification_require_woocommerce_notice' );
 
-* SET ALERT FOR ORDERS THAT CONTAIN SELECTED PRODUCTS
+        deactivate_plugins( plugin_basename( __FILE__ ) ); 
 
+        if ( isset( $_GET['activate'] ) ) 
+        {
+            unset( $_GET['activate'] );
+        }
+    }
+}
 
-**Woocommerce custom order page with recent orders for showing a popup notification with sound when a new order received.**
+//throw admin notice if woocommerce is not active
+function new_order_notification_require_woocommerce_notice(){
+    ?>
+    <style> #toplevel_page_new_order_notification{display:none;} </style>
+    <div class="error"><p>Sorry, but New Order Notification for Woocommerce requires the Woocommerce plugin to be installed and activated.</p></div>
+    <?php
+    return;
+}
 
-1. New Order Notification for WooCommerce is providing shop managers and administrators to see the recent orders on a custom order page.
-2. This order page is customized to popup a notification when a new order received.
-3. While the popup notification is showing to the admin, a music file also plays to alert admin.
-4. This music keeps playing and popup keeps showing until the admin confirms the new order.
-5. There are settings for this custom order page, popup notification and music file.
-6. You may edit the string fields in popup notification.
-7. You may edit the refresh time of custom order page (time to check if new order is received).
-8. You may add a link to change the music file (.mp3 extension).
-9. You may set product ID rules for order notification. (alert only if order contains product X)
+//settings link for plugin page
+function new_order_notification_settings_link( $links ) 
+{
+    if(!is_admin()) exit();
 
-**To ask new properties or report bugs, kindly inform globalcoupons@mrebabi.com**
+	$links[] = '<a href="' .
+		admin_url( 'admin.php?page=new_order_notification_settings' ) .
+		'">' . __('Settings') . '</a>';
+	return $links;
+}
 
-== Installation ==
-1. Upload the entire 'new-order-notification-for-woocommerce' folder to the '/wp-content/plugins/' directory or upload as a zip file then extract it to the '/wp-content/plugins/'
-2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Look at your admin bar to see new section: New Order.
-4. Open the New Order page and enjoy the plugin!
+//css for admin panel
+function new_order_notification_admin_css() 
+{
+	wp_register_style('new-order-notification-admin-css', plugins_url('assets/new-order-notification.css',__FILE__ ), array(), rand(111,9999), 'all');
+    wp_enqueue_style('new-order-notification-admin-css');
+}
 
-== Frequently Asked Questions ==
-= Does this plugin work with newest Wordpress and Woocommerce version and also older versions? =
-Yes, the plugin is tested with Wordpress 5.3 and Woocommerce 3.8.1 and works fine. Yet, you are welcome to inform us about any bugs so we can fix them.
+add_action( 'admin_init','new_order_notification_admin_css');
 
-= Can we still use standard Woocommerce Orders page while using this plugin? =
-Yes, but the notification system only works with custom order page named New Order.
+function new_order_notification_admin_js()
+{
+    wp_register_style('new-order-notification-admin-js', 'https://code.jquery.com/jquery-1.8.2.js' , array(), rand(111,9999), 'all');
+    wp_enqueue_style('new-order-notification-admin-js');
+    
+}
 
-== Screenshots ==
-1. New Order Notification Recent Order Table
-2. Popup Notification Preview When a New Order Received
-3. Settings for Notifications
+add_action( 'admin_init','new_order_notification_admin_js');
 
-== Changelog ==
-**=1.1.2=**
--Better CSS for Popup and Settings page.
--Small bug fixes and speed optimization.
+if(!class_exists('NewOrderNotification'))
+{
+    class NewOrderNotification
+    {
+        function __construct()
+        {
+            add_filter('plugin_action_links_'.plugin_basename(__FILE__), 'new_order_notification_settings_link');
+            require_once(dirname(__FILE__) . '/new-order-notification-admin.php');
+            require_once(dirname(__FILE__) . '/new-order-notification-settings.php');
+        }
+    }
+}
 
-**=1.1.1=**
--Separate tab (submenu) for settings page.
--Access control changes: Shop manager and Administrator can access the New Order Notification page.
--Access control changes: Only Administrator can access the Settings page.
+if(class_exists('NewOrderNotification'))
+{
+    $newOrderNotification = new NewOrderNotification();
+}
 
-**=1.1.0=**
--Reported bug fixed for WooCommerce Shops that have not received any (0) or enough (<10) orders yet.
--An information message is added for WooCommerce Shops that have not received any orders.
--Auto refresh with every 5 seconds to detect the first order of a very new WooCommerce shop.
+register_activation_hook( __FILE__, array($newOrderNotification, '__construct'));
 
-**=1.0.3=**
--"Alert only for orders that contain specific products" option is added.
--You may enter the product ids one by one from the related settings field.
--Small bug and CSS fixes.
-
-**=1.0.2=**
--Settings providing selection of order statuses that the plugin will notify.
--Small bug fixes.
--CSS fixes.
-
-**=1.0.1=**
--Small bug fixes.
--CSS additions.
--README is more detailed now.
-
-**=1.0.0=**
--Hello World. This is the first version of the New Order Notification for Woocommerce.
--Initialized the source code.
--So it begins...
