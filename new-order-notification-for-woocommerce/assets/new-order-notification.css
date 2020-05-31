@@ -1,12 +1,12 @@
         audio {display:none;}
         
         div.settings-area{
-            width: 71%;
+            width: 50%;
             float: left;
         }
         
         div.settings-area-id{
-            width: 30%;
+            width: 51%;
             float: left;
         }
         
@@ -105,8 +105,8 @@
         }
         
         #settings-new-order-notification td, #settings-new-order-notification th {
-          ;
           border: 1px solid #ddd;
+           padding: 8px;
         }
         
         #settings-new-order-notification tr:nth-child(even){background-color: #f2f2f2;}
@@ -122,9 +122,10 @@
           color: white;
         }
         
-        #settings-new-order-notification input {
+        #settings-new-order-notification input, #settings-new-order-notification select, #settings-new-order-notification option {
             width: 95%;
             text-align: center;
+            text-align-last: center;
         }
         
         #settings-new-order-notification input[type=submit] {
