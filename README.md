@@ -57,6 +57,21 @@ Version 1.1.2:
 - Better CSS for Settings page.
 - Small bug fixes, speed optimizations.
 
+Version 1.2.0:
+
+- Sound playing problem when another tab is focused on the browser is solved.
+- Audio loop feature is added.
+- Better product ID selection with dropdown options.
+- Improvement of order status selection in Settings to show all order statuses including custom statuses.
+- Time zone problem of order date is solved.
+- Better format for order date.
+- Better CSS for Settings page.
+
+Version 1.2.1:
+
+- Bug fixes for reported PHP errors.
+- New Order Notifciation page is now accessable for roles: Super Admin, Admin, Editor, Author and Shop Manager.
+
 ---
 
 Next release:
