@@ -3,19 +3,28 @@
 add_action( 'admin_menu', 'new_order_notification' );
 
 function new_order_notification() {
-    add_menu_page( 'New Order Notification', 'New Order Notification', 'manage_woocommerce' , 'new_order_notification' , 'new_order_notification_menu', 'dashicons-warning' , '54');
-	add_submenu_page('new_order_notification', 'Settings', 'Settings', 'manage_woocommerce', 'new_order_notification_settings', 'new_order_notification_settings');
+    add_menu_page( 'New Order Notification', 'New Order Notification', 'delete_posts' , 'new_order_notification' , 'new_order_notification_menu', 'dashicons-warning' , '54');
+	add_submenu_page('new_order_notification', 'Settings', 'Settings', 'manage_options', 'new_order_notification_settings', 'new_order_notification_settings');
+}
+
+function new_order_notification_manipulate_status_name($orderStatusName)
+{
+    $name = trim($orderStatusName);
+    $name = str_replace(' ', '_', $name);
+    $manipulatedName = strtolower($name);
+    return $manipulatedName;
 }
 
 function new_order_notification_menu()
 {
     $checkArgs = array('status' => array_keys( wc_get_order_statuses() ), );
     $checkOrders = wc_get_orders($checkArgs);
-    $numberOfOrders = count($checkOrders);
+	$numberOfOrders = 0;
+	if(is_array($checkOrders)) $numberOfOrders = count($checkOrders);
     
     if(($numberOfOrders) == 0)
     {
-        echo "<h1>You have not received any orders yet. This page will be refreshed for every 5 seconds to check if your first order is received.</h1>";
+        echo "<h1>You have not received any orders yet.<br><br>This page will be refreshed for every 5 seconds to check if your first order is received.</h1>";
         header("Refresh: 5");
         return;
     }
@@ -70,6 +79,15 @@ function new_order_notification_menu()
         $to_check_orders = $query->get_orders();
     }
     
+    $_order_statuses = array_values(wc_get_order_statuses());
+    $_order_status_names = array();
+    $_order_status_name_index = 0;
+    foreach($_order_statuses as $_order_status)
+    {    
+        array_push($_order_status_names, new_order_notification_manipulate_status_name($_order_status));
+    }
+    
+	$order_statuses = array();
     $options = get_option('_new_order_option');
     if(!$options)
     {
@@ -79,8 +97,7 @@ function new_order_notification_menu()
         $order_text = "Check Details: ";
         $confirm = "ACKNOWLEDGE THIS NOTIFICATION";
         $product_ids = array ();
-        //pending = 1, on-hold = 3, processing = 5, pending&on-hold = 4, pending&processing = 6, on-hold&processing = 8, pending&on-hold&processing = 9
-        $order_statuses = 9;
+        $order_statuses = $_order_status_names;
         
         add_option('_new_order_option', array(
             'last_order'   =>  $last_order[0],
@@ -107,13 +124,14 @@ function new_order_notification_menu()
     
     $alertForThisProduct = false;
     $isAllProducts = true;
-    if(count($product_ids) != 0)
+    if(is_array($product_ids) && count($product_ids) != 0)
     {
         $isAllProducts = false;
     }
     $isNew = false;
     $isAnyDeletion = false;
-    if(in_array($last_order[0], $options['check_deleted'])) $isAnyDeletion = true;
+    
+    if(is_array($options['check_deleted']) && in_array($last_order[0], $options['check_deleted'])) $isAnyDeletion = true;
     
     if($last_order[0] != $options['last_order'] && (!$isAnyDeletion))
     {
@@ -131,33 +149,14 @@ function new_order_notification_menu()
             }
         }
         
-        if($options['statuses'] == 9 && ($isAllProducts || $alertForThisProduct) )
+        $statusPrefix = "wc-";
+        $_lastOrderStatus = $lastOrder->status;
+        $_lastOrderStatus = $statusPrefix . $_lastOrderStatus;
+        $lastOrderStatus = wc_get_order_statuses()[$_lastOrderStatus];
+        
+        if(in_array(new_order_notification_manipulate_status_name($lastOrderStatus), $order_statuses) && ($isAllProducts || $alertForThisProduct))
         {
             $isNew = true;
-        }
-        if($options['statuses'] == 8 && ($isAllProducts || $alertForThisProduct))
-        {
-            if($lastOrder->get_status() == 'on-hold' || $lastOrder->get_status() == 'processing' && ($isAllProducts || $alertForThisProduct)) $isNew = true;
-        }
-        if($options['statuses'] == 6)
-        {
-            if($lastOrder->get_status() == 'pending' || $lastOrder->get_status() == 'processing' && ($isAllProducts || $alertForThisProduct)) $isNew = true;
-        }
-        if($options['statuses'] == 5 && ($isAllProducts || $alertForThisProduct))
-        {
-            if($lastOrder->get_status() == 'processing' ) $isNew = true;
-        }
-        if($options['statuses'] == 4 && ($isAllProducts || $alertForThisProduct))
-        {
-            if($lastOrder->get_status() == 'pending' || $lastOrder->get_status() == 'on-hold') $isNew = true;
-        }
-        if($options['statuses'] == 3 && ($isAllProducts || $alertForThisProduct))
-        {
-            if($lastOrder->get_status() == 'pending') $isNew = true;
-        }
-        if($options['statuses'] == 1 && ($isAllProducts || $alertForThisProduct))
-        {
-            if($lastOrder->get_status() == 'pending') $isNew = true;
         }
     }
     
@@ -170,6 +169,7 @@ function new_order_notification_menu()
     {
         ?>
         <script type='text/javascript'>
+            window.focus();
             jQuery(function($){
             var overlay = $('<div id="overlay"></div>');
             overlay.show();
@@ -191,7 +191,8 @@ function new_order_notification_menu()
         </script>
         <?php
         
-        $popupcontent = "<audio controls autoplay><source src='".esc_html($options['mp3_url'])."' type='audio/mpeg'>Your browser does not support the audio element.</audio>";
+        $audiocontent = "<audio controls autoplay loop><source src='".esc_html($options['mp3_url'])."' type='audio/mpeg'>Your browser does not support the audio element.</audio>";
+        echo $audiocontent;
         $popupcontent .= "<div class='popup'><div class='cnt223'><h1>".esc_html($order_header)."</h1><p>".esc_html($order_text)." <a href='".esc_html($websiteUrl)."' target='_blank'>".esc_html($last_order[0])."</a><br/><br/><a href='' class='close'>".esc_html($confirm)."</a></p></div></div>";
         echo $popupcontent;
         
@@ -212,19 +213,18 @@ function new_order_notification_menu()
     $content .= "<tr><th>Recent Orders</th></tr>";
     $content .= "<tr><th>Order No</th><th>Order Date</th><th>Order Status</th><th>Check Details</th></tr>";
     foreach($recent_orders as $recent_order)
-    {
+    {        
+        $utc_diff = get_option('gmt_offset');
         $order_id = $recent_order->ID;
-        $order_date = $recent_order->date_created;
-        $order_date = substr($order_date, 0, 19);
-        $order_date = explode('T', $order_date);
-
+        $_order = wc_get_order($order_id);
+        $order_date = $_order->get_date_created();
         $order_status = $recent_order->status;
         $order_link = get_site_url();
         $order_link .= "/wp-admin/post.php?post=";
         $order_link .= $order_id;
         $order_link .= "&action=edit";
         
-        $content .= "<tr><td>".esc_html($order_id)."</td><td>".esc_html($order_date[0])." - ".esc_html($order_date[1])."</td><td>".esc_html(ucfirst($order_status))."</td><td><a href='".esc_html($order_link)."'>Order ".esc_html($order_id)."</a></td></tr>";
+        $content .= "<tr><td>".esc_html($order_id)."</td><td>".esc_html($order_date->date("g:i:s - d/m/Y"))."</td><td>".esc_html(ucfirst($order_status))."</td><td><a href='".esc_html($order_link)."' target='_blank'>Order ".esc_html($order_id)."</a></td></tr>";
     }
     
     $content .= "</table><br><hr>";
@@ -238,5 +238,3 @@ function new_order_notification_menu()
     $content .= "To be warned when a new order received, keep this page opened in your browser.";
     echo $content;
 }
-
-?>
