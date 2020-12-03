@@ -100,11 +100,11 @@ function new_order_notification_settings()
     }
     $content .= "</select></th></tr>";    
     
-    $content .= "<tr><th>Refresh Time (in seconds): </th><th><input type='number' min='0' step='1' name='inputForTime' placeholder='".esc_html($options['refresh_time'])."'></th></tr>";
-    $content .= "<tr><th>MP3 File URL (ends with .mp3): </th><th><input type='text' name='inputForMp3' placeholder='".esc_html($options['mp3_url'])."'></th></tr>";
-    $content .= "<tr><th>Notification Header: </th><th><input type='text' name='inputForHeader' placeholder='".esc_html($options['order_header'])."'></th></tr>";
-    $content .= "<tr><th>Notification Text: </th><th><input type='text' name='inputForText' placeholder='".esc_html($options['order_text'])."'></th></tr>";
-    $content .= "<tr><th>Confirmation Text: </th><th><input type='text' name='inputForConfirm' placeholder='".esc_html($options['confirm'])."'></th></tr>";
+    $content .= "<tr><th>Refresh Time (in seconds): </th><th><input type='number' min='0' step='1' name='inputForTime' value='".esc_html($options['refresh_time'])."'></th></tr>";
+    $content .= "<tr><th>MP3 File URL (ends with .mp3): </th><th><input type='text' name='inputForMp3' value='".esc_html($options['mp3_url'])."'></th></tr>";
+    $content .= "<tr><th>Notification Header: </th><th><input type='text' name='inputForHeader' value='".esc_html($options['order_header'])."'></th></tr>";
+    $content .= "<tr><th>Notification Text: </th><th><input type='text' name='inputForText' value='".esc_html($options['order_text'])."'></th></tr>";
+    $content .= "<tr><th>Confirmation Text: </th><th><input type='text' name='inputForConfirm' value='".esc_html($options['confirm'])."'></th></tr>";
     $content .= "<tr><th>Notification Order Statuses: </th><th>";
     foreach($_order_statuses as $_order_status)
     {
