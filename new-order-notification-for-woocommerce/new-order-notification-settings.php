@@ -2,45 +2,34 @@
 
 function new_order_notification_settings()
 {
-    $user = wp_get_current_user();
-    if ( !in_array( 'administrator', (array) $user->roles ) ) 
-    {
-        echo "<br><br><h2>Only Administrator can see Settings page.</h2>";
-        return;
-    }
-    
-    $_order_statuses = array_values(wc_get_order_statuses());
-    $_order_status_names = array();
-    $_order_status_name_index = 0;
-    foreach($_order_statuses as $_order_status)
-    {    
-        $name = trim($_order_status);
-        $name = str_replace(' ', '_', $name);
-        $name = strtolower($name);
-        array_push($_order_status_names, $name);
-    }
-    
+    $order_statuses = array();
+	$product_ids = array();
+	global $wp_roles;
+    $roles = $wp_roles->roles;
+    $roleValues = array_keys($roles);
+    $user_roles = $roleValues;
+    $order_status_map = wc_get_order_statuses();
+    $order_status_keys = array_keys($order_status_map);
+    $order_status_values = array_values($order_status_map);
+	
     $options = get_option('_new_order_option');
     if(!$options)
     {
         $musicUrlMp3 = plugins_url('assets/order-music.mp3',__FILE__ );
         $refreshTime = 30;
         $order_header = "Order Notification - New Order";
-        $order_text = "Check Details: ";
+        $order_text = "Check Order Details: ";
         $confirm = "ACKNOWLEDGE THIS NOTIFICATION";
-        $product_ids = array ();
-        $order_statuses = $_order_status_names;
-        
+
         add_option('_new_order_option', array(
-        'last_order'   =>  $last_order[0],
-        'check_deleted' =>  $to_check_orders,
-        'refresh_time'  =>  $refreshTime,
-        'mp3_url'   =>  $musicUrlMp3,
-        'order_header'  =>  $order_header,
-        'order_text'    =>  $order_text,
-        'confirm'   =>  $confirm,
-        'statuses'  =>  $order_statuses,
-        'product_ids'   =>  $product_ids,
+            'refresh_time'  =>  $refreshTime,
+            'mp3_url'   =>  $musicUrlMp3,
+            'order_header'  =>  $order_header,
+            'order_text'    =>  $order_text,
+            'confirm'   =>  $confirm,
+            'statuses'  =>  $order_status_keys,
+            'product_ids'   =>  $product_ids,
+            'user_roles'   =>  $user_roles,
         ));
     }
     else
@@ -52,36 +41,20 @@ function new_order_notification_settings()
         $confirm = $options['confirm'];
         $order_statuses = $options['statuses'];
         $product_ids = $options['product_ids'];
+        $user_roles = $options['user_roles'];
     }
     
+    $user = wp_get_current_user();
+    if ( !in_array( 'administrator', (array) $user->roles ) ) 
+    {
+        echo "<br><br><h2>You don't have permission to see the Settings page.</h2>";
+        return;
+    }
+    
+    $checkOrders = array();
     $checkArgs = array('status' => array_keys( wc_get_order_statuses() ), );
     $checkOrders = wc_get_orders($checkArgs);
     $numberOfOrders = count($checkOrders);
-    
-    if(($numberOfOrders) == 0)
-    {
-        echo "<h1>You have not received any orders yet. This page will be refreshed for every 5 seconds to check if your first order is received.</h1>";
-    }
-    else if($numberOfOrders < 10 && $numberOfOrders > 0)
-    {
-        $query = new WC_Order_Query( array(
-        'limit' => $numberOfOrders,
-        'orderby' => 'date',
-        'order' => 'DESC',
-        'return' => 'ids',
-        ) );
-        $last_order = $query->get_orders();
-    }
-    else
-    {
-        $query = new WC_Order_Query( array(
-        'limit' => 6,
-        'orderby' => 'date',
-        'order' => 'DESC',
-        'return' => 'ids',
-        ) );
-        $last_order = $query->get_orders();
-    }
     
     $allProductIds = get_posts( array(
       'posts_per_page' => -1,
@@ -93,30 +66,65 @@ function new_order_notification_settings()
     $content .= "<table id='settings-new-order-notification'>";
     $content .= "<form action='' method='post' id='notificationSettingsForm'>";
     $content .= "<tr><th><span style='font-size:18px'>Settings for Notifications</span></th></tr>";
-    $content .= "<tr><th>Alert only for orders containing products with ID: </th><th><select name='inputForProductIds'><option value='' disabled selected></option>";
+    
+    $content .= "<tr><th><div class='tooltip'>Product IDs: <span class='tooltiptext'>When you select product ids, the recent orders and alerts will be restricted with orders that contain selected product ids. </span></div></th><th><select multiple name='inputForProductIds[]'><option value='' disabled selected></option>";
     foreach($allProductIds as $productId)
     {
-        $content .= "<option value='".esc_html($productId)."'>".esc_html(get_the_title($productId))."</option>";
+        if(!in_array($productId, $product_ids)) {
+            $content .= "<option value='".esc_html($productId)."'>".esc_html(get_the_title($productId))."</option>";
+        }
     }
     $content .= "</select></th></tr>";    
     
-    $content .= "<tr><th>Refresh Time (in seconds): </th><th><input type='number' min='0' step='1' name='inputForTime' value='".esc_html($options['refresh_time'])."'></th></tr>";
-    $content .= "<tr><th>MP3 File URL (ends with .mp3): </th><th><input type='text' name='inputForMp3' value='".esc_html($options['mp3_url'])."'></th></tr>";
-    $content .= "<tr><th>Notification Header: </th><th><input type='text' name='inputForHeader' value='".esc_html($options['order_header'])."'></th></tr>";
-    $content .= "<tr><th>Notification Text: </th><th><input type='text' name='inputForText' value='".esc_html($options['order_text'])."'></th></tr>";
-    $content .= "<tr><th>Confirmation Text: </th><th><input type='text' name='inputForConfirm' value='".esc_html($options['confirm'])."'></th></tr>";
-    $content .= "<tr><th>Notification Order Statuses: </th><th>";
-    foreach($_order_statuses as $_order_status)
+    $content .= "<tr><th><div class='tooltip'>Refresh Time: <span class='tooltiptext'>Enter the refresh time in seconds, to check whether a new order is received or not. </span></div></th><th><input type='number' min='0' step='1' name='inputForTime' value='".esc_html($options['refresh_time'])."'></th></tr>";
+    
+    $content .= "<tr><th><div class='tooltip'>MP3 File URL: <span class='tooltiptext'>You can upload any .mp3 file using Media section in admin panel then copy the file URL and paste here to use it as alert media. </span></div></th><th><input type='text' name='inputForMp3' value='".esc_html($options['mp3_url'])."'></th></tr>";
+    
+    $content .= "<tr><th><div class='tooltip'>Notification Header: <span class='tooltiptext'>Enter the header text that is shown in the notification popup. </span></div></th><th><input type='text' name='inputForHeader' value='".esc_html($options['order_header'])."'></th></tr>";
+    
+    $content .= "<tr><th><div class='tooltip'>Notification Text: <span class='tooltiptext'>Enter the text that is shown in the notification popup just before the Order ID.</span></div></th><th><input type='text' name='inputForText' value='".esc_html($options['order_text'])."'></th></tr>";
+    
+    $content .= "<tr><th><div class='tooltip'>Confirmation Text: <span class='tooltiptext'>Enter the confirmation text which closes the notification popup.</span></div></th><th><input type='text' name='inputForConfirm' value='".esc_html($options['confirm'])."'></th></tr>";
+    
+    $content .= "<tr><th><div class='tooltip'>Notification Order Statuses: <span class='tooltiptext'>The new order alert and recent orders table works for the selected order statuses from this option.</span></div></th><th>";
+    $_order_status_name_index = 0;
+    foreach($order_status_keys as $order_status_key)
     {
-        if(in_array ($_order_status_names[$_order_status_name_index], $order_statuses))
-        $content .= "<input type='checkbox' name='".esc_html($_order_status_names[$_order_status_name_index])."' value='".esc_html($_order_status_names[$_order_status_name_index])."' checked>". esc_html ($_order_status) ."<br>";
-        else
-        $content .= "<input type='checkbox' name='".esc_html($_order_status_names[$_order_status_name_index])."' value='".esc_html($_order_status_names[$_order_status_name_index])."'>". esc_html ($_order_status) ."<br>";
+        if(in_array ($order_status_key, $order_statuses)) {
+            $content .= "<input type='checkbox' name='inputForStatuses[]' value='".esc_html($order_status_key)."' checked>". esc_html ($order_status_values[$_order_status_name_index]) ."<br>";
+        }
+        else {
+            $content .= "<input type='checkbox' name='inputForStatuses[]' value='".esc_html($order_status_key)."'>". esc_html ($order_status_values[$_order_status_name_index]) ."<br>";
+        }
         $_order_status_name_index++;
     }
+    
+    $content .= "<tr><th><div class='tooltip'>New Order Notification Page Roles: <span class='tooltiptext'>Select the user roles which can access the New Order Notification Page.</span></div></th><th><select name='inputForRoles[]' multiple><option value='' disabled selected></option>";
+    $index = 0;
+    foreach($roles as $role)
+    {
+        $roleValue = $roleValues[$index];
+        $roleName = $role['name'];
+        $content .= "<option value='".esc_html($roleValue)."'>".esc_html($roleName)."</option>";
+        $index++;
+    }
+    $content .= "</select></th></tr>";
+    
     $content .= wp_nonce_field('notification_settings_form', 'nonce_of_notificationSettingsForm');
-    $content .= "<tr><th><input type='submit' value='Reset to Default' name='resetSettings'></th><th><input type='submit' value='Save Settings' name='saveSettings'></th></tr>";
-    $content .= "</form></table></div>";
+    $content .= "<tr><th><input type='submit' value='Reset to Default' name='resetSettings'></th><th><input type='submit' value='Save Settings' name='saveSettings'></th></tr></form></table>";
+    $content .= "<script type='text/javascript'>
+                    jQuery(function($){
+                        $('#openPreview').click(function(){
+                            $('.popup').show();
+                        });
+                        $('#closePreview').click(function(){
+                            $('.popup').hide();
+                        });
+                    });
+                </script>
+                <br><h2>Preview Alert Popup</h2><input type='button' id='openPreview' value='Preview'>";
+    $content .= "</div>";
+    $content .= "<div class='popup'><div class='cnt223'><h1>".esc_html($order_header)."</h1><p>".esc_html($options['order_text'])." <a href='#' target='_blank'>X</a><br/><br/><a href='' id='closePreview'>".esc_html($options['confirm'])."</a></p></div></div>";
     
     $productLoop = 0;
     if(count($product_ids))
@@ -141,37 +149,73 @@ function new_order_notification_settings()
         $content .= "</table></div>";
     }
     
+    $roleLoop = 0;
+    if(count($user_roles))
+    {
+        $content .= "<div class='settings-area'>";
+        $content .= "<table id='settings-new-order-notification'><form action='' method='post' id='notificationSettingsForm'> ";
+        $content .= "<tr><th><span style='font-size:18px'>Permitted User Roles:</span></th></tr>";
+        while($roleLoop < count($user_roles))
+        {
+            $content .= "<tr><th><input type='checkbox' value='".esc_html($options['user_roles'][$roleLoop])."' name='selectUserRole[]'>".esc_html($options['user_roles'][$roleLoop])."</th></tr>";
+            $roleLoop++;
+        }
+        $content .= wp_nonce_field('notification_settings_form_3', 'nonce_of_notificationSettingsForm_3');
+        $content .= "<tr><th><input type='submit' value='Remove Selected User Roles' name='removeUserRoles'></th></tr>";
+        $content .= "</form></table></div>";
+    }
+    else
+    {
+        $content .= "<div class='settings-area-id'>";
+        $content .= "<table id='settings-new-order-notification'>";
+        $content .= "<tr><th><h4>No User Roles provided, all user roles are permitted.</h4></th></tr>";
+        $content .= "</table></div>";
+    }
+    
     $isPosted = false;
     
     if(wp_verify_nonce($_POST['nonce_of_notificationSettingsForm'], 'notification_settings_form'))
     {
         if(isset($_POST['saveSettings']))
         {
-            $order_statuses = array();
+            $count_statuses = count($order_statuses);
             $count_products = count($product_ids);
+            $count_roles = count($user_roles);
             if( isset($_POST['inputForTime']) && !empty($_POST['inputForTime']) ) $refreshTime = sanitize_text_field($_POST['inputForTime']);
             if( isset($_POST['inputForMp3']) && !empty($_POST['inputForMp3']) ) $musicUrlMp3 = sanitize_text_field($_POST['inputForMp3']);
             if( isset($_POST['inputForHeader']) && !empty($_POST['inputForHeader']) ) $order_header = sanitize_text_field($_POST['inputForHeader']);
             if( isset($_POST['inputForText']) && !empty($_POST['inputForText']) ) $order_text = sanitize_text_field($_POST['inputForText']);
             if( isset($_POST['inputForConfirm']) && !empty($_POST['inputForConfirm']) ) $confirm = sanitize_text_field($_POST['inputForConfirm']);
             
-            foreach($_order_status_names as $_order_status_name) 
-            {
-                if( isset($_POST[$_order_status_name]) && !empty($_POST[$_order_status_name]) ) array_push($order_statuses, sanitize_text_field($_POST[$_order_status_name]));
+            if( isset($_POST['inputForStatuses']) && !empty($_POST['inputForStatuses']) ) {
+                $order_statuses = $_POST['inputForStatuses'];
             }
 
-            if( isset($_POST['inputForProductIds']) && !empty($_POST['inputForProductIds']) ) $product_ids[$count_products] = sanitize_text_field($_POST['inputForProductIds']);
+            if( isset($_POST['inputForProductIds']) && !empty($_POST['inputForProductIds']) ) {
+                $index = 0;
+                foreach($_POST['inputForProductIds'] as $inputForProductId) {
+                    $product_ids[$count_products+$index] = sanitize_text_field($inputForProductId);
+                    $index++;
+                }
+            }
+            
+            if( isset($_POST['inputForRoles']) && !empty($_POST['inputForRoles']) ) {
+                $index = 0;
+                foreach($_POST['inputForRoles'] as $inputForRole) {
+                    $user_roles[$count_products+$index] = sanitize_text_field($inputForRole);
+                    $index++;
+                }
+            }
             
             update_option('_new_order_option', array(
-            'last_order'   =>  $last_order[0],
-            'check_deleted' =>  $to_check_orders,
-            'refresh_time'  =>  $refreshTime,
-            'mp3_url'   =>  $musicUrlMp3,
-            'order_header'  =>  $order_header,
-            'order_text'    =>  $order_text,
-            'confirm'   =>  $confirm,
-            'statuses'  =>  $order_statuses,
-            'product_ids'   =>  $product_ids,
+                'refresh_time'  =>  $refreshTime,
+                'mp3_url'   =>  $musicUrlMp3,
+                'order_header'  =>  $order_header,
+                'order_text'    =>  $order_text,
+                'confirm'   =>  $confirm,
+                'statuses'  =>  $order_statuses,
+                'product_ids'   =>  $product_ids,
+                'user_roles'    =>  $user_roles
             ));
             $isPosted = true;
             header("Refresh:0");
@@ -181,18 +225,17 @@ function new_order_notification_settings()
             $musicUrlMp3 = plugins_url('assets/order-music.mp3',__FILE__ );
             $refreshTime = 30;
             $order_header = "Order Notification - New Order";
-            $order_text = "Check Details: ";
+            $order_text = "Check Order Details: ";
             $confirm = "ACKNOWLEDGE THIS NOTIFICATION";
             
             update_option('_new_order_option', array(
-            'last_order'   =>  $last_order[0],
-            'check_deleted' =>  $to_check_orders,
-            'refresh_time'  =>  $refreshTime,
-            'mp3_url'   =>  $musicUrlMp3,
-            'order_header'  =>  $order_header,
-            'order_text'    =>  $order_text,
-            'confirm'   =>  $confirm,
-            'statuses'  =>  $_order_status_names,
+                'refresh_time'  =>  $refreshTime,
+                'mp3_url'   =>  $musicUrlMp3,
+                'order_header'  =>  $order_header,
+                'order_text'    =>  $order_text,
+                'confirm'   =>  $confirm,
+                'statuses'  =>  $order_status_keys,
+                'user_roles'    =>  $user_roles
             ));
             $isPosted = true;
             header("Refresh:0");
@@ -213,15 +256,42 @@ function new_order_notification_settings()
             }
             
             update_option('_new_order_option', array(
-            'last_order'   =>  $last_order[0],
-            'check_deleted' =>  $to_check_orders,
-            'refresh_time'  =>  $refreshTime,
-            'mp3_url'   =>  $musicUrlMp3,
-            'order_header'  =>  $order_header,
-            'order_text'    =>  $order_text,
-            'confirm'   =>  $confirm,
-            'statuses'  =>  $order_statuses,
-            'product_ids'   =>  $product_ids,
+                'refresh_time'  =>  $refreshTime,
+                'mp3_url'   =>  $musicUrlMp3,
+                'order_header'  =>  $order_header,
+                'order_text'    =>  $order_text,
+                'confirm'   =>  $confirm,
+                'statuses'  =>  $order_statuses,
+                'product_ids'   =>  $product_ids,
+                'user_roles'    =>  $user_roles
+            ));
+            $isPosted = true;
+            header("Refresh:0");
+        }
+    }
+    
+    if(wp_verify_nonce($_POST['nonce_of_notificationSettingsForm_3'], 'notification_settings_form_3'))
+    {
+        if(isset($_POST['selectUserRole']) && !empty($_POST['selectUserRole']))
+        {
+            foreach($_POST['selectUserRole'] as $checkedBox)
+            {
+                if (($key = array_search($checkedBox, $user_roles)) !== false)
+                {
+                    unset($user_roles[$key]);
+                    array_values($user_roles);
+                }                
+            }
+            
+            update_option('_new_order_option', array(
+                'refresh_time'  =>  $refreshTime,
+                'mp3_url'   =>  $musicUrlMp3,
+                'order_header'  =>  $order_header,
+                'order_text'    =>  $order_text,
+                'confirm'   =>  $confirm,
+                'statuses'  =>  $order_statuses,
+                'product_ids'   =>  $product_ids,
+                'user_roles'    =>  $user_roles
             ));
             $isPosted = true;
             header("Refresh:0");
