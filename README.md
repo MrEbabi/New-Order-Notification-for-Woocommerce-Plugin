@@ -88,6 +88,15 @@ Version 1.3.1:
 - Get default settings for date and time format from Wordpress Settings.
 - Change table column names and popup texts.
 
+Version 1.3.2 & 1.3.3
+
+- Fix PHP Error for user roles.
+- Add responsive css for new order popup.
+- Fix reported bugs.
+- Fix PHP Warnings for empty arrays.
+- Fix User Role restriction error.
+- Fix user role and product id removal error in settings.
+
 ---
 
 To-Do: 
