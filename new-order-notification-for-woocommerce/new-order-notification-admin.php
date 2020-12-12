@@ -9,7 +9,7 @@ function detect_new_order_on_checkout($order_id) {
             'order_id' =>  $order_id
         ));
     } else {
-        update_option('_new_order_option', array(
+        update_option('_new_order_id_for_notification', array(
             'order_id'  =>  $order_id
         ));
     }
@@ -25,14 +25,21 @@ function new_order_notification() {
 function new_order_notification_menu() {
     $isNew = false;
     $order_statuses = array();
-	$product_ids = array();
+	$product_ids = get_posts( array(
+      'posts_per_page' => -1,
+      'post_type' => array('product','product_variation'),
+      'fields' => 'ids',
+    ) );
 	$last_order = array();
-	$user_roles = array();
+	global $wp_roles;
+	$roles = $wp_roles->roles;
+    $roleValues = array_keys($roles);
+    $user_roles = $roleValues;
 	$order_status_map = wc_get_order_statuses();
     $order_status_keys = array_keys($order_status_map);
     $order_status_values = array_values($order_status_map);
 	
-	$options = get_option('_new_order_option');
+	$options = get_option('__new_order_option');
     if($options) {
         $musicUrlMp3 = $options['mp3_url'];
         $refreshTime = $options['refresh_time'];
@@ -44,11 +51,19 @@ function new_order_notification_menu() {
         $user_roles = $options['user_roles'];
         
         $user = wp_get_current_user();
-        foreach($user_roles as $user_role) {
-            if ( !in_array( $user_role, (array) $user->roles ) ) {
-                echo "<br><br><h2>You don't have permission to see New Order Notification page.</h2>";
-                return;
+        $isRestrictedUserRole = true;
+        if(is_array($user_roles) && count($user_roles)) {
+            foreach($user_roles as $user_role) {
+            if ( in_array( $user_role, $user->roles) ) {
+                $isRestrictedUserRole = false;
             }
+        }
+        } else {
+            $isRestrictedUserRole = false;
+        }
+        if($isRestrictedUserRole) {
+            echo "<br><br><h2>You don't have permission to see New Order Notification page.</h2>";
+            return;
         }
     }
     else
@@ -59,7 +74,7 @@ function new_order_notification_menu() {
         $order_text = "Check Order Details: ";
         $confirm = "ACKNOWLEDGE THIS NOTIFICATION";
         
-        add_option('_new_order_option', array(
+        add_option('__new_order_option', array(
             'refresh_time'  =>  $refreshTime,
             'mp3_url'   =>  $musicUrlMp3,
             'order_header'  =>  $order_header,
@@ -123,28 +138,28 @@ function new_order_notification_menu() {
                 <script type='text/javascript'>
                     window.focus();
                     jQuery(function($){
-                    var overlay = $('<div id="overlay"></div>');
-                    overlay.show();
-                    overlay.appendTo(document.body);
-                    $('.popup').show();
-                    $('.close').click(function(){
-                    $('.popup').hide();
-                    overlay.appendTo(document.body).remove();
-                    location.reload();
-                    return false;
+                        var overlay = $('<div id="overlay"></div>');
+                        overlay.show();
+                        overlay.appendTo(document.body);
+                        $('.popup').show();
+                        $('.close').click(function(){
+                        $('.popup').hide();
+                        overlay.appendTo(document.body).remove();
+                        location.reload();
+                        return false;
                     });
                 
                     $('.x').click(function(){
-                    $('.popup').hide();
-                    overlay.appendTo(document.body).remove();
-                    return false;
+                        $('.popup').hide();
+                        overlay.appendTo(document.body).remove();
+                        return false;
                     });
                     });
                 </script>
                 <?php
                 $audiocontent = "<audio controls autoplay loop><source src='".esc_html($options['mp3_url'])."' type='audio/mpeg'>Your browser does not support the audio element.</audio>";
                 echo $audiocontent;
-                $popupcontent .= "<div class='popup'><div class='cnt223'><h1>".esc_html($order_header)."</h1><p>".esc_html($options['order_text'])." <a href='".esc_html($websiteUrl)."' target='_blank'>".esc_html($lastOrderId)."</a><br/><br/><a href='' class='close'>".esc_html($options['confirm'])."</a></p></div></div>";
+                $popupcontent = "<div class='popup'><div class='cnt223'><h1>".esc_html($order_header)."</h1><p>".esc_html($options['order_text'])." <a href='".esc_html($websiteUrl)."' target='_blank'>".esc_html($lastOrderId)."</a><br/><br/><a href='' class='close'>".esc_html($options['confirm'])."</a></p></div></div>";
                 echo $popupcontent;
                 delete_option('_new_order_id_for_notification');
             }
@@ -152,7 +167,7 @@ function new_order_notification_menu() {
     }
     
     $recent_orders = wc_get_orders( array(
-        'limit' => 10,
+        'limit' => 20,
         'orderby' => 'date',
         'order' => 'DESC',
         'status'=> $options['statuses'],
@@ -194,7 +209,7 @@ function new_order_notification_menu() {
         header("Refresh:".esc_html($time)."");
     }
     
-    $content .= "<div class='main-info-bottom'><p>To be warned when a new order received, keep this page opened in your browser.</p>";
-    $content .= "<p>You can test audio alert: </p><audio controls loop style='display: block'><source src='".esc_html($options['mp3_url'])."' type='audio/mpeg'>Your browser does not support the audio element.</audio></div>";
+    $content .= "<br><br><div class='main-info-bottom'><p>1 - To be warned when a new order received, keep this page opened in your browser.</p><p>2 - Recent Order Table gets Timezone and Date Format settings from Settings -> General.</p>";
+    $content .= "<p>3 - You can test audio alert: </p><audio controls loop style='display: block'><source src='".esc_html($options['mp3_url'])."' type='audio/mpeg'>Your browser does not support the audio element.</audio></div>";
     echo $content;
 }
