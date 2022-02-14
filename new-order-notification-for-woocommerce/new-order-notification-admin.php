@@ -22,6 +22,7 @@ function new_order_notification()
 {
     add_menu_page('New Order Notification', 'New Order Notification', 'delete_posts', 'new_order_notification', 'new_order_notification_menu', 'dashicons-warning', '54');
     add_submenu_page('new_order_notification', 'Settings', 'Settings', 'manage_options', 'new_order_notification_settings', 'new_order_notification_settings');
+    add_submenu_page('new_order_notification', 'Beta', 'Beta', 'delete_posts', 'new_order_notification_v2', 'new_order_notification_v2');
 }
 
 function new_order_notification_menu()

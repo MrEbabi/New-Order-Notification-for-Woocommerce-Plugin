@@ -80,7 +80,7 @@ function new_order_notification_settings()
             'show_order_num' => $show_order_num,
             'show_order_statuses' => $show_order_statuses
         ));
-        
+
     } else {
         $musicUrlMp3 = plugins_url('assets/order-music.mp3', __FILE__);
         $refreshTime = 30;

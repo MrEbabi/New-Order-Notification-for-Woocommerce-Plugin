@@ -1,193 +1,260 @@
-        @media only screen and (max-width: 600px) {
-            .cnt223 {
-                width: 220px;
-                margin-top: 100px;
-                margin-left: 30px;
-                background: #f3f3f3;
-                position: relative;
-                z-index: 103;
-                padding: 15px 35px;
-                border-radius: 5px;
-                box-shadow: 0 2px 5px #000;
-                line-height: 22px;
-            }
-        }
-        
-         @media only screen and (min-width: 600px) {
-            .cnt223 {
-                min-width: 300px;
-                width: 400px;
-                min-height: 150px;
-                margin-left: 400px ;
-                margin-top: 200px;
-                background: #f3f3f3;
-                position: relative;
-                z-index: 103;
-                padding: 15px 35px;
-                border-radius: 5px;
-                box-shadow: 0 2px 5px #000;
-            }
-        }
-        audio {display:none;}
-        
-        .settings-area {
-            width: 35%;
-            float: left;
-        }
-        
-        .settings-area-id {
-            width: 15%;
-            float: left;
-        }
-        
-        #overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #000;
-            filter:alpha(opacity=70);
-            -moz-opacity:0.7;
-            -khtml-opacity: 0.7;
-            opacity: 0.7;
-            z-index: 100;
-            display: none;
-        }
-        .cnt223 a{
-            text-decoration: none;
-        }
-        .popup{
-            width: 100%;
-            margin: 0 auto;
-            display: none;
-            position: fixed;
-            z-index: 101;
-        }
-        .cnt223 p{
-            clear: both;
-            color: #555555;
-            /* text-align: justify; */
-            font-size: 20px;
-            font-family: sans-serif;
-        }
-        .cnt223 p a{
-            color: #d91900;
-            font-weight: bold;
-        }
-        .cnt223 .x{
-            float: right;
-            height: 35px;
-            left: 22px;
-            position: relative;
-            top: -25px;
-            width: 34px;
-        }
-        .cnt223 .x:hover{
-            cursor: pointer;
-        }
-        
-        #customers-new-order-notification {
-          font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-          border-collapse: collapse;
-          width: 100%;
-          margin-top: 2%;
-          text-align: center;
-          font-size: 18px;
-        }
-        
-        #customers-new-order-notification td, #customers-new-order-notification th {
-          border: 1px solid #ddd;
-          padding: 8px;
-        }
-        
-        #customers-new-order-notification tr:nth-child(even){background-color: #f2f2f2;}
-        
-        #customers-new-order-notification tr:hover {background-color: #ddd;}
-        
-        #customers-new-order-notification th {
-          padding-top: 12px;
-          padding-bottom: 12px;
-          text-align: center;
-          background-color: #4CAF50;
-          color: white;
-          font-size: 22px !important;
-        }
-        
-        #settings-new-order-notification {
-          font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-          border-collapse: collapse;
-          margin-top: 2%;
-          
-        }
-        
-        #settings-new-order-notification td, #settings-new-order-notification th {
-          border: 1px solid #ddd;
-           padding: 8px;
-        }
-        
-        #settings-new-order-notification tr:nth-child(even){background-color: #f2f2f2;}
-        
-        #settings-new-order-notification tr:hover {background-color: #ddd;}
-        
-        #settings-new-order-notification th {
-          width: 50%;
-          padding-top: 12px;
-          padding-bottom: 12px;
-          text-align: center;
-          background-color: #80CBCC;
-          color: white;
-        }
-        
-        #settings-new-order-notification input, #settings-new-order-notification select, #settings-new-order-notification option {
-            width: 95%;
-            text-align: center;
-            text-align-last: center;
-        }
-        
-        #settings-new-order-notification input[type=submit] {
-            width: 100%;
-            background-color: white;
-        }
-        
-        #settings-new-order-notification input[type=checkbox] {
-            width: 5%;
-            background-color: white;
-        }
-        
-        .tooltip {
-          position: relative;
-          display: inline-block;
-          border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
-        }
-        
-        /* Tooltip text */
-        .tooltip .tooltiptext {
-          visibility: hidden;
-          width: 120px;
-          background-color: black;
-          color: #fff;
-          text-align: center;
-          padding: 5px 0;
-          border-radius: 6px;
-         
-          /* Position the tooltip text - see examples below! */
-          position: absolute;
-          z-index: 1;
-        }
-        
-        /* Show the tooltip text when you mouse over the tooltip container */
-        .tooltip:hover .tooltiptext {
-          visibility: visible;
-        }
-        
-        .tooltip .tooltiptext {
-          top: -5px;
-          left: 105%;
-        }
-        
-        .main-info-bottom {
-            border: 2px solid; 
-            border-radius: 25px; 
-            padding: 10px;
-        }
+@media only screen and (max-width: 600px) {
+    .cnt223 {
+        width: 220px;
+        margin-top: 100px;
+        margin-left: 30px;
+        background: #f3f3f3;
+        position: relative;
+        z-index: 103;
+        padding: 15px 35px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px #000;
+        line-height: 22px;
+    }
+}
+
+@media only screen and (min-width: 600px) {
+    .cnt223 {
+        min-width: 300px;
+        width: 400px;
+        min-height: 150px;
+        margin-left: 400px ;
+        margin-top: 200px;
+        background: #f3f3f3;
+        position: relative;
+        z-index: 103;
+        padding: 15px 35px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px #000;
+    }
+}
+
+.settings-area {
+    width: 35%;
+    float: left;
+}
+
+.settings-area-id {
+    width: 15%;
+    float: left;
+}
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    filter:alpha(opacity=70);
+    -moz-opacity:0.7;
+    -khtml-opacity: 0.7;
+    opacity: 0.7;
+    z-index: 100;
+    display: none;
+}
+.cnt223 a{
+    text-decoration: none;
+}
+.popup{
+    width: 100%;
+    margin: 0 auto;
+    display: none;
+    position: fixed;
+    z-index: 101;
+}
+.popupEditModal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 50px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.6);
+}
+.popupEditContent {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    height: 80%;
+}
+.cnt223 p{
+    clear: both;
+    color: #555555;
+    /* text-align: justify; */
+    font-size: 20px;
+    font-family: sans-serif;
+}
+.cnt223 p a{
+    color: #d91900;
+    font-weight: bold;
+}
+.cnt223 .x{
+    float: right;
+    height: 35px;
+    left: 22px;
+    position: relative;
+    top: -25px;
+    width: 34px;
+}
+.cnt223 .x:hover{
+    cursor: pointer;
+}
+
+#customers-new-order-notification {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 2%;
+    text-align: center;
+    font-size: 18px;
+}
+
+#customers-new-order-notification td, #customers-new-order-notification th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#customers-new-order-notification tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers-new-order-notification tr:hover {background-color: #ddd;}
+
+#customers-new-order-notification th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #4d524d;
+    color: white;
+    font-size: 22px !important;
+}
+
+#settings-new-order-notification {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    margin-top: 2%;
+
+}
+
+#settings-new-order-notification td, #settings-new-order-notification th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#settings-new-order-notification tr:nth-child(even){background-color: #f2f2f2;}
+
+#settings-new-order-notification tr:hover {background-color: #ddd;}
+
+#settings-new-order-notification th {
+    width: 50%;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #80CBCC;
+    color: white;
+}
+
+#settings-new-order-notification input, #settings-new-order-notification select, #settings-new-order-notification option {
+    width: 95%;
+    text-align: center;
+    text-align-last: center;
+}
+
+#settings-new-order-notification input[type=submit] {
+    width: 100%;
+    background-color: white;
+}
+
+#settings-new-order-notification input[type=checkbox] {
+    width: 5%;
+    background-color: white;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+.tooltip .tooltiptext {
+    top: -5px;
+    left: 105%;
+}
+
+.main-info-bottom {
+    border: 2px solid;
+    border-radius: 25px;
+    padding: 10px;
+}
+
+.btn {
+    border: none;
+    cursor: pointer;
+}
+.popupEditHeader {
+    height: auto;
+    background: #fcfcfc;
+    border-bottom: 1px solid #ddd;
+}
+.popupEditStatus {
+    background: #2e312e;
+    color: #fefefe;
+    float: right;
+    line-height: 1.5em;
+    border-radius: 4px;
+    border-bottom: 1px solid rgba(0,0,0,.05);
+}
+.popupEditStatusText {
+    margin: 0 1em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+}
+.popupEditAddressHeader {
+    line-height: 2.5em;
+    border-bottom: 1px solid #ddd;
+}
+
+#popup-new-order-notification {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 2%;
+    text-align: center;
+    font-size: 12px;
+}
+
+#popup-new-order-notification td, #popup-new-order-notificationn th {
+    border: 1px solid #ddd;
+    padding: 6px;
+}
+
+#popup-new-order-notification tr:nth-child(even){background-color: #f2f2f2;}
+
+#popup-new-order-notification tr:hover {background-color: #ddd;}
+
