@@ -99,9 +99,8 @@ Version 1.3.2 & 1.3.3
 
 ---
 
-To-Do: 
+v2.0 todo:
 - Usage instructions like browser and device type, browser settings for autoplay (Wordpress Support)
-- Order notification popup title with order status (New Order -> Pending/On-Hold/Processing..)
-- Order notification popup second acknowledge button to provide order status change functionality
-- Better UI/UX for custom order page and new order popup
-- Audio file upload button instead of link field.
+- Order notification popup title with order status (New Order -> Pending/On-Hold/Processing..) +++
+- Order notification popup second acknowledge button to provide order status change functionality +++
+- Better UI/UX for custom order page and new order popup +++
