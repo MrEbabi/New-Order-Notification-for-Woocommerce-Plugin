@@ -176,7 +176,7 @@ function getRecentOrderTable($orders)
         $order = wc_get_order($orderId);
         $orderDate = $order->get_date_created();
         $orderLink = get_site_url() . "/wp-admin/post.php?post=" . $orderId . "&action=edit";
-        $orderStatus = wc_get_order_statuses()["wc-" . $recent_order->get_status()];
+        $orderStatus = wc_get_order_statuses()["wc-" . strtolower($recent_order->get_status())];
         $orderNumber = $order->get_order_number();
 
         $dateFormat = get_option('date_format');
@@ -186,7 +186,7 @@ function getRecentOrderTable($orders)
         $content .= "<tr>
                         <td>" . esc_html($orderNumber) . "</td>
                         <td>" . esc_html($orderDate->date($formatter)) . "</td>
-                        <td>" . esc_html($orderStatus) . "</td>
+                        <td id='non-status-" . esc_html($orderId) . "'>" . esc_html($orderStatus) . "</td>
                         <td>
                             <div style='display: flex; justify-content: space-evenly;'>
                                 <button class='btn' type='submit' name='showOrderEditPopupButton' onclick='showOrderEditPopupButton(this.value)' value=" . esc_html($orderId) . ">
@@ -198,24 +198,45 @@ function getRecentOrderTable($orders)
                     </tr>";
         ?>
         <script type="text/javascript">
-            var modal = document.getElementById("popupEditModal");
             window.onclick = function (event) {
+                const modal = document.getElementById("popupEditModal");
                 if (event.target == modal) {
+                    modal.remove();
                     modal.style.display = "none";
                 }
             }
 
             function showOrderEditPopupButton(orderId) {
-                var data = {
-                    'action': 'my_action_2',
+                const data = {
+                    'action': 'show_order_edit_popup_action',
                     'orderId': orderId
+                };
+                console.log(data);
+                jQuery.post(ajaxurl, data, function (response) {
+                    jQuery(function ($) {
+                        const editPopup = $(response);
+                        editPopup.appendTo(document.body);
+                        const modal = document.getElementById("popupEditModal");
+                        modal.style.display = "block";
+                    });
+                });
+            }
+
+            function orderEditStatus() {
+                const orderId = document.getElementById('popupOrderId').value;
+                const status = document.getElementById('popupStatus').value;
+                const data = {
+                    'action': 'order_edit_status_action',
+                    'orderId': orderId,
+                    'status': status,
                 };
                 jQuery.post(ajaxurl, data, function (response) {
                     jQuery(function ($) {
-                        var editPopup = $(response);
-                        editPopup.appendTo(document.body);
-                        modal = document.getElementById("popupEditModal");
-                        modal.style.display = "block";
+                        const modal = document.getElementById("popupEditModal");
+                        modal.remove();
+                        const columnId = 'non-status-' + orderId;
+                        const orderColumn = document.getElementById(columnId);
+                        orderColumn.innerText = response;
                     });
                 });
             }
@@ -262,6 +283,18 @@ function showOrderEditPopup($orderId)
                         </table>";
     }
 
+    $statusContent = "";
+    $index = 0;
+    $wcOrderStatuses = array_keys(wc_get_order_statuses());
+    foreach (wc_get_order_statuses() as $orderStatus) {
+        if (strtolower($orderStatus) == strtolower($order->get_status())) {
+            $statusContent .= "<option selected disabled value='" . esc_html($wcOrderStatuses[$index]) . "'>" . esc_html($orderStatus) . "</option>";
+        } else {
+            $statusContent .= "<option value='" . esc_html($wcOrderStatuses[$index]) . "'>" . esc_html($orderStatus) . "</option>";
+        }
+        $index++;
+    }
+
     $popupEditModal = "<div id='popupEditModal' class='popupEditModal'>
               <div class='popupEditContent'>
                   <div class='popupEditHeader'>
@@ -271,7 +304,7 @@ function showOrderEditPopup($orderId)
                         <h2>" . esc_html($orderText) . " #" . esc_html($orderId) . "</h2>
                   </div>
                   <div>
-                        <div style='min-height: 200px;'>
+                        <div style='min-height: 180px;'>
                             <div style='width: 50%; float: left;'>
                                 <h2 class='popupEditAddressHeader'>" . esc_html($billingText) . "</h2>
                                 <strong>" . $order->get_formatted_billing_address() . "</strong>
@@ -281,7 +314,7 @@ function showOrderEditPopup($orderId)
                                 <strong>" . $order->get_formatted_shipping_address() . "</strong>
                             </div>
                         </div>
-                        <div style='min-height: 200px;'>
+                        <div style='min-height: 180px;'>
                             <div style='width: 50%; float: left;'>
                                 <h2 class='popupEditAddressHeader'>" . esc_html($emailText) . "</h2>
                                 <strong>" . esc_html($order->get_billing_email()) . "</strong>
@@ -303,22 +336,46 @@ function showOrderEditPopup($orderId)
                                 </div> 
                             </div>
                         </div>
-                        <div style='min-height: 200px;'>                            
+                        <div style='min-height: 180px;'>                            
                         <h2 class='popupEditAddressHeader'>" . esc_html($productText) . "</h2>
                             " . $itemContent . "
+                        </div>
+                        <div style='min-height: 100pxpx;'>                            
+                        <h2 class='popupEditAddressHeader'>Change Order Status</h2> 
+                            <input id='popupOrderId' type='hidden' value='" . esc_html($orderId) . "'/>
+                            <select id='popupStatus' name='popupStatusSelection'>  
+                            " . $statusContent . "
+                            </select>
+                            <input class='popupStatusChangeButton' onclick='orderEditStatus()' value='Update' type='submit' />
                         </div>
                   </div>
               </div>
           </div>";
-
     echo $popupEditModal;
 }
 
-add_action('wp_ajax_my_action_2', 'my_action_2');
+add_action('wp_ajax_show_order_edit_popup_action', 'show_order_edit_popup_action');
 
-function my_action_2()
+function show_order_edit_popup_action()
 {
-    showOrderEditPopup($_POST['orderId']);
+    $orderId = $_POST['orderId'];
+    showOrderEditPopup($orderId);
+    //
+    wp_die();
+}
+
+add_action('wp_ajax_order_edit_status_action', 'order_edit_status_action');
+
+function order_edit_status_action()
+{
+    $orderId = $_POST['orderId'];
+    $status = $_POST['status'];
+    //
+    $order = wc_get_order($orderId);
+    $order->set_status($status);
+    $order->save();
+    //
+    echo wc_get_order_statuses()[$status];
     wp_die();
 }
 
@@ -329,6 +386,7 @@ function getRecentOrders($limit, $statuses)
         'orderby' => 'date',
         'order' => 'DESC',
         'status' => $statuses,
+        'type' => 'shop_order',
     ));
 }
 
@@ -416,26 +474,9 @@ function checkNewOrder($settings)
     }
 }
 
-add_action('new_order_notification', 'my_action_javascript'); // Write our JS below here
+add_action('wp_ajax_detect_new_order_action', 'detectNewOrderAjax');
 
-function my_action_javascript()
-{
-    ?>
-    <script type="text/javascript">
-        var data = {
-            'action': 'my_action',
-            'whatever': 1234
-        };
-        jQuery.post(ajaxurl, data, function (response) {
-            alert('Got this from the server: ' + response);
-        });
-    </script>
-    <?php
-}
-
-add_action('wp_ajax_my_action', 'my_action');
-
-function my_action()
+function detectNewOrderAjax()
 {
     $settings = getNewOrderNotificationSettings();
     checkNewOrder($settings);
@@ -443,9 +484,11 @@ function my_action()
     wp_die(); // this is required to terminate immediately and return a proper response
 }
 
-function new_order_notification_v2()
+function newOrderNotificationV2()
 {
-    echo "This is beta version for New Order Notification v2.0. Settings page and new order detection is not ready for this version.";
+    echo "<h3>This is beta version for New Order Notification v2.0. Settings page and new order detection is not ready for this version.
+          <br/>Beta version will be on development until March 01, 2022. All comments and change requests for beta version will help us to make it better. You can write us via Wordpress Support or developer email.
+          </h3><br/>";
     //
     $settings = getNewOrderNotificationSettings();
     $isRestricted = checkIfUserRestricted($settings['user_roles']);
