@@ -508,14 +508,19 @@ function new_order_notification_V2()
     // display page header
     echo "<h1 id='new-order-notification-header'>New Order Notification for Woocommerce</h1>";
     // check new order and show popup
-    echo "<button id='activateNewOrderDetect' class='btn' onclick='loopForNewOrderDetection(" . esc_html($settings['refresh_time'] * 1000) . ")'>
-            <i class='fas fa-clock'></i>
-          </button>";
+    echo "<div id='newOrderDetectDiv' style='display: flex'>
+            <p id='activateNewOrderDetectText'>Activate new order alert: </p>
+              <button id='activateNewOrderDetect' class='btn' onclick='loopForNewOrderDetection(" . esc_html($settings['refresh_time'] * 1000) . ")'>
+                <i id='activateNewOrderDetectIcon' class='fas fa-toggle-off fa-2x'></i>
+              </button>
+          </div>";
     // display recent order table
     echo getRecentOrderTable($settings);
     ?>
     <script type='text/javascript'>
         function loopForNewOrderDetection(loopDuration) {
+            document.getElementById("activateNewOrderDetectIcon").setAttribute("class", "fas fa-toggle-on fa-2x");
+            document.getElementById("activateNewOrderDetectText").innerText = "New Order Alert activated.";
             const detectNewOrderAction = {
                 'action': 'detect_new_order'
             };
@@ -523,7 +528,7 @@ function new_order_notification_V2()
                 if (response != 0) {
                     jQuery(function ($) {
                         const newOrderPopup = $(response);
-                        newOrderPopup.insertAfter("#activateNewOrderDetect");
+                        newOrderPopup.insertAfter("#newOrderDetectDiv");
                         $('.close').click(function () {
                             $('.popup').hide();
                             document.getElementById('overlay').remove();
@@ -535,7 +540,7 @@ function new_order_notification_V2()
                             }
                             jQuery.post(ajaxurl, reRenderRecentOrderTableAction, function (response) {
                                 const recentOrderTable = $(response);
-                                recentOrderTable.insertAfter("#activateNewOrderDetect")
+                                recentOrderTable.insertAfter("#newOrderDetectDiv")
                             });
                             return false;
                         });

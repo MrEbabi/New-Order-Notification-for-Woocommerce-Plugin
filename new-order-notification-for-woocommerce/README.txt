@@ -3,8 +3,8 @@ Contributors: mrebabi
 Author URI: https://github.com/MrEbabi
 Tags: woocommerce, woocommerce order page, woocommerce notification, woocommerce order notification, woocommerce new order notification, woocommerce new order popup
 Requires at least: 3.1
-Tested up to: 5.7
-Stable tag: 1.4.0
+Tested up to: 5.9
+Stable tag: 2.0.0
 License: GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: new-order-notification-for-woocommerce
@@ -12,15 +12,15 @@ Text Domain: new-order-notification-for-woocommerce
 Woocommerce custom order page with recent orders for showing a popup notification with sound when a new order received.
 
 == Description==
-* POPUP NOTIFICATION WHEN A NEW ORDER RECEIVED
+* POPUP NOTIFICATION WITH SOUND ALERT WHEN A NEW ORDER RECEIVED
 
 * NOTIFICATION KEEPS SHOWING UNTIL YOU ACKNOWLEDGE THE NEW ORDER
 
 * SET YOUR ALARM SOUND TO PLAY WITH POPUP NOTIFICATION
 
-* SET THE REFRESH TIME OF NEW ORDER PAGE
-
 * SET ALERT FOR ORDERS THAT CONTAIN SELECTED PRODUCTS
+
+* CUSTOM ORDER TABLE, ORDER PREVIEW AND ORDER STATUS CHANGE FEATURES
 
 
 **Woocommerce custom order page with recent orders for showing a popup notification with sound when a new order received.**
@@ -56,6 +56,13 @@ Yes, but the notification system only works with custom order page named New Ord
 3. Settings for Notifications
 
 == Changelog ==
+**=2.0.0=**
+- Beta version of newly designed New Order Notification page.
+- New css for recent order table.
+- Order preview and status change features.
+- Activation for sound and popup alert.
+- Async calls instead of page refreshing.
+
 **=1.4.0=**
 -Fix Product Id selection and User Role selection in the settings.
 -Add settings for number of orders to show in recent order table.
