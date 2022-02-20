@@ -97,10 +97,22 @@ Version 1.3.2 & 1.3.3
 - Fix User Role restriction error.
 - Fix user role and product id removal error in settings.
 
+Version 2.0.0
+
+- Beta version of newly designed New Order Notification page.
+- New css for recent order table.
+- Order preview and status change features.
+- Activation for sound and popup alert.
+- Async calls instead of page refreshing.
+
 ---
 
-v2.0 todo:
+v2.0.1 todo:
 - Usage instructions like browser and device type, browser settings for autoplay (Wordpress Support)
-- Order notification popup title with order status (New Order -> Pending/On-Hold/Processing..) +++
-- Order notification popup second acknowledge button to provide order status change functionality +++
-- Better UI/UX for custom order page and new order popup +++
+- Settings page for beta version.
+
+v2.1.0 todo:
+
+- Remove deprecated new order notification page
+- Add support & premium section
+- Release beta version
