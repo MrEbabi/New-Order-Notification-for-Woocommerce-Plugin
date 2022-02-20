@@ -117,9 +117,16 @@ function checkIfUserRestricted($userRoles)
     return $isRestrictedUserRole;
 }
 
-function getRecentOrderTable($orders)
+function getRecentOrderTable($settings)
 {
-    $pageTitle = "New Order Notification for Woocommerce";
+    $orders = wc_get_orders(array(
+        'limit' => $settings['show_order_num'],
+        'orderby' => 'date',
+        'order' => 'DESC',
+        'status' => $settings['statuses'],
+        'type' => 'shop_order',
+    ));
+
     $columnOrderNo = "Order No";
     $columnOrderDate = "Order Date";
     $columnOrderStatus = "Order Status";
@@ -128,9 +135,6 @@ function getRecentOrderTable($orders)
     $options = get_option('_non_v2_order_table_options');
     //
     if ($options) {
-        if ($options['page_title']) {
-            $pageTitle = $options['page_title'];
-        }
         if ($options['column_order_no']) {
             $columnOrderNo = $options['column_order_no'];
         }
@@ -145,7 +149,6 @@ function getRecentOrderTable($orders)
         }
         //
         update_option('_non_v2_order_table_options', array(
-            'page_title' => $pageTitle,
             'column_order_no' => $columnOrderNo,
             'column_order_date' => $columnOrderDate,
             'column_order_status' => $columnOrderStatus,
@@ -154,7 +157,6 @@ function getRecentOrderTable($orders)
     } else {
         //
         add_option('_non_v2_order_table_options', array(
-            'page_title' => $pageTitle,
             'column_order_no' => $columnOrderNo,
             'column_order_date' => $columnOrderDate,
             'column_order_status' => $columnOrderStatus,
@@ -162,8 +164,7 @@ function getRecentOrderTable($orders)
         ));
     }
     //
-    $content = "<h1>" . esc_html($pageTitle) . "</h1>";
-    $content .= "<table id='customers-new-order-notification'>";
+    $content = "<table id='customers-new-order-notification'>";
     $content .= "<tr>
                     <th>" . esc_html($columnOrderNo) . "</th>
                     <th>" . esc_html($columnOrderDate) . "</th>
@@ -211,7 +212,6 @@ function getRecentOrderTable($orders)
                     'action': 'show_order_edit_popup_action',
                     'orderId': orderId
                 };
-                console.log(data);
                 jQuery.post(ajaxurl, data, function (response) {
                     jQuery(function ($) {
                         const editPopup = $(response);
@@ -440,53 +440,63 @@ function checkNewOrder($settings)
                       <source src='" . esc_html($musicUrlMp3) . "' type='audio/mpeg'>
                       Your browser does not support the audio element.
                   </audio>";
-        $popupContent = "<div class='popup'><div class='cnt223'><h1>" . esc_html($popupTitle) . "</h1><p>" . esc_html($popupHeader) . " <a href='" . esc_html($orderEditLink) . "' target='_blank'>" . esc_html($newOrderId) . "</a><br/><br/><a href='' class='close'>" . esc_html($popupConfirmation) . "</a></p></div></div>";
+        $popupContent = "<div id='popupContent' class='popup'>
+                            <div class='cnt223'>
+                                <h1>" . esc_html($popupTitle) . "</h1>
+                                <p>" . esc_html($popupHeader) . " 
+                                    <a href='" . esc_html($orderEditLink) . "' target='_blank'>" . esc_html($newOrderId) . "</a>
+                                    <br/>
+                                    <br/>
+                                    <a class='close'>" . esc_html($popupConfirmation) . "</a>
+                                </p>
+                            </div>
+                        </div>";
         //
+        delete_option('_order_id_for_new_order_notification');
         echo $audio;
         echo $popupContent;
         echo "<script type='text/javascript'>
                     window.focus();
                     //
                     jQuery(function ($) {
-                        var overlay = $('<div id=\"overlay\"></div>');
+                        const overlay = $('<div id=\"overlay\"></div>');
                         overlay.show();
-                        var video = document.getElementById('audioAlert');
+                        const video = document.getElementById('audioAlert');
                         video.oncanplaythrough = function() {
                             video.play();
                         }
                         overlay.appendTo(document.body);
                         $('.popup').show();
-                        $('.close').click(function () {
-                            $('.popup').hide();
-                            overlay.appendTo(document.body).remove();
-                            video.pause();
-                            return false;
-                        });
-                        $('.x').click(function () {
-                            $('.popup').hide();
-                            overlay.appendTo(document.body).remove();
-                            video.pause();
-                            return false;
-                        });
                     });
                 </script>";
-        delete_option('_order_id_for_new_order_notification');
+        return true;
     }
+    return false;
 }
 
-add_action('wp_ajax_detect_new_order_action', 'detectNewOrderAjax');
+add_action('wp_ajax_re_render_recent_order_table', 're_render_recent_order_table');
 
-function detectNewOrderAjax()
+function re_render_recent_order_table()
 {
     $settings = getNewOrderNotificationSettings();
-    checkNewOrder($settings);
-    echo 10;
+    echo getRecentOrderTable($settings);
     wp_die(); // this is required to terminate immediately and return a proper response
 }
 
-function newOrderNotificationV2()
+add_action('wp_ajax_detect_new_order', 'detect_new_order');
+
+function detect_new_order()
 {
-    echo "<h3>This is beta version for New Order Notification v2.0. Settings page and new order detection is not ready for this version.
+    $settings = getNewOrderNotificationSettings();
+    if (!checkNewOrder($settings)) {
+        echo 0;
+    }
+    wp_die(); // this is required to terminate immediately and return a proper response
+}
+
+function new_order_notification_V2()
+{
+    echo "<h3>This is beta version for New Order Notification v2.0. Settings page is not ready for this version.
           <br/>Beta version will be on development until March 01, 2022. All comments and change requests for beta version will help us to make it better. You can write us via Wordpress Support or developer email.
           </h3><br/>";
     //
@@ -495,10 +505,45 @@ function newOrderNotificationV2()
     if ($isRestricted) {
         return;
     }
-    // get recent orders
-    $orders = getRecentOrders($settings['show_order_num'], $settings['statuses']);
-    // display recent order table
-    echo getRecentOrderTable($orders);
+    // display page header
+    echo "<h1 id='new-order-notification-header'>New Order Notification for Woocommerce</h1>";
     // check new order and show popup
-    checkNewOrder($settings);
+    echo "<button id='activateNewOrderDetect' class='btn' onclick='loopForNewOrderDetection(" . esc_html($settings['refresh_time'] * 1000) . ")'>
+            <i class='fas fa-clock'></i>
+          </button>";
+    // display recent order table
+    echo getRecentOrderTable($settings);
+    ?>
+    <script type='text/javascript'>
+        function loopForNewOrderDetection(loopDuration) {
+            const detectNewOrderAction = {
+                'action': 'detect_new_order'
+            };
+            jQuery.post(ajaxurl, detectNewOrderAction, function (response) {
+                if (response != 0) {
+                    jQuery(function ($) {
+                        const newOrderPopup = $(response);
+                        newOrderPopup.insertAfter("#activateNewOrderDetect");
+                        $('.close').click(function () {
+                            $('.popup').hide();
+                            document.getElementById('overlay').remove();
+                            document.getElementById('audioAlert').pause();
+                            document.getElementById("customers-new-order-notification").remove();
+                            newOrderPopup.remove();
+                            const reRenderRecentOrderTableAction = {
+                                'action': 're_render_recent_order_table'
+                            }
+                            jQuery.post(ajaxurl, reRenderRecentOrderTableAction, function (response) {
+                                const recentOrderTable = $(response);
+                                recentOrderTable.insertAfter("#activateNewOrderDetect")
+                            });
+                            return false;
+                        });
+                    });
+                }
+                return setTimeout(() => loopForNewOrderDetection(loopDuration), loopDuration);
+            });
+        }
+    </script>
+    <?php
 }
