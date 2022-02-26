@@ -23,9 +23,6 @@ function getNewOrderNotificationSettings()
     //
     $musicUrl = plugins_url('assets/order-music.mp3', __FILE__);
     $refreshTime = 30;
-    $popupTitle = "Order Notification - New Order";
-    $popupHeader = "Check Order Details: ";
-    $popupConfirmation = "ACKNOWLEDGE NOTIFICATION";
     $orderStatuses = $wcOrderStatuses;
     $productIds = get_posts(array(
         'posts_per_page' => -1,
@@ -43,15 +40,6 @@ function getNewOrderNotificationSettings()
         }
         if ($options['refresh_time']) {
             $refreshTime = $options['refresh_time'];
-        }
-        if ($options['order_header']) {
-            $popupTitle = $options['order_header'];
-        }
-        if ($options['order_text']) {
-            $popupHeader = $options['order_text'];
-        }
-        if ($options['confirm']) {
-            $popupConfirmation = $options['confirm'];
         }
         if ($options['statuses']) {
             $orderStatuses = $options['statuses'];
@@ -72,9 +60,6 @@ function getNewOrderNotificationSettings()
         update_option('_non_v2_alert_options', array(
             'mp3_url' => $musicUrl,
             'refresh_time' => $refreshTime,
-            'order_header' => $popupTitle,
-            'order_text' => $popupHeader,
-            'confirm' => $popupConfirmation,
             'statuses' => $orderStatuses,
             'product_ids' => $productIds,
             'user_roles' => $userRoles,
@@ -85,9 +70,6 @@ function getNewOrderNotificationSettings()
         add_option('_non_v2_alert_options', array(
             'mp3_url' => $musicUrl,
             'refresh_time' => $refreshTime,
-            'order_header' => $popupTitle,
-            'order_text' => $popupHeader,
-            'confirm' => $popupConfirmation,
             'statuses' => $orderStatuses,
             'product_ids' => $productIds,
             'user_roles' => $userRoles,
@@ -112,7 +94,7 @@ function checkIfUserRestricted($userRoles)
         $isRestrictedUserRole = false;
     }
     if ($isRestrictedUserRole) {
-        echo "<br><br><h2>You don't have permission to see New Order Notification page.</h2>";
+        echo "<br><br><h2>" . __("You don't have permission to see New Order Notification page.", 'new-order-notification-for-woocommerce') . "</h2>";
     }
     return $isRestrictedUserRole;
 }
@@ -248,19 +230,6 @@ function getRecentOrderTable($settings)
 
 function showOrderEditPopup($orderId)
 {
-    $orderText = "Order";
-    $billingText = "Billing Details";
-    $shippingText = "Shipping Details";
-    $emailText = "Email";
-    $phoneText = "Phone";
-    $noteText = "Customer Note";
-    $paymentText = "Payment Details";
-    $productText = "Product Details";
-    //
-    $productName = "Product";
-    $productQuantity = "Quantity";
-    $productTotal = "Total";
-
     $order = wc_get_order($orderId);
 
     $itemContent = "";
@@ -271,9 +240,9 @@ function showOrderEditPopup($orderId)
 
         $itemContent .= "<table id='popup-new-order-notification'>
                             <tr>
-                                <th>" . esc_html($productName) . "</th>
-                                <th>" . esc_html($productQuantity) . "</th>
-                                <th>" . esc_html($productTotal) . "</th>
+                                <th>" . __('Product', 'new-order-notification-for-woocommerce') . "</th>
+                                <th>" . __('Quantity', 'new-order-notification-for-woocommerce') . "</th>
+                                <th>" . __('Total', 'new-order-notification-for-woocommerce') . "</th>
                             </tr>
                             <tr>
                                 <td>" . esc_html($name) . "</td>
@@ -301,33 +270,33 @@ function showOrderEditPopup($orderId)
                         <mark class='popupEditStatus'>
                                 <span class='popupEditStatusText'>" . esc_html($order->get_status()) . "</span>
                         </mark>
-                        <h2>" . esc_html($orderText) . " #" . esc_html($orderId) . "</h2>
+                        <h2>" . __('Order', 'new-order-notification-for-woocommerce') . " #" . esc_html($orderId) . "</h2>
                   </div>
                   <div>
                         <div style='min-height: 180px;'>
                             <div style='width: 50%; float: left;'>
-                                <h2 class='popupEditAddressHeader'>" . esc_html($billingText) . "</h2>
+                                <h2 class='popupEditAddressHeader'>" . __('Billing Details', 'new-order-notification-for-woocommerce') . "</h2>
                                 <strong>" . $order->get_formatted_billing_address() . "</strong>
                             </div>
                             <div style='width: 50%; float: right;'>
-                                <h2 class='popupEditAddressHeader'>" . esc_html($shippingText) . "</h2>
+                                <h2 class='popupEditAddressHeader'>" . __('Shipping Details', 'new-order-notification-for-woocommerce') . "</h2>
                                 <strong>" . $order->get_formatted_shipping_address() . "</strong>
                             </div>
                         </div>
                         <div style='min-height: 180px;'>
                             <div style='width: 50%; float: left;'>
-                                <h2 class='popupEditAddressHeader'>" . esc_html($emailText) . "</h2>
+                                <h2 class='popupEditAddressHeader'>" . __('Email', 'new-order-notification-for-woocommerce') . "</h2>
                                 <strong>" . esc_html($order->get_billing_email()) . "</strong>
-                                <h2 class='popupEditAddressHeader'>" . esc_html($phoneText) . "</h2>
+                                <h2 class='popupEditAddressHeader'>" . __('Phone', 'new-order-notification-for-woocommerce') . "</h2>
                                 <strong>" . esc_html($order->get_billing_phone()) . "</strong>
                             </div>
                             <div style='width: 50%; float: right'>
                                 <div>
-                                    <h2 class='popupEditAddressHeader'>" . esc_html($noteText) . "</h2>
+                                    <h2 class='popupEditAddressHeader'>" . __('Customer Note', 'new-order-notification-for-woocommerce') . "</h2>
                                     <strong>" . esc_html($order->get_customer_note()) . "</strong>
                                 </div>
                                 <br/>
-                                <h2 class='popupEditAddressHeader'>" . esc_html($paymentText) . "</h2>
+                                <h2 class='popupEditAddressHeader'>" . __('Payment Details', 'new-order-notification-for-woocommerce') . "</h2>
                                 <div style='width: 50%; float: left;'>
                                     <strong>" . esc_html($order->get_payment_method_title()) . "</strong>
                                 </div>
@@ -337,7 +306,7 @@ function showOrderEditPopup($orderId)
                             </div>
                         </div>
                         <div style='min-height: 180px;'>                            
-                        <h2 class='popupEditAddressHeader'>" . esc_html($productText) . "</h2>
+                        <h2 class='popupEditAddressHeader'>" . __('Product Details', 'new-order-notification-for-woocommerce') . "</h2>
                             " . $itemContent . "
                         </div>
                         <div style='min-height: 100pxpx;'>                            
@@ -429,11 +398,8 @@ function checkNewOrder($settings)
     if ($shouldAlert) {
         // get popup variables
         $musicUrlMp3 = $settings['mp3_url'];
-        $popupTitle = $settings['order_header'];
-        $popupHeader = $settings['order_text'];
         $newOrderId = $newOrder->get_id();
         $orderEditLink = get_site_url() . "/wp-admin/post.php?post=" . $newOrderId . "&action=edit";
-        $popupConfirmation = $settings['confirm'];
         //
         $audio = "<audio id='audioAlert' controls loop>
                       <source src='" . esc_html($musicUrlMp3) . "' type='audio/ogg'>
@@ -442,12 +408,12 @@ function checkNewOrder($settings)
                   </audio>";
         $popupContent = "<div id='popupContent' class='popup'>
                             <div class='cnt223'>
-                                <h1>" . esc_html($popupTitle) . "</h1>
-                                <p>" . esc_html($popupHeader) . " 
+                                <h1>" . __('Order Notification - New Order', 'new-order-notification-for-woocommerce') . "</h1>
+                                <p>" . __('Check Order Details', 'new-order-notification-for-woocommerce') . " 
                                     <a href='" . esc_html($orderEditLink) . "' target='_blank'>" . esc_html($newOrderId) . "</a>
                                     <br/>
                                     <br/>
-                                    <a class='close'>" . esc_html($popupConfirmation) . "</a>
+                                    <a class='close'>" . __('ACKNOWLEDGE NOTIFICATION', 'new-order-notification-for-woocommerce') . "</a>
                                 </p>
                             </div>
                         </div>";
