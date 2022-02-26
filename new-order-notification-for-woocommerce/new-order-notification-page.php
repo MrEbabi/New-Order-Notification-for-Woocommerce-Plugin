@@ -109,49 +109,13 @@ function getRecentOrderTable($settings)
         'type' => 'shop_order',
     ));
 
-    $columnOrderNo = "Order No";
-    $columnOrderDate = "Order Date";
-    $columnOrderStatus = "Order Status";
-    $columnOrderEdit = "Edit Order";
-    //
-    $options = get_option('_non_v2_order_table_options');
-    //
-    if ($options) {
-        if ($options['column_order_no']) {
-            $columnOrderNo = $options['column_order_no'];
-        }
-        if ($options['column_order_date']) {
-            $columnOrderDate = $options['column_order_date'];
-        }
-        if ($options['column_order_status']) {
-            $columnOrderStatus = $options['column_order_status'];
-        }
-        if ($options['column_order_edit']) {
-            $columnOrderEdit = $options['column_order_edit'];
-        }
-        //
-        update_option('_non_v2_order_table_options', array(
-            'column_order_no' => $columnOrderNo,
-            'column_order_date' => $columnOrderDate,
-            'column_order_status' => $columnOrderStatus,
-            'column_order_edit' => $columnOrderEdit,
-        ));
-    } else {
-        //
-        add_option('_non_v2_order_table_options', array(
-            'column_order_no' => $columnOrderNo,
-            'column_order_date' => $columnOrderDate,
-            'column_order_status' => $columnOrderStatus,
-            'column_order_edit' => $columnOrderEdit,
-        ));
-    }
     //
     $content = "<table id='customers-new-order-notification'>";
     $content .= "<tr>
-                    <th>" . esc_html($columnOrderNo) . "</th>
-                    <th>" . esc_html($columnOrderDate) . "</th>
-                    <th>" . esc_html($columnOrderStatus) . "</th>
-                    <th>" . esc_html($columnOrderEdit) . "</th>
+                    <th>" . __('Order No', 'new-order-notification-for-woocommerce') . "</th>
+                    <th>" . __('Date', 'new-order-notification-for-woocommerce') . "</th>
+                    <th>" . __('Status', 'new-order-notification-for-woocommerce') . "</th>
+                    <th>" . __('Preview/Edit', 'new-order-notification-for-woocommerce') . "</th>
                  </tr>";
     //
     foreach ($orders as $recent_order) {
@@ -310,12 +274,12 @@ function showOrderEditPopup($orderId)
                             " . $itemContent . "
                         </div>
                         <div style='min-height: 100pxpx;'>                            
-                        <h2 class='popupEditAddressHeader'>Change Order Status</h2> 
+                        <h2 class='popupEditAddressHeader'>" . __('Change Order Status', 'new-order-notification-for-woocommerce') . "</h2> 
                             <input id='popupOrderId' type='hidden' value='" . esc_html($orderId) . "'/>
                             <select id='popupStatus' name='popupStatusSelection'>  
                             " . $statusContent . "
                             </select>
-                            <input class='popupStatusChangeButton' onclick='orderEditStatus()' value='Update' type='submit' />
+                            <input class='popupStatusChangeButton' onclick='orderEditStatus()' value='" . __('Update', 'new-order-notification-for-woocommerce') . "' type='submit' />
                         </div>
                   </div>
               </div>
@@ -472,10 +436,10 @@ function new_order_notification_V2()
         return;
     }
     // display page header
-    echo "<h1 id='new-order-notification-header'>New Order Notification for Woocommerce</h1>";
+    echo "<h1 id='new-order-notification-header'>" . __('New Order Notification for Woocommerce', 'new-order-notification-for-woocommerce') . "</h1>";
     // check new order and show popup
     echo "<div id='newOrderDetectDiv' style='display: flex'>
-            <p id='activateNewOrderDetectText'>Activate new order alert: </p>
+            <p id='activateNewOrderDetectText'>" . __('Activate new order alert: ', 'new-order-notification-for-woocommerce') . "</p>
               <button id='activateNewOrderDetect' class='btn' onclick='loopForNewOrderDetection(" . esc_html($settings['refresh_time'] * 1000) . ")'>
                 <i id='activateNewOrderDetectIcon' class='fas fa-toggle-off fa-2x'></i>
               </button>
@@ -486,7 +450,7 @@ function new_order_notification_V2()
     <script type='text/javascript'>
         function loopForNewOrderDetection(loopDuration) {
             document.getElementById("activateNewOrderDetectIcon").setAttribute("class", "fas fa-toggle-on fa-2x");
-            document.getElementById("activateNewOrderDetectText").innerText = "New Order Alert activated.";
+            document.getElementById("activateNewOrderDetectText").innerText = "<?php echo _e('New Order Alert activated.', 'new-order-notification-for-woocommerce') ?>";
             const detectNewOrderAction = {
                 'action': 'detect_new_order'
             };
