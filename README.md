@@ -108,11 +108,12 @@ Version 2.0.0
 ---
 
 v2.0.1 todo:
+- Localization for all texts.
 - Usage instructions like browser and device type, browser settings for autoplay (Wordpress Support)
-- Settings page for beta version.
+- New Settings page.
 
 v2.1.0 todo:
 
-- Remove deprecated new order notification page
+- Remove deprecated new order notification page & settings
 - Add support & premium section
 - Release beta version
