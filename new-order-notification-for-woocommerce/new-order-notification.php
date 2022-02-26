@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) {
 defined('ABSPATH') or die('You shall not pass!');
 
 if (!function_exists('add_action')) {
-    echo "You shall not pass!";
+    echo __('You shall not pass!', 'new-order-notification-for-woocommerce');;
     exit;
 }
 
@@ -43,11 +43,16 @@ function new_order_notification_require_woocommerce()
 function new_order_notification_require_woocommerce_notice()
 {
     ?>
-    <style> #toplevel_page_new_order_notification {
+    <style>
+        #toplevel_page_new_order_notification {
             display: none;
-        } </style>
-    <div class="error"><p>Sorry, but New Order Notification for Woocommerce requires the Woocommerce plugin to be
-            installed and activated.</p></div>
+        }
+    </style>
+    <div class="error">
+        <p>
+            <?php _e('Sorry, but New Order Notification for Woocommerce requires the Woocommerce plugin to be installed and activated.', 'new-order-notification-for-woocommerce') ?>
+        </p>
+    </div>
     <?php
     return;
 }
@@ -57,9 +62,7 @@ function new_order_notification_settings_link($links)
 {
     if (!is_admin()) exit();
 
-    $links[] = '<a href="' .
-        admin_url('admin.php?page=new_order_notification_settings') .
-        '">' . __('Settings') . '</a>';
+    $links[] = '<a href="' . admin_url('admin.php?page=new_order_notification_settings') . '">' . __('Settings', 'new-order-notification-for-woocommerce') . '</a>';
     return $links;
 }
 
