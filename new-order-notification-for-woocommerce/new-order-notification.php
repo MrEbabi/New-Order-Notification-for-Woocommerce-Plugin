@@ -84,6 +84,13 @@ function new_order_notification_admin_js()
 
 add_action('admin_init', 'new_order_notification_admin_js');
 
+function new_order_notification_fontawesome()
+{
+    wp_enqueue_style('fontawesome', 'https://use.fontawesome.com/releases/v5.8.1/css/all.css', '', '5.8.1', 'all');
+}
+
+add_action('admin_init', 'new_order_notification_fontawesome');
+
 if (!class_exists('NewOrderNotification')) {
     class NewOrderNotification
     {

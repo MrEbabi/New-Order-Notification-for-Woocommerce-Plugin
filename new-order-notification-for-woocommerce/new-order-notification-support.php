@@ -4,8 +4,7 @@ function new_order_notification_support()
 {
     $user = wp_get_current_user();
 
-    $content = "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>";
-    $content .= "<h1>New Order Notification for Woocommerce - Support</h1>";
+    $content = "<h1>New Order Notification for Woocommerce - Support</h1>";
     $content .= "<div class='support-main'>
                      <p class='support-title'>Dear " . esc_html($user->user_login) . ", 
                      </br></br>
@@ -26,9 +25,9 @@ function new_order_notification_support()
                      <p class='support-title'>Software Engineer</p>
                      <p class='support-title'>Freelance Wordpress/Woocommerce Developer</p>
                      <div style='margin: 24px 0;'>
-                         <a class='support' href='https://www.linkedin.com/in/ey%C3%BCp-sabri-g%C3%BCl%C5%9Fen-809837186/' target='_blank'><i class='fa fa-linkedin'></i></a>  
-                         <a class='support' href='https://mrebabi.com/iletisim/' target='_blank'><i class='fa fa-envelope'></i></a>  
-                         <a class='support' href='https://mrebabi.com/' target='_blank'><i class='fa fa-globe'></i></a>  
+                         <a class='support' href='https://www.linkedin.com/in/ey%C3%BCp-sabri-g%C3%BCl%C5%9Fen-809837186/' target='_blank'><i class='fa fa-linkedin-in'></i></a>  
+                         <a class='support' href='https://mrebabi.com/iletisim/' target='_blank'><i class='fas fa-envelope'></i></a>  
+                         <a class='support' href='https://mrebabi.com/' target='_blank'><i class='fas fa-globe'></i></a>  
                      </div>
                      <p>
                         <a href ='https://mrebabi.com/donate/' target='_blank'>
