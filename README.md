@@ -105,15 +105,16 @@ Version 2.0.0
 - Activation for sound and popup alert.
 - Async calls instead of page refreshing.
 
+Version 2.0.1
+
+- Beta version moved as main page.
+- Previous version of notification page moved as old page.
+- Introduce support page.
+
 ---
 
-v2.0.1 todo:
-- Localization for all texts.
-- Usage instructions like browser and device type, browser settings for autoplay (Wordpress Support)
-- New Settings page.
-
 v2.1.0 todo:
+- Localization for all texts.
+- New Settings page.
+- Remove deprecated new order notification page & settings.
 
-- Remove deprecated new order notification page & settings
-- Add support & premium section
-- Release beta version
