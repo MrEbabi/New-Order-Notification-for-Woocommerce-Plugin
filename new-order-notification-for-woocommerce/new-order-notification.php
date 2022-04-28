@@ -84,14 +84,6 @@ function new_order_notification_admin_js()
 
 add_action('admin_init', 'new_order_notification_admin_js');
 
-
-function new_order_notification_fontawesome()
-{
-    wp_enqueue_style('fontawesome', 'https://use.fontawesome.com/releases/v5.8.1/css/all.css', '', '5.8.1', 'all');
-}
-
-add_action('admin_init', 'new_order_notification_fontawesome');
-
 if (!class_exists('NewOrderNotification')) {
     class NewOrderNotification
     {
@@ -101,6 +93,7 @@ if (!class_exists('NewOrderNotification')) {
             require_once(dirname(__FILE__) . '/new-order-notification-admin.php');
             require_once(dirname(__FILE__) . '/new-order-notification-settings.php');
             require_once(dirname(__FILE__) . '/new-order-notification-page.php');
+            require_once(dirname(__FILE__) . '/new-order-notification-support.php');
         }
     }
 }

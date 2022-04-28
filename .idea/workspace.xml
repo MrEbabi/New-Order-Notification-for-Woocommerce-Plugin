@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="deccbf60-9782-441a-aa63-34f45e9f5eff" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/new-order-notification-for-woocommerce/new-order-notification-support.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-order-notification-for-woocommerce/assets/new-order-notification.css" beforeDir="false" afterPath="$PROJECT_DIR$/new-order-notification-for-woocommerce/assets/new-order-notification.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-order-notification-for-woocommerce/new-order-notification-admin.php" beforeDir="false" afterPath="$PROJECT_DIR$/new-order-notification-for-woocommerce/new-order-notification-admin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-order-notification-for-woocommerce/new-order-notification-page.php" beforeDir="false" afterPath="$PROJECT_DIR$/new-order-notification-for-woocommerce/new-order-notification-page.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-order-notification-for-woocommerce/new-order-notification.php" beforeDir="false" afterPath="$PROJECT_DIR$/new-order-notification-for-woocommerce/new-order-notification.php" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="257Jn658oTPAgMp2GmPLcBijMoh" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/new-order-notification-for-woocommerce" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/new-order-notification-for-woocommerce" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="deccbf60-9782-441a-aa63-34f45e9f5eff" name="Default Changelist" comment="" />
+      <created>1644872355073</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1644872355073</updated>
+      <workItem from="1644872356901" duration="72000" />
+      <workItem from="1644949776932" duration="7587000" />
+      <workItem from="1645281240675" duration="2568000" />
+      <workItem from="1645303665075" duration="4947000" />
+      <workItem from="1645386844218" duration="1724000" />
+      <workItem from="1645881875531" duration="2648000" />
+      <workItem from="1645886958219" duration="15000" />
+      <workItem from="1651106172569" duration="4068000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+</project>

@@ -293,3 +293,40 @@
 #popup-new-order-notification tr:hover {
     background-color: #ddd;
 }
+
+.support-card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    margin: auto;
+    text-align: center;
+    font-family: arial;
+}
+
+.support-title {
+    color: grey;
+    font-size: 18px;
+}
+
+button.support {
+    border: none;
+    outline: 0;
+    display: inline-block;
+    padding: 8px;
+    color: white;
+    background-color: #000;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+    font-size: 18px;
+}
+
+a.support {
+    text-decoration: none;
+    font-size: 22px;
+    color: black;
+    margin: 0 15px 0 0;
+}
+
+button.support:hover, a.support:hover {
+    opacity: 0.7;
+}

@@ -20,9 +20,10 @@ add_action('admin_menu', 'new_order_notification');
 
 function new_order_notification()
 {
-    add_menu_page('New Order Notification', 'New Order Notification', 'delete_posts', 'new_order_notification', 'new_order_notification_menu', 'dashicons-warning', '54');
+    add_menu_page('New Order Notification', 'New Order Notification', 'delete_posts', 'new_order_notification', 'new_order_notification_V2', 'dashicons-warning', '54');
     add_submenu_page('new_order_notification', 'Settings', 'Settings', 'manage_options', 'new_order_notification_settings', 'new_order_notification_settings');
-    add_submenu_page('new_order_notification', 'New Order Notification (Beta)', 'New Order Notification (Beta)', 'delete_posts', 'new_order_notification_v2', 'new_order_notification_V2');
+    add_submenu_page('new_order_notification', 'New Order Notification (Old)', 'New Order Notification (Old)', 'delete_posts', 'new_order_notification_menu', 'new_order_notification_menu');
+    add_submenu_page('new_order_notification', 'Support', 'Support', 'delete_posts', 'new_order_notification_support', 'new_order_notification_support');
 }
 
 function new_order_notification_menu()

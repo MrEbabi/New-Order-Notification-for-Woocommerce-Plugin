@@ -426,10 +426,6 @@ function detect_new_order()
 
 function new_order_notification_V2()
 {
-    echo "<h3>This is beta version for New Order Notification v2.0. Settings page is not ready for this version.
-          <br/>Beta version will be on development until March 01, 2022. All comments and change requests for beta version will help us to make it better. You can write us via Wordpress Support or developer email.
-          </h3><br/>";
-    //
     $settings = getNewOrderNotificationSettings();
     $isRestricted = checkIfUserRestricted($settings['user_roles']);
     if ($isRestricted) {
@@ -437,6 +433,7 @@ function new_order_notification_V2()
     }
     // display page header
     echo "<h1 id='new-order-notification-header'>" . __('New Order Notification for Woocommerce', 'new-order-notification-for-woocommerce') . "</h1>";
+    echo "<h3>" . __('Settings page is not ready for this page. You may still use the old New Order Notification Page listed as subpage in the plugin.', 'new-order-notification-for-woocommerce') . "</h3>";
     // check new order and show popup
     echo "<div id='newOrderDetectDiv' style='display: flex'>
             <p id='activateNewOrderDetectText'>" . __('Activate new order alert: ', 'new-order-notification-for-woocommerce') . "</p>
