@@ -2,7 +2,7 @@
 /*
 Plugin Name: New Order Notification for Woocommerce
 Description: Woocommerce custom order page with recent orders for showing a popup notification with sound when a new order received.
-Version: 2.0.3
+Version: 2.0.4
 Author: Mr.Ebabi
 Author URI: https://github.com/MrEbabi
 License: GPL2

@@ -113,6 +113,11 @@ Version 2.0.1
 - Previous version of notification page moved as old page.
 - Introduce support page.
 
+Version 2.0.3
+
+- Fix security issues.
+- Test with latest WordPress and WooCommerce versions.
+
 ---
 
 v2.1.0 todo:
