@@ -25,11 +25,12 @@ function getNewOrderNotificationSettings()
     $refreshTime = 30;
     $wcOrderStatuses = array_keys(wc_get_order_statuses());
     $orderStatuses = $wcOrderStatuses;
-    $productIds = get_posts(array(
-        'posts_per_page' => -1,
-        'post_type' => array('product', 'product_variation'),
-        'fields' => 'ids',
-    ));
+    $productIds = wc_get_products([
+        'limit'  => -1,
+        'return' => 'ids',
+        'type'   => ['simple', 'variable'],
+        'status' => 'publish',
+    ]);
     global $wpRoles;
     $userRoles = array_keys($wpRoles->roles);
     $recentOrderTableLimit = 20;

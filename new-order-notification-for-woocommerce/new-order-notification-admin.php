@@ -29,11 +29,12 @@ function new_order_notification()
 function new_order_notification_menu()
 {
     $isNew = false;
-    $allProductIds = get_posts(array(
-        'posts_per_page' => -1,
-        'post_type' => array('product', 'product_variation'),
-        'fields' => 'ids',
-    ));
+    $allProductIds = wc_get_products([
+        'limit'  => -1,
+        'return' => 'ids',
+        'type'   => ['simple', 'variable'],
+        'status' => 'publish',
+    ]);
     global $wpRoles;
     $roles = $wpRoles->roles;
     $roleValues = array_keys($roles);
