@@ -115,7 +115,11 @@ Version 2.0.1
 
 Version 2.0.3
 
-- Fix security issues.
+- WordPress and Woocommerce version updated.
+- Security issues fixed.
+
+Version 2.0.4
+
 - Test with latest WordPress and WooCommerce versions.
 
 ---
