@@ -2,14 +2,14 @@
 /*
 Plugin Name: New Order Notification for Woocommerce
 Description: Woocommerce custom order page with recent orders for showing a popup notification with sound when a new order received.
-Version: 2.0.1
+Version: 2.0.3
 Author: Mr.Ebabi
 Author URI: https://github.com/MrEbabi
 License: GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: new-order-notification-for-woocommerce
 WC requires at least: 2.5
-WC tested up to: 6.4.1
+WC tested up to: 9.9.4
 */
 
 if (!defined('ABSPATH')) {
@@ -79,7 +79,6 @@ function new_order_notification_admin_js()
 {
     wp_register_style('new-order-notification-admin-js', 'https://code.jquery.com/jquery-1.8.2.js', array(), rand(111, 9999), 'all');
     wp_enqueue_style('new-order-notification-admin-js');
-
 }
 
 add_action('admin_init', 'new_order_notification_admin_js');
@@ -90,6 +89,24 @@ function new_order_notification_fontawesome()
 }
 
 add_action('admin_init', 'new_order_notification_fontawesome');
+
+add_action( 'admin_head', 'new_order_notification_inline_nonce' );
+function new_order_notification_inline_nonce() {
+    $screen = get_current_screen();
+
+    if ( $screen->id !== 'toplevel_page_new_order_notification' ) {
+        return;
+    }
+    ?>
+    <script type="text/javascript">
+        var NewOrderNotif = {
+            ajax_url: "<?php echo esc_js( admin_url( 'admin-ajax.php' ) ); ?>",
+            nonce:    "<?php echo wp_create_nonce( 'noneni_action' ); ?>"
+        };
+    </script>
+    <?php
+}
+
 
 if (!class_exists('NewOrderNotification')) {
     class NewOrderNotification

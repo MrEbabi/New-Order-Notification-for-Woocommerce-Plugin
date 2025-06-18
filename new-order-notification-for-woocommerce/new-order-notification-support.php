@@ -20,7 +20,7 @@ function new_order_notification_support()
                      </br></br> 
                      </p>
                      <div class='support-card'>
-                     <img src='https://media-exp1.licdn.com/dms/image/C5603AQGI6Ycy3ky1wg/profile-displayphoto-shrink_400_400/0/1632419918780?e=1656547200&v=beta&t=VMdVUxY6F_Qwo-T8v8C3zETJIXu9vdQMkQNEyIkTEz4' alt='Plugin Developer' style='width:50%'>
+                     <img src='https://avatars.githubusercontent.com/u/40281221' alt='Plugin Developer' style='width:50%'>
                      <h1>Eyup Gulsen</h1>
                      <p class='support-title'>Software Engineer</p>
                      <p class='support-title'>Freelance Wordpress/Woocommerce Developer</p>

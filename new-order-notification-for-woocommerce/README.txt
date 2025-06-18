@@ -3,8 +3,8 @@ Contributors: mrebabi
 Author URI: https://github.com/MrEbabi
 Tags: woocommerce, woocommerce order page, woocommerce notification, woocommerce order notification, woocommerce new order notification, woocommerce new order popup
 Requires at least: 3.1
-Tested up to: 5.9.3
-Stable tag: 2.0.1
+Tested up to: 6.8.1
+Stable tag: 2.0.3
 License: GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: new-order-notification-for-woocommerce
@@ -56,6 +56,13 @@ Yes, but the notification system only works with custom order page named New Ord
 3. Settings for Notifications
 
 == Changelog ==
+**=2.0.3=**
+- Wordpress and Woocommerce version updated.
+- Security issues fixed.
+
+**=2.0.2=**
+- Wordpress and Woocommerce version updated.
+
 **=2.0.1=**
 - Beta version moved as main page.
 - Previous version of notification page moved as old page.

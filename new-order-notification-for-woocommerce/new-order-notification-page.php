@@ -112,7 +112,7 @@ function getRecentOrderTable($settings)
     //
     $content = "<table id='customers-new-order-notification'>";
     $content .= "<tr>
-                    <th>" . __('Order No', 'new-order-notification-for-woocommerce') . "</th>
+                    <th>" . __('Order ID', 'new-order-notification-for-woocommerce') . "</th>
                     <th>" . __('Date', 'new-order-notification-for-woocommerce') . "</th>
                     <th>" . __('Status', 'new-order-notification-for-woocommerce') . "</th>
                     <th>" . __('Preview/Edit', 'new-order-notification-for-woocommerce') . "</th>
@@ -156,7 +156,8 @@ function getRecentOrderTable($settings)
             function showOrderEditPopupButton(orderId) {
                 const data = {
                     'action': 'show_order_edit_popup_action',
-                    'orderId': orderId
+                    'orderId': orderId,
+                    'security': NewOrderNotif.nonce
                 };
                 jQuery.post(ajaxurl, data, function (response) {
                     jQuery(function ($) {
@@ -175,6 +176,7 @@ function getRecentOrderTable($settings)
                     'action': 'order_edit_status_action',
                     'orderId': orderId,
                     'status': status,
+                    'security': NewOrderNotif.nonce
                 };
                 jQuery.post(ajaxurl, data, function (response) {
                     jQuery(function ($) {
@@ -291,6 +293,11 @@ add_action('wp_ajax_show_order_edit_popup_action', 'show_order_edit_popup_action
 
 function show_order_edit_popup_action()
 {
+
+    if ( ! isset($_POST['security']) || ! wp_verify_nonce( $_POST['security'], 'noneni_action' ) ) { wp_send_json_error( 'Geçersiz nonce' ); }
+    if ( ! current_user_can( 'edit_shop_orders' ) ) { wp_send_json_error( 'Yetkiniz yok' ); }
+    $orderId = isset($_POST['orderId']) ? absint($_POST['orderId']) : 0;
+    if ( ! $order = wc_get_order( $orderId ) ) { wp_send_json_error( 'Sipariş bulunamadı' ); }
     $orderId = $_POST['orderId'];
     showOrderEditPopup($orderId);
     //
@@ -301,6 +308,12 @@ add_action('wp_ajax_order_edit_status_action', 'order_edit_status_action');
 
 function order_edit_status_action()
 {
+
+    if ( ! isset($_POST['security']) || ! wp_verify_nonce( $_POST['security'], 'noneni_action' ) ) { wp_send_json_error( 'Geçersiz nonce' ); }
+    if ( ! current_user_can( 'edit_shop_orders' ) ) { wp_send_json_error( 'Yetkiniz yok' ); }
+    $orderId = isset($_POST['orderId']) ? absint($_POST['orderId']) : 0;
+    $status  = isset($_POST['status']) ? sanitize_text_field($_POST['status']) : '';
+    if ( ! $order = wc_get_order( $orderId ) ) { wp_send_json_error( 'Sipariş bulunamadı' ); }
     $orderId = $_POST['orderId'];
     $status = $_POST['status'];
     //
@@ -408,6 +421,9 @@ add_action('wp_ajax_re_render_recent_order_table', 're_render_recent_order_table
 
 function re_render_recent_order_table()
 {
+
+    if ( ! isset($_POST['security']) || ! wp_verify_nonce( $_POST['security'], 'noneni_action' ) ) { wp_send_json_error( 'Geçersiz nonce' ); }
+    if ( ! current_user_can( 'edit_shop_orders' ) ) { wp_send_json_error( 'Yetkiniz yok' ); }
     $settings = getNewOrderNotificationSettings();
     echo getRecentOrderTable($settings);
     wp_die(); // this is required to terminate immediately and return a proper response
@@ -449,7 +465,8 @@ function new_order_notification_V2()
             document.getElementById("activateNewOrderDetectIcon").setAttribute("class", "fas fa-toggle-on fa-2x");
             document.getElementById("activateNewOrderDetectText").innerText = "<?php echo _e('New Order Alert activated.', 'new-order-notification-for-woocommerce') ?>";
             const detectNewOrderAction = {
-                'action': 'detect_new_order'
+                'action': 'detect_new_order',
+                'security': NewOrderNotif.nonce
             };
             jQuery.post(ajaxurl, detectNewOrderAction, function (response) {
                 if (response != 0) {
@@ -463,7 +480,8 @@ function new_order_notification_V2()
                             document.getElementById("customers-new-order-notification").remove();
                             newOrderPopup.remove();
                             const reRenderRecentOrderTableAction = {
-                                'action': 're_render_recent_order_table'
+                                'action': 're_render_recent_order_table',
+                                'security': NewOrderNotif.nonce
                             }
                             jQuery.post(ajaxurl, reRenderRecentOrderTableAction, function (response) {
                                 const recentOrderTable = $(response);
