@@ -234,7 +234,7 @@ function new_order_notification_menu()
     $content = "<h1>New Order Notification for Woocommerce</h1>";
     $content .= "<table id='customers-new-order-notification'>";
     $content .= "<tr><th>Recent Orders</th></tr>";
-    $content .= "<tr><th>Order No</th><th>Order Date</th><th>Order Status</th><th>Order Details</th></tr>";
+    $content .= "<tr><th>Order ID</th><th>Order Date</th><th>Order Status</th><th>Order Details</th></tr>";
 
     foreach ($recent_orders as $recent_order) {
         $order_id = $recent_order->get_id();

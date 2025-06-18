@@ -90,18 +90,19 @@ function new_order_notification_fontawesome()
 
 add_action('admin_init', 'new_order_notification_fontawesome');
 
-add_action( 'admin_head', 'new_order_notification_inline_nonce' );
-function new_order_notification_inline_nonce() {
+add_action('admin_head', 'new_order_notification_inline_nonce');
+function new_order_notification_inline_nonce()
+{
     $screen = get_current_screen();
 
-    if ( $screen->id !== 'toplevel_page_new_order_notification' ) {
+    if ($screen->id !== 'toplevel_page_new_order_notification') {
         return;
     }
     ?>
     <script type="text/javascript">
         var NewOrderNotif = {
-            ajax_url: "<?php echo esc_js( admin_url( 'admin-ajax.php' ) ); ?>",
-            nonce:    "<?php echo wp_create_nonce( 'noneni_action' ); ?>"
+            ajax_url: "<?php echo esc_js(admin_url('admin-ajax.php')); ?>",
+            nonce: "<?php echo wp_create_nonce('noneni_action'); ?>"
         };
     </script>
     <?php

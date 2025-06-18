@@ -1,34 +1,36 @@
 <?php
 
-add_action('woocommerce_checkout_order_processed', 'detect_new_order_on_checkout_v2');
+add_action('woocommerce_new_order', 'my_detect_new_order', 10, 2);
+add_action('woocommerce_checkout_order_created', 'my_detect_new_order', 10, 1);
+add_action('woocommerce_store_api_checkout_order_created', 'my_detect_new_order', 10, 1);
 
-function detect_new_order_on_checkout_v2($order_id)
+function my_detect_new_order($order_or_id, $maybe_order = null)
 {
-    $options = get_option('_order_id_for_new_order_notification');
-    if (!$options) {
-        add_option('_order_id_for_new_order_notification', array(
-            'order_id' => $order_id
-        ));
+    if ($order_or_id instanceof WC_Order) {
+        $order = $order_or_id;
     } else {
-        update_option('_order_id_for_new_order_notification', array(
-            'order_id' => $order_id
-        ));
+        $order = $maybe_order instanceof WC_Order ? $maybe_order : wc_get_order($order_or_id);
     }
+    if (!$order) {
+        return;
+    }
+    $order_id = $order->get_id();
+    update_option('_order_id_for_new_order_notification', $order_id);
 }
 
 function getNewOrderNotificationSettings()
 {
-    global $wp_roles;
-    $wcOrderStatuses = array_keys(wc_get_order_statuses());
     //
     $musicUrl = plugins_url('assets/order-music.mp3', __FILE__);
     $refreshTime = 30;
+    $wcOrderStatuses = array_keys(wc_get_order_statuses());
     $orderStatuses = $wcOrderStatuses;
     $productIds = get_posts(array(
         'posts_per_page' => -1,
         'post_type' => array('product', 'product_variation'),
         'fields' => 'ids',
     ));
+    global $wp_roles;
     $userRoles = array_keys($wp_roles->roles);
     $recentOrderTableLimit = 20;
     $recentOrderTableStatuses = $wcOrderStatuses;
@@ -294,10 +296,16 @@ add_action('wp_ajax_show_order_edit_popup_action', 'show_order_edit_popup_action
 function show_order_edit_popup_action()
 {
 
-    if ( ! isset($_POST['security']) || ! wp_verify_nonce( $_POST['security'], 'noneni_action' ) ) { wp_send_json_error( 'Geçersiz nonce' ); }
-    if ( ! current_user_can( 'edit_shop_orders' ) ) { wp_send_json_error( 'Yetkiniz yok' ); }
+    if (!isset($_POST['security']) || !wp_verify_nonce($_POST['security'], 'noneni_action')) {
+        wp_send_json_error('Invalid nonce.');
+    }
+    if (!current_user_can('edit_shop_orders')) {
+        wp_send_json_error('Unauthorized.');
+    }
     $orderId = isset($_POST['orderId']) ? absint($_POST['orderId']) : 0;
-    if ( ! $order = wc_get_order( $orderId ) ) { wp_send_json_error( 'Sipariş bulunamadı' ); }
+    if (!$order = wc_get_order($orderId)) {
+        wp_send_json_error('Could not find order.');
+    }
     $orderId = $_POST['orderId'];
     showOrderEditPopup($orderId);
     //
@@ -308,12 +316,17 @@ add_action('wp_ajax_order_edit_status_action', 'order_edit_status_action');
 
 function order_edit_status_action()
 {
-
-    if ( ! isset($_POST['security']) || ! wp_verify_nonce( $_POST['security'], 'noneni_action' ) ) { wp_send_json_error( 'Geçersiz nonce' ); }
-    if ( ! current_user_can( 'edit_shop_orders' ) ) { wp_send_json_error( 'Yetkiniz yok' ); }
+    if (!isset($_POST['security']) || !wp_verify_nonce($_POST['security'], 'noneni_action')) {
+        wp_send_json_error('Invalid nonce.');
+    }
+    if (!current_user_can('edit_shop_orders')) {
+        wp_send_json_error('Unauthorized.');
+    }
     $orderId = isset($_POST['orderId']) ? absint($_POST['orderId']) : 0;
-    $status  = isset($_POST['status']) ? sanitize_text_field($_POST['status']) : '';
-    if ( ! $order = wc_get_order( $orderId ) ) { wp_send_json_error( 'Sipariş bulunamadı' ); }
+    $status = isset($_POST['status']) ? sanitize_text_field($_POST['status']) : '';
+    if (!$order = wc_get_order($orderId)) {
+        wp_send_json_error('Could not find order.');
+    }
     $orderId = $_POST['orderId'];
     $status = $_POST['status'];
     //
@@ -325,26 +338,13 @@ function order_edit_status_action()
     wp_die();
 }
 
-function getRecentOrders($limit, $statuses)
-{
-    return wc_get_orders(array(
-        'limit' => $limit,
-        'orderby' => 'date',
-        'order' => 'DESC',
-        'status' => $statuses,
-        'type' => 'shop_order',
-    ));
-}
-
 function checkNewOrder($settings)
 {
-    $anyNewOrder = get_option('_order_id_for_new_order_notification');
-    if (!$anyNewOrder) {
-        return;
+    $maybeOrderId = get_option('_order_id_for_new_order_notification');
+    if (!$maybeOrderId) {
+        return false;
     }
     $shouldAlert = false;
-    // get new order
-    $newOrder = wc_get_order($anyNewOrder['order_id']);
     // check product options
     $productIds = $settings['product_ids'];
     $alertForThisProduct = false;
@@ -352,6 +352,8 @@ function checkNewOrder($settings)
     if (is_array($productIds) && count($productIds) != 0) {
         $isAllProducts = false;
     }
+    // get new order
+    $newOrder = wc_get_order($maybeOrderId);
     if (!$isAllProducts) {
         foreach ($newOrder->get_items() as $item_id => $item) {
             $product_id = $item->get_product_id();
@@ -422,11 +424,15 @@ add_action('wp_ajax_re_render_recent_order_table', 're_render_recent_order_table
 function re_render_recent_order_table()
 {
 
-    if ( ! isset($_POST['security']) || ! wp_verify_nonce( $_POST['security'], 'noneni_action' ) ) { wp_send_json_error( 'Geçersiz nonce' ); }
-    if ( ! current_user_can( 'edit_shop_orders' ) ) { wp_send_json_error( 'Yetkiniz yok' ); }
+    if (!isset($_POST['security']) || !wp_verify_nonce($_POST['security'], 'noneni_action')) {
+        wp_send_json_error('Invalid nonce.');
+    }
+    if (!current_user_can('edit_shop_orders')) {
+        wp_send_json_error('Unauthorized.');
+    }
     $settings = getNewOrderNotificationSettings();
     echo getRecentOrderTable($settings);
-    wp_die(); // this is required to terminate immediately and return a proper response
+    wp_die();
 }
 
 add_action('wp_ajax_detect_new_order', 'detect_new_order');
@@ -435,9 +441,11 @@ function detect_new_order()
 {
     $settings = getNewOrderNotificationSettings();
     if (!checkNewOrder($settings)) {
-        echo 0;
+        echo "No new order found.";
+    } else {
+        echo "New order detected";
     }
-    wp_die(); // this is required to terminate immediately and return a proper response
+    wp_die();
 }
 
 function new_order_notification_V2()

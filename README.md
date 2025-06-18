@@ -1,10 +1,11 @@
 # Woocommerce New Order Notification Plugin
 
-Woocommerce custom order page for showing a popup notification with sound when a new order received. 
+Woocommerce custom order page for showing a popup notification with sound when a new order received.
 
-Usage: 
+Usage:
 
-- Download the current version from release folder and upload it to wp-content/plugins using FTP or using Admin Panel -> Plugins -> Add New -> Upload Plugin, then extract there.
+- Download the current version from release folder and upload it to wp-content/plugins using FTP or using Admin Panel ->
+  Plugins -> Add New -> Upload Plugin, then extract there.
 
 or
 
@@ -12,7 +13,8 @@ or
 
 or
 
-- Wordpress Admin Panel -> Plugins -> Add New -> Search -> "New Order Notification for Woocommerce" -> Install -> Activate
+- Wordpress Admin Panel -> Plugins -> Add New -> Search -> "New Order Notification for Woocommerce" -> Install ->
+  Activate
 
 ---
 
@@ -114,6 +116,7 @@ Version 2.0.1
 ---
 
 v2.1.0 todo:
+
 - Localization for all texts.
 - New Settings page.
 - Remove deprecated new order notification page & settings.
