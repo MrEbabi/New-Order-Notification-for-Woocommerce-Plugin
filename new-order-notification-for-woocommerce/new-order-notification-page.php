@@ -1,10 +1,10 @@
 <?php
 
-add_action('woocommerce_new_order', 'my_detect_new_order', 10, 2);
-add_action('woocommerce_checkout_order_created', 'my_detect_new_order', 10, 1);
-add_action('woocommerce_store_api_checkout_order_created', 'my_detect_new_order', 10, 1);
+add_action('woocommerce_new_order', 'detect_new_order_on_checkout_v2', 10, 2);
+add_action('woocommerce_checkout_order_created', 'detect_new_order_on_checkout_v2', 10, 1);
+add_action('woocommerce_store_api_checkout_order_created', 'detect_new_order_on_checkout_v2', 10, 1);
 
-function my_detect_new_order($order_or_id, $maybe_order = null)
+function detect_new_order_on_checkout_v2($order_or_id, $maybe_order = null)
 {
     if ($order_or_id instanceof WC_Order) {
         $order = $order_or_id;
