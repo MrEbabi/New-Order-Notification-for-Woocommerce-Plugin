@@ -2,16 +2,16 @@
 
 add_action('woocommerce_checkout_order_processed', 'detect_new_order_on_checkout');
 
-function detect_new_order_on_checkout($order_id)
+function detect_new_order_on_checkout($orderId)
 {
     $options = get_option('_new_order_id_for_notification');
     if (!$options) {
         add_option('_new_order_id_for_notification', array(
-            'order_id' => $order_id
+            'order_id' => $orderId
         ));
     } else {
         update_option('_new_order_id_for_notification', array(
-            'order_id' => $order_id
+            'order_id' => $orderId
         ));
     }
 }
@@ -29,17 +29,17 @@ function new_order_notification()
 function new_order_notification_menu()
 {
     $isNew = false;
-    $all_product_ids = get_posts(array(
+    $allProductIds = get_posts(array(
         'posts_per_page' => -1,
         'post_type' => array('product', 'product_variation'),
         'fields' => 'ids',
     ));
-    global $wp_roles;
-    $roles = $wp_roles->roles;
+    global $wpRoles;
+    $roles = $wpRoles->roles;
     $roleValues = array_keys($roles);
-    $all_user_roles = $roleValues;
-    $order_status_map = wc_get_order_statuses();
-    $order_status_keys = array_keys($order_status_map);
+    $allUserRoles = $roleValues;
+    $orderStatusMap = wc_get_order_statuses();
+    $orderStatusKeys = array_keys($orderStatusMap);
 
     $options = get_option('__new_order_option');
     if ($options) {
@@ -54,14 +54,14 @@ function new_order_notification_menu()
             $refreshTime = 30;
         }
         if ($options['order_header']) {
-            $order_header = $options['order_header'];
+            $orderHeader = $options['order_header'];
         } else {
-            $order_header = "Order Notification - New Order";
+            $orderHeader = "Order Notification - New Order";
         }
         if ($options['order_text']) {
-            $order_text = $options['order_text'];
+            $orderText = $options['order_text'];
         } else {
-            $order_text = "Check Order Details: ";
+            $orderText = "Check Order Details: ";
         }
         if ($options['confirm']) {
             $confirm = $options['confirm'];
@@ -69,48 +69,48 @@ function new_order_notification_menu()
             $confirm = "ACKNOWLEDGE THIS NOTIFICATION";
         }
         if ($options['statuses']) {
-            $order_statuses = $options['statuses'];
+            $orderStatuses = $options['statuses'];
         } else {
-            $order_statuses = $order_status_keys;
+            $orderStatuses = $orderStatusKeys;
         }
         if ($options['product_ids']) {
-            $product_ids = $options['product_ids'];
+            $productIds = $options['product_ids'];
         } else {
-            $product_ids = $all_product_ids;
+            $productIds = $allProductIds;
         }
         if ($options['user_roles']) {
-            $user_roles = $options['user_roles'];
+            $userRoles = $options['user_roles'];
         } else {
-            $user_roles = $all_user_roles;
+            $userRoles = $allUserRoles;
         }
         if ($options['show_order_num']) {
-            $show_order_num = $options['show_order_num'];
+            $showOrderNum = $options['show_order_num'];
         } else {
-            $show_order_num = 20;
+            $showOrderNum = 20;
         }
         if ($options['show_order_statuses']) {
-            $show_order_statuses = $options['show_order_statuses'];
+            $showOrderStatuses = $options['show_order_statuses'];
         } else {
-            $show_order_statuses = $order_status_keys;
+            $showOrderStatuses = $orderStatusKeys;
         }
         update_option('__new_order_option', array(
             'refresh_time' => $refreshTime,
             'mp3_url' => $musicUrlMp3,
-            'order_header' => $order_header,
-            'order_text' => $order_text,
+            'order_header' => $orderHeader,
+            'order_text' => $orderText,
             'confirm' => $confirm,
-            'statuses' => $order_statuses,
-            'product_ids' => $product_ids,
-            'user_roles' => $user_roles,
-            'show_order_num' => $show_order_num,
-            'show_order_statuses' => $show_order_statuses
+            'statuses' => $orderStatuses,
+            'product_ids' => $productIds,
+            'user_roles' => $userRoles,
+            'show_order_num' => $showOrderNum,
+            'show_order_statuses' => $showOrderStatuses
         ));
 
         $user = wp_get_current_user();
         $isRestrictedUserRole = true;
-        if (is_array($user_roles) && count($user_roles)) {
-            foreach ($user_roles as $user_role) {
-                if (in_array($user_role, $user->roles)) {
+        if (is_array($userRoles) && count($userRoles)) {
+            foreach ($userRoles as $userRole) {
+                if (in_array($userRole, $user->roles)) {
                     $isRestrictedUserRole = false;
                 }
             }
@@ -124,30 +124,30 @@ function new_order_notification_menu()
     } else {
         $musicUrlMp3 = plugins_url('assets/order-music.mp3', __FILE__);
         $refreshTime = 30;
-        $order_header = "Order Notification - New Order";
-        $order_text = "Check Order Details: ";
+        $orderHeader = "Order Notification - New Order";
+        $orderText = "Check Order Details: ";
         $confirm = "ACKNOWLEDGE THIS NOTIFICATION";
-        $order_statuses = $order_status_keys;
-        $product_ids = $all_product_ids;
-        $user_roles = $all_user_roles;
-        $show_order_num = 20;
-        $show_order_statuses = $order_status_keys;
+        $orderStatuses = $orderStatusKeys;
+        $productIds = $allProductIds;
+        $userRoles = $allUserRoles;
+        $showOrderNum = 20;
+        $showOrderStatuses = $orderStatusKeys;
 
         add_option('__new_order_option', array(
             'refresh_time' => $refreshTime,
             'mp3_url' => $musicUrlMp3,
-            'order_header' => $order_header,
-            'order_text' => $order_text,
+            'order_header' => $orderHeader,
+            'order_text' => $orderText,
             'confirm' => $confirm,
-            'statuses' => $order_statuses,
-            'product_ids' => $product_ids,
-            'user_roles' => $user_roles,
-            'show_order_num' => $show_order_num,
-            'show_order_statuses' => $show_order_statuses
+            'statuses' => $orderStatuses,
+            'product_ids' => $productIds,
+            'user_roles' => $userRoles,
+            'show_order_num' => $showOrderNum,
+            'show_order_statuses' => $showOrderStatuses
         ));
     }
 
-    $checkOrders = wc_get_orders(array('status' => $order_status_keys));
+    $checkOrders = wc_get_orders(array('status' => $orderStatusKeys));
     $numberOfOrders = 0;
     if (is_array($checkOrders)) {
         $numberOfOrders = count($checkOrders);
@@ -158,21 +158,21 @@ function new_order_notification_menu()
         header("Refresh: 5");
         return;
     } else {
-        $any_new_order = get_option('_new_order_id_for_notification');
-        if ($any_new_order) {
+        $anyNewOrder = get_option('_new_order_id_for_notification');
+        if ($anyNewOrder) {
             $alertForThisProduct = false;
             $isAllProducts = true;
-            if (is_array($product_ids) && count($product_ids) != 0) {
+            if (is_array($productIds) && count($productIds) != 0) {
                 $isAllProducts = false;
             }
 
-            $lastOrderId = $any_new_order['order_id'];
+            $lastOrderId = $anyNewOrder['order_id'];
             $lastOrder = wc_get_order($lastOrderId);
             if (!$isAllProducts) {
-                foreach ($lastOrder->get_items() as $item_id => $item) {
-                    $product_id = $item->get_product_id();
-                    $variation_id = $item->get_variation_id();
-                    if (in_array($product_id, $product_ids) || in_array($variation_id, $product_ids)) {
+                foreach ($lastOrder->get_items() as $itemId => $item) {
+                    $productId = $item->get_product_id();
+                    $variationId = $item->get_variation_id();
+                    if (in_array($productId, $productIds) || in_array($variationId, $productIds)) {
                         $alertForThisProduct = true;
                     }
                 }
@@ -182,7 +182,7 @@ function new_order_notification_menu()
             $lastOrderStatus = $lastOrder->get_status();
             $lastOrderStatus = $statusPrefix . $lastOrderStatus;
 
-            if (in_array($lastOrderStatus, $order_statuses) && ($isAllProducts || $alertForThisProduct)) {
+            if (in_array($lastOrderStatus, $orderStatuses) && ($isAllProducts || $alertForThisProduct)) {
                 $isNew = true;
             }
 
@@ -217,18 +217,18 @@ function new_order_notification_menu()
                 <?php
                 $audiocontent = "<audio controls autoplay loop><source src='" . esc_html($musicUrlMp3) . "' type='audio/mpeg'>Your browser does not support the audio element.</audio>";
                 echo $audiocontent;
-                $popupcontent = "<div class='popup'><div class='cnt223'><h1>" . esc_html($order_header) . "</h1><p>" . esc_html($order_text) . " <a href='" . esc_html($websiteUrl) . "' target='_blank'>" . esc_html($lastOrderId) . "</a><br/><br/><a href='' class='close'>" . esc_html($confirm) . "</a></p></div></div>";
+                $popupcontent = "<div class='popup'><div class='cnt223'><h1>" . esc_html($orderHeader) . "</h1><p>" . esc_html($orderText) . " <a href='" . esc_html($websiteUrl) . "' target='_blank'>" . esc_html($lastOrderId) . "</a><br/><br/><a href='' class='close'>" . esc_html($confirm) . "</a></p></div></div>";
                 echo $popupcontent;
                 delete_option('_new_order_id_for_notification');
             }
         }
     }
 
-    $recent_orders = wc_get_orders(array(
-        'limit' => $show_order_num,
+    $recentOrders = wc_get_orders(array(
+        'limit' => $showOrderNum,
         'orderby' => 'date',
         'order' => 'DESC',
-        'status' => $show_order_statuses,
+        'status' => $showOrderStatuses,
     ));
 
     $content = "<h1>New Order Notification for Woocommerce</h1>";
@@ -236,27 +236,27 @@ function new_order_notification_menu()
     $content .= "<tr><th>Recent Orders</th></tr>";
     $content .= "<tr><th>Order ID</th><th>Order Date</th><th>Order Status</th><th>Order Details</th></tr>";
 
-    foreach ($recent_orders as $recent_order) {
-        $order_id = $recent_order->get_id();
-        $_order = wc_get_order($order_id);
-        $order_date = $_order->get_date_created();
-        $order_status = $recent_order->get_status();
-        $order_link = get_site_url();
-        $order_link .= "/wp-admin/post.php?post=";
-        $order_link .= $order_id;
-        $order_link .= "&action=edit";
+    foreach ($recentOrders as $recentOrder) {
+        $orderId = $recentOrder->get_id();
+        $Order = wc_get_order($orderId);
+        $orderDate = $Order->get_date_created();
+        $orderStatus = $recentOrder->get_status();
+        $orderLink = get_site_url();
+        $orderLink .= "/wp-admin/post.php?post=";
+        $orderLink .= $orderId;
+        $orderLink .= "&action=edit";
 
 
         $statusPrefix = "wc-";
-        $_orderStatus = $statusPrefix . $order_status;
-        $_order_status = $order_status_map[$_orderStatus];
+        $Orderstatus = $statusPrefix . $orderStatus;
+        $OrderStatus = $orderStatusMap[$Orderstatus];
 
-        $date_format = get_option('date_format');
-        $time_format = get_option('time_format');
+        $dateFormat = get_option('date_format');
+        $timeFormat = get_option('time_format');
 
-        $format_order_date = $time_format . " - " . $date_format;
+        $formatOrderDate = $timeFormat . " - " . $dateFormat;
 
-        $content .= "<tr><td>" . esc_html($order_id) . "</td><td>" . esc_html($order_date->date($format_order_date)) . "</td><td>" . esc_html($_order_status) . "</td><td><a href='" . esc_html($order_link) . "' target='_blank'>Order " . esc_html($order_id) . "</a></td></tr>";
+        $content .= "<tr><td>" . esc_html($orderId) . "</td><td>" . esc_html($orderDate->date($formatOrderDate)) . "</td><td>" . esc_html($OrderStatus) . "</td><td><a href='" . esc_html($orderLink) . "' target='_blank'>Order " . esc_html($orderId) . "</a></td></tr>";
     }
 
     $content .= "</table><br><hr>";

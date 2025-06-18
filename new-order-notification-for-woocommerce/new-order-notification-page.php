@@ -4,18 +4,18 @@ add_action('woocommerce_new_order', 'detect_new_order_on_checkout_v2', 10, 2);
 add_action('woocommerce_checkout_order_created', 'detect_new_order_on_checkout_v2', 10, 1);
 add_action('woocommerce_store_api_checkout_order_created', 'detect_new_order_on_checkout_v2', 10, 1);
 
-function detect_new_order_on_checkout_v2($order_or_id, $maybe_order = null)
+function detect_new_order_on_checkout_v2($orderOrId, $maybeOrder = null)
 {
-    if ($order_or_id instanceof WC_Order) {
-        $order = $order_or_id;
+    if ($orderOrId instanceof WC_Order) {
+        $order = $orderOrId;
     } else {
-        $order = $maybe_order instanceof WC_Order ? $maybe_order : wc_get_order($order_or_id);
+        $order = $maybeOrder instanceof WC_Order ? $maybeOrder : wc_get_order($orderOrId);
     }
     if (!$order) {
         return;
     }
-    $order_id = $order->get_id();
-    update_option('_order_id_for_new_order_notification', $order_id);
+    $orderId = $order->get_id();
+    update_option('_order_id_for_new_order_notification', $orderId);
 }
 
 function getNewOrderNotificationSettings()
@@ -30,8 +30,8 @@ function getNewOrderNotificationSettings()
         'post_type' => array('product', 'product_variation'),
         'fields' => 'ids',
     ));
-    global $wp_roles;
-    $userRoles = array_keys($wp_roles->roles);
+    global $wpRoles;
+    $userRoles = array_keys($wpRoles->roles);
     $recentOrderTableLimit = 20;
     $recentOrderTableStatuses = $wcOrderStatuses;
     //
@@ -120,12 +120,12 @@ function getRecentOrderTable($settings)
                     <th>" . __('Preview/Edit', 'new-order-notification-for-woocommerce') . "</th>
                  </tr>";
     //
-    foreach ($orders as $recent_order) {
-        $orderId = $recent_order->get_id();
+    foreach ($orders as $recentOrder) {
+        $orderId = $recentOrder->get_id();
         $order = wc_get_order($orderId);
         $orderDate = $order->get_date_created();
         $orderLink = get_site_url() . "/wp-admin/post.php?post=" . $orderId . "&action=edit";
-        $orderStatus = wc_get_order_statuses()["wc-" . strtolower($recent_order->get_status())];
+        $orderStatus = wc_get_order_statuses()["wc-" . strtolower($recentOrder->get_status())];
         $orderNumber = $order->get_order_number();
 
         $dateFormat = get_option('date_format');
@@ -201,7 +201,7 @@ function showOrderEditPopup($orderId)
     $order = wc_get_order($orderId);
 
     $itemContent = "";
-    foreach ($order->get_items() as $item_id => $item) {
+    foreach ($order->get_items() as $itemId => $item) {
         $name = $item->get_name();
         $quantity = $item->get_quantity();
         $total = $item->get_total();
@@ -355,10 +355,10 @@ function checkNewOrder($settings)
     // get new order
     $newOrder = wc_get_order($maybeOrderId);
     if (!$isAllProducts) {
-        foreach ($newOrder->get_items() as $item_id => $item) {
-            $product_id = $item->get_product_id();
-            $variation_id = $item->get_variation_id();
-            if (in_array($product_id, $productIds) || in_array($variation_id, $productIds)) {
+        foreach ($newOrder->get_items() as $itemId => $item) {
+            $productId = $item->get_product_id();
+            $variationId = $item->get_variation_id();
+            if (in_array($productId, $productIds) || in_array($variationId, $productIds)) {
                 $alertForThisProduct = true;
             }
         }
