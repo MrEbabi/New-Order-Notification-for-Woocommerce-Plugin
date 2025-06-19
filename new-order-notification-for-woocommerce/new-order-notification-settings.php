@@ -3,14 +3,14 @@
 function new_order_notification_settings()
 {
     $allProductIds = wc_get_products([
-        'limit'  => -1,
+        'limit' => -1,
         'return' => 'ids',
-        'type'   => ['simple', 'variable'],
+        'type' => ['simple', 'variable'],
         'status' => 'publish',
     ]);
 
-    global $wpRoles;
-    $roles = $wpRoles->roles;
+    global $wp_roles;
+    $roles = $wp_roles->roles;
     $roleValues = array_keys($roles);
 
     $orderStatusMap = wc_get_order_statuses();
@@ -325,13 +325,13 @@ function new_order_notification_settings()
             $orderText = "Check Order Details: ";
             $confirm = "ACKNOWLEDGE THIS NOTIFICATION";
             $productIds = wc_get_products([
-                'limit'  => -1,
+                'limit' => -1,
                 'return' => 'ids',
-                'type'   => ['simple', 'variable'],
+                'type' => ['simple', 'variable'],
                 'status' => 'publish',
             ]);
-            global $wpRoles;
-            $roles = $wpRoles->roles;
+            global $wp_roles;
+            $roles = $wp_roles->roles;
             $roleValues = array_keys($roles);
             $showOrderNum = 20;
 

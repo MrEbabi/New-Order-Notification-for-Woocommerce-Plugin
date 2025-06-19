@@ -2,7 +2,7 @@
 /*
 Plugin Name: New Order Notification for Woocommerce
 Description: Woocommerce custom order page with recent orders for showing a popup notification with sound when a new order received.
-Version: 2.0.4
+Version: 2.0.5
 Author: Mr.Ebabi
 Author URI: https://github.com/MrEbabi
 License: GPL2
@@ -23,7 +23,7 @@ if (!function_exists('add_action')) {
     exit;
 }
 
-//require woocommerce to install global coupons for woocommerce
+//require woocommerce to install new order notifications for woocommerce
 add_action('admin_init', 'new_order_notification_require_woocommerce');
 
 function new_order_notification_require_woocommerce()
@@ -120,6 +120,20 @@ if (!class_exists('NewOrderNotification')) {
             require_once(dirname(__FILE__) . '/new-order-notification-page.php');
             require_once(dirname(__FILE__) . '/new-order-notification-support.php');
         }
+    }
+}
+
+// Eklentinizin ana dosyasının en üstüne veya eklenti başlangıcında bir yere ekleyin
+add_action('before_woocommerce_init', 'new_order_notification_hpos_compat');
+function new_order_notification_hpos_compat()
+{
+    if (class_exists(\Automattic\WooCommerce\Utilities\FeaturesUtil::class)) {
+        // 'custom_order_tables' HPOS özelliğidir, true ile uyumlu olduğunu beyan ediyoruz
+        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
+            'custom_order_tables',
+            __FILE__,
+            true
+        );
     }
 }
 

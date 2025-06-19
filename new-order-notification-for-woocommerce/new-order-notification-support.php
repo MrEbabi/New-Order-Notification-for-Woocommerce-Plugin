@@ -29,11 +29,6 @@ function new_order_notification_support()
                          <a class='support' href='https://mrebabi.com/iletisim/' target='_blank'><i class='fas fa-envelope'></i></a>  
                          <a class='support' href='https://mrebabi.com/' target='_blank'><i class='fas fa-globe'></i></a>  
                      </div>
-                     <p>
-                        <a href ='https://mrebabi.com/donate/' target='_blank'>
-                            <button class='support'>Donate Crypto</button>
-                        </a>
-                     </p>
                  </div>
                  </div>";
     echo $content;

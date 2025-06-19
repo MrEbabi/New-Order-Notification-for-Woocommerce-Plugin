@@ -30,13 +30,13 @@ function new_order_notification_menu()
 {
     $isNew = false;
     $allProductIds = wc_get_products([
-        'limit'  => -1,
+        'limit' => -1,
         'return' => 'ids',
-        'type'   => ['simple', 'variable'],
+        'type' => ['simple', 'variable'],
         'status' => 'publish',
     ]);
-    global $wpRoles;
-    $roles = $wpRoles->roles;
+    global $wp_roles;
+    $roles = $wp_roles->roles;
     $roleValues = array_keys($roles);
     $allUserRoles = $roleValues;
     $orderStatusMap = wc_get_order_statuses();

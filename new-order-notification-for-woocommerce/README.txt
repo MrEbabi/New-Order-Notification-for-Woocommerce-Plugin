@@ -4,7 +4,7 @@ Author URI: https://github.com/MrEbabi
 Tags: woocommerce, woocommerce order page, woocommerce notification, woocommerce order notification, woocommerce new order notification, woocommerce new order popup
 Requires at least: 3.1
 Tested up to: 6.8.1
-Stable tag: 2.0.4
+Stable tag: 2.0.5
 License: GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: new-order-notification-for-woocommerce
@@ -35,7 +35,7 @@ Woocommerce custom order page with recent orders for showing a popup notificatio
 8. You may add a link to change the music file (.mp3 extension).
 9. You may set product ID rules for order notification. (alert only if order contains product X)
 
-**To ask new properties or report bugs, kindly inform globalcoupons@mrebabi.com**
+**To ask new properties or report bugs, kindly inform info@mrebabi.com**
 
 == Installation ==
 1. Upload the entire 'new-order-notification-for-woocommerce' folder to the '/wp-content/plugins/' directory or upload as a zip file then extract it to the '/wp-content/plugins/'
@@ -56,6 +56,10 @@ Yes, but the notification system only works with custom order page named New Ord
 3. Settings for Notifications
 
 == Changelog ==
+**=2.0.5=**
+- Bug fixed.
+- Donate link removed.
+
 **=2.0.4=**
 - Test with latest WordPress and WooCommerce versions.
 
