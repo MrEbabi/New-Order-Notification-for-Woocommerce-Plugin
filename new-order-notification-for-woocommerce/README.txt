@@ -1,160 +1,166 @@
-=== New Order Notification for Woocommerce ===
+=== New Order Notification for WooCommerce ===
 Contributors: mrebabi
 Author URI: https://github.com/MrEbabi
-Tags: woocommerce, woocommerce order page, woocommerce notification, woocommerce order notification, woocommerce new order notification, woocommerce new order popup
-Requires at least: 3.1
-Tested up to: 6.8.1
-Stable tag: 2.0.5
+Tags: woocommerce, order notification, admin alert, popup notification, sound alert, new order
+Requires at least: 5.0
+Tested up to: 6.9
+Stable tag: 2.1.0
 License: GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: new-order-notification-for-woocommerce
 
-Woocommerce custom order page with recent orders for showing a popup notification with sound when a new order received.
+Instant popup and sound alerts for new WooCommerce orders — never miss a sale again.
 
-== Description==
-* POPUP NOTIFICATION WITH SOUND ALERT WHEN A NEW ORDER RECEIVED
+== Description ==
 
-* NOTIFICATION KEEPS SHOWING UNTIL YOU ACKNOWLEDGE THE NEW ORDER
+New Order Notification for WooCommerce helps shop managers and administrators see recent orders on a custom order page and get notified instantly when a new order is received.
 
-* SET YOUR ALARM SOUND TO PLAY WITH POPUP NOTIFICATION
+* Popup notification with sound alert when a new order is received.
+* Notification stays visible until you acknowledge the new order.
+* Custom alarm sound (MP3 URL) for the popup notification.
+* Alert only for orders that contain selected products (product ID rules).
+* Custom order table with recent orders, order preview and status change.
 
-* SET ALERT FOR ORDERS THAT CONTAIN SELECTED PRODUCTS
+1. The plugin provides a custom order page where shop managers and admins can see recent orders.
+2. This page shows a popup notification whenever a new order is received.
+3. While the popup is visible, a sound is played to alert the admin.
+4. The popup and the sound continue until the admin confirms the new order.
+5. You can configure the refresh time, popup texts and the sound file URL.
+6. You can restrict alerts to specific product IDs only.
+7. You can control which order statuses and user roles are used for notifications.
+8. You can control how many recent orders are shown in the custom order table.
 
-* CUSTOM ORDER TABLE, ORDER PREVIEW AND ORDER STATUS CHANGE FEATURES
-
-
-**Woocommerce custom order page with recent orders for showing a popup notification with sound when a new order received.**
-
-1. New Order Notification for WooCommerce is providing shop managers and administrators to see the recent orders on a custom order page.
-2. This order page is customized to popup a notification when a new order received.
-3. While the popup notification is showing to the admin, a music file also plays to alert admin.
-4. This music keeps playing and popup keeps showing until the admin confirms the new order.
-5. There are settings for this custom order page, popup notification and music file.
-6. You may edit the string fields in popup notification.
-7. You may edit the refresh time of custom order page (time to check if new order is received).
-8. You may add a link to change the music file (.mp3 extension).
-9. You may set product ID rules for order notification. (alert only if order contains product X)
-
-**To ask new properties or report bugs, kindly inform info@mrebabi.com**
+To request new features or report bugs, please contact: info@mrebabi.com
 
 == Installation ==
-1. Upload the entire 'new-order-notification-for-woocommerce' folder to the '/wp-content/plugins/' directory or upload as a zip file then extract it to the '/wp-content/plugins/'
-2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Look at your admin bar to see new section: New Order.
-4. Open the New Order page and enjoy the plugin!
+
+1. Upload the entire `new-order-notification-for-woocommerce` folder to the `/wp-content/plugins/` directory, or upload the ZIP file via the WordPress “Plugins > Add New” screen.
+2. Activate the plugin through the “Plugins” menu in WordPress.
+3. In the admin menu, look for the new section: “New Order”.
+4. Open the “New Order” page and enjoy instant notifications.
 
 == Frequently Asked Questions ==
-= Does this plugin work with newest Wordpress and Woocommerce version and also older versions? =
-Yes, the plugin is tested with Wordpress 5.3 and Woocommerce 3.8.1 and works fine. Yet, you are welcome to inform us about any bugs so we can fix them.
 
-= Can we still use standard Woocommerce Orders page while using this plugin? =
-Yes, but the notification system only works with custom order page named New Order.
+= Does this plugin work with the latest WordPress and WooCommerce versions? =
+
+Yes. The plugin is tested with WordPress 6.9 and recent WooCommerce versions. You are welcome to report any issues so they can be fixed quickly.
+
+= Can we still use the standard WooCommerce Orders page while using this plugin? =
+
+Yes. You can still use the default WooCommerce Orders page. The popup and sound notification system works on the custom “New Order” page provided by this plugin.
 
 == Screenshots ==
-1. New Order Notification Recent Orders Table
-2. Popup Notification Preview When a New Order Received
-3. Settings for Notifications
+
+1. New Order Notification recent orders table.
+2. Popup notification preview when a new order is received.
+3. Settings page for notifications.
 
 == Changelog ==
-**=2.0.5=**
-- Bug fixed.
-- Donate link removed.
 
-**=2.0.4=**
-- Test with latest WordPress and WooCommerce versions.
+= 2.1.0 =
+* Refactored main plugin bootstrap for better compatibility with modern WordPress and WooCommerce.
+* Improved WooCommerce dependency checks and HPOS compatibility declaration.
+* Cleaned up admin asset loading and plugin structure.
+* Settings page updated.
+* Removed old Notification page.
 
-**=2.0.3=**
-- Wordpress and Woocommerce version updated.
-- Security issues fixed.
+= 2.0.5 =
+* Bug fixed.
+* Donate link removed.
 
-**=2.0.2=**
-- Wordpress and Woocommerce version updated.
+= 2.0.4 =
+* Tested with latest WordPress and WooCommerce versions.
 
-**=2.0.1=**
-- Beta version moved as main page.
-- Previous version of notification page moved as old page.
-- Introduce support page.
+= 2.0.3 =
+* WordPress and WooCommerce versions updated.
+* Security issues fixed.
 
-**=2.0.0=**
-- Beta version of newly designed New Order Notification page.
-- New css for recent order table.
-- Order preview and status change features.
-- Activation for sound and popup alert.
-- Async calls instead of page refreshing.
+= 2.0.2 =
+* WordPress and WooCommerce versions updated.
 
-**=1.4.0=**
--Fix Product Id selection and User Role selection in the settings.
--Add settings for number of orders to show in recent order table.
--Add settings for order statuses that will be shown in recent order table.
--Optimize the plugin by refactoring the source code.
+= 2.0.1 =
+* Beta version moved as main page.
+* Previous notification page moved as old page.
+* Introduced support page.
 
-**=1.3.3=**
--Fix PHP Error for user roles.
--Add responsive css for new order popup.
--Fix reported bugs.
+= 2.0.0 =
+* Beta version of newly designed New Order Notification page.
+* New CSS for recent order table.
+* Order preview and status change features.
+* Activation for sound and popup alerts.
+* Async calls instead of page refreshing.
 
-**=1.3.2=**
--Fix PHP Warnings.
--Fix User Role restriction error.
--Fix user role and product id removal error.
+= 1.4.0 =
+* Fixed Product ID selection and User Role selection in settings.
+* Added settings for number of orders to show in recent orders table.
+* Added settings for order statuses that will be shown in recent orders table.
+* Optimized the plugin by refactoring source code.
 
-**=1.3.1=**
--Get default settings for date and time format from Wordpress Settings.
--Change table column names and popup texts.
+= 1.3.3 =
+* Fixed PHP error for user roles.
+* Added responsive CSS for new order popup.
+* Fixed reported bugs.
 
-**=1.3.0=**
--Change new order detection solution for better performance.
--Add audio play test feature to New Order Notification page.
--Add user role settings for access management in New Order Notification page.
--Add popup preview button to settings page.
--Shorter setting names with on hover information boxes.
--Change recent orders table to show only the selected order statuses.
--Other small performance improvements.
--Some CSS changes for both pages.
+= 1.3.2 =
+* Fixed PHP warnings.
+* Fixed user role restriction error.
+* Fixed user role and product ID removal error.
 
-**=1.2.1=**
--Bug fixes for reported PHP errors.
--New Order Notifciation page is now accessable for roles: Super Admin, Admin, Editor, Author and Shop Manager.
+= 1.3.1 =
+* Used default settings for date and time format from WordPress Settings.
+* Changed table column names and popup texts.
 
-**=1.2.0=**
--Sound playing problem when another tab is focused on the browser is solved.
--Audio loop feature is added.
--Better product ID selection with dropdown options.
--Improvement of order status selection in Settings to show all order statuses including custom statuses.
--Time zone problem of order date is solved.
--Better format for order date.
--Better CSS for Settings page.
+= 1.3.0 =
+* Changed new order detection solution for better performance.
+* Added audio play test feature to New Order Notification page.
+* Added user role settings for access management in New Order Notification page.
+* Added popup preview button to settings page.
+* Shorter setting names with hover information boxes.
+* Changed recent orders table to show only the selected order statuses.
+* Other small performance improvements.
+* Some CSS changes for both pages.
 
-**=1.1.2=**
--Better CSS for Popup and Settings page.
--Small bug fixes and speed optimization.
+= 1.2.1 =
+* Bug fixes for reported PHP errors.
+* New Order Notification page is now accessible for roles: Super Admin, Admin, Editor, Author and Shop Manager.
 
-**=1.1.1=**
--Separate tab (submenu) for settings page.
--Access control changes: Shop manager and Administrator can access the New Order Notification page.
--Access control changes: Only Administrator can access the Settings page.
+= 1.2.0 =
+* Fixed sound playing problem when another tab is focused in the browser.
+* Added audio loop feature.
+* Better product ID selection with dropdown options.
+* Improved order status selection in Settings to show all order statuses including custom statuses.
+* Fixed time zone problem of order date.
+* Better formatted order date.
+* Better CSS for Settings page.
 
-**=1.1.0=**
--Reported bug fixed for WooCommerce Shops that have not received any (0) or enough (<10) orders yet.
--An information message is added for WooCommerce Shops that have not received any orders.
--Auto refresh with every 5 seconds to detect the first order of a very new WooCommerce shop.
+= 1.1.2 =
+* Better CSS for Popup and Settings page.
+* Small bug fixes and speed optimization.
 
-**=1.0.3=**
--"Alert only for orders that contain specific products" option is added.
--You may enter the product ids one by one from the related settings field.
--Small bug and CSS fixes.
+= 1.1.1 =
+* Separate tab (submenu) for settings page.
+* Access control changes: Shop Manager and Administrator can access the New Order Notification page.
+* Access control changes: Only Administrator can access the Settings page.
 
-**=1.0.2=**
--Settings providing selection of order statuses that the plugin will notify.
--Small bug fixes.
--CSS fixes.
+= 1.1.0 =
+* Fixed reported bug for WooCommerce shops that have not received any (0) or enough (<10) orders yet.
+* Added an information message for WooCommerce shops that have not received any orders.
+* Auto refresh every 5 seconds to detect the first order of a very new WooCommerce shop.
 
-**=1.0.1=**
--Small bug fixes.
--CSS additions.
--README is more detailed now.
+= 1.0.3 =
+* Added “Alert only for orders that contain specific products” option.
+* You may enter the product IDs one by one from the related settings field.
+* Small bug and CSS fixes.
 
-**=1.0.0=**
--Hello World. This is the first version of the New Order Notification for Woocommerce.
--Initialized the source code.
--So it begins...
+= 1.0.2 =
+* Settings for selecting order statuses that the plugin will notify.
+* Small bug fixes.
+* CSS fixes.
+
+= 1.0.1 =
+* Small bug fixes.
+* CSS additions.
+* README made more detailed.
+
+= 1.0.0 =
+* First release of New Order Notification for WooCommerce.
