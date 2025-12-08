@@ -1,7 +1,7 @@
 === New Order Notification for WooCommerce ===
 Contributors: mrebabi
 Author URI: https://github.com/MrEbabi
-Tags: woocommerce, order notification, admin alert, popup notification, sound alert, new order
+Tags: woocommerce, order notification, order alert, popup notification, sound alert, new order
 Requires at least: 5.0
 Tested up to: 6.9
 Stable tag: 2.1.0
@@ -9,28 +9,32 @@ License: GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: new-order-notification-for-woocommerce
 
-Instant popup and sound alerts for new WooCommerce orders — never miss a sale again.
+Instant popup and sound alerts for new WooCommerce orders — never miss a sale again!
 
 == Description ==
 
-New Order Notification for WooCommerce helps shop managers and administrators see recent orders on a custom order page and get notified instantly when a new order is received.
+**New Order Notification for WooCommerce** helps store administrators stay informed instantly when new orders arrive.
+With this plugin, you’ll get a popup notification and a sound alert for every new order — so you’ll never miss a sale again.
 
-* Popup notification with sound alert when a new order is received.
-* Notification stays visible until you acknowledge the new order.
-* Custom alarm sound (MP3 URL) for the popup notification.
-* Alert only for orders that contain selected products (product ID rules).
-* Custom order table with recent orders, order preview and status change.
+### 🚀 Key Features
+* 🔔 **Popup Notification with Sound Alert** — Shows a popup and plays a sound immediately when a new order is received.
+* ⏰ **Persistent Notification** — Popup stays visible until acknowledged by admin.
+* 🎵 **Custom Alarm Sound** — Choose your own MP3 sound file for alerts.
+* 🧩 **Smart Filters** — Alert only for orders containing selected product IDs.
+* 🧾 **Custom Order Page** — See all recent orders in a responsive, optimized table.
+* 👀 **Order Preview & Status Change** — Quickly view or update orders right from the custom page.
+* ⚙️ **Flexible Settings** — Adjust refresh interval, popup text, order statuses, and sound file.
 
-1. The plugin provides a custom order page where shop managers and admins can see recent orders.
-2. This page shows a popup notification whenever a new order is received.
-3. While the popup is visible, a sound is played to alert the admin.
-4. The popup and the sound continue until the admin confirms the new order.
-5. You can configure the refresh time, popup texts and the sound file URL.
-6. You can restrict alerts to specific product IDs only.
-7. You can control which order statuses and user roles are used for notifications.
-8. You can control how many recent orders are shown in the custom order table.
+### 💡 Why You’ll Love It
+- Instant awareness of new sales
+- No page refresh needed (async detection)
+- Easy to set up and lightweight (no external APIs)
+- Perfect for busy shop owners and teams
 
-To request new features or report bugs, please contact: info@mrebabi.com
+> **Compatible with the latest versions of WordPress and WooCommerce.**
+
+If you’d like to suggest new features or report a bug, please contact:
+📧 [newordernotification@mrebabi.com](mailto:newordernotification@mrebabi.com)
 
 == Installation ==
 
