@@ -224,7 +224,7 @@ function showOrderEditPopup($orderId)
         <tr>
             <td>" . esc_html($item->get_name()) . "</td>
             <td>" . esc_html($item->get_quantity()) . "</td>
-            <td>" . esc_html(wc_price($item->get_total())) . "</td>
+            <td>" . wp_kses_post(wc_price($item->get_total())) . "</td>
         </tr>";
     }
 
@@ -344,6 +344,90 @@ function re_render_recent_order_table()
     $settings = getNewOrderNotificationSettings();
     echo getRecentOrderTable($settings);
     wp_die();
+}
+
+function checkNewOrder($settings)
+{
+    $maybeOrderId = get_option('_order_id_for_new_order_notification');
+    if (!$maybeOrderId) {
+        return false;
+    }
+    $shouldAlert = false;
+    // check product options
+    $productIds = $settings['product_ids'];
+    $alertForThisProduct = false;
+    $isAllProducts = true;
+    if (is_array($productIds) && count($productIds) != 0) {
+        $isAllProducts = false;
+    }
+    // get new order
+    $newOrder = wc_get_order($maybeOrderId);
+    if (!$isAllProducts) {
+        foreach ($newOrder->get_items() as $itemId => $item) {
+            $productId = $item->get_product_id();
+            $variationId = $item->get_variation_id();
+            if (in_array($productId, $productIds) || in_array($variationId, $productIds)) {
+                $alertForThisProduct = true;
+            }
+        }
+    }
+    // check order status
+    $orderStatuses = $settings['statuses'];
+    $alertForThisStatus = false;
+    $newOrderStatus = "wc-" . $newOrder->get_status();
+    if (in_array($newOrderStatus, $orderStatuses)) {
+        $alertForThisStatus = true;
+    }
+    // decide to show alert
+    if ($alertForThisStatus && $alertForThisProduct) {
+        $shouldAlert = true;
+    }
+    if ($shouldAlert) {
+        // get popup variables
+        $musicUrlMp3 = $settings['mp3_url'];
+        $orderHeader = $settings['order_header'];
+        $orderText = $settings['order_text'];
+        $confirm = $settings['confirm'];
+        $newOrderId = $newOrder->get_id();
+        $orderEditLink = get_site_url() . "/wp-admin/post.php?post=" . $newOrderId . "&action=edit";
+        //
+        $audio = "<audio id='audioAlert' controls loop>
+                      <source src='" . esc_html($musicUrlMp3) . "' type='audio/ogg'>
+                      <source src='" . esc_html($musicUrlMp3) . "' type='audio/mpeg'>
+                      Your browser does not support the audio element.
+                  </audio>";
+        $popupContent = "<div id='popupContent' class='popup'>
+                            <div class='cnt223'>
+                                <h1>" . esc_html($orderHeader) . "</h1>
+                                <p>" . esc_html($orderText) . " 
+                                    <a href='" . esc_html($orderEditLink) . "' target='_blank'>" . esc_html($newOrderId) . "</a>
+                                    <br/>
+                                    <br/>
+                                    <a class='close'>" . esc_html($confirm) . "</a>
+                                </p>
+                            </div>
+                        </div>";
+        //
+        delete_option('_order_id_for_new_order_notification');
+        echo $audio;
+        echo $popupContent;
+        echo "<script type='text/javascript'>
+                    window.focus();
+                    //
+                    jQuery(function ($) {
+                        const overlay = $('<div id=\"overlay\"></div>');
+                        overlay.show();
+                        const video = document.getElementById('audioAlert');
+                        video.oncanplaythrough = function() {
+                            video.play();
+                        }
+                        overlay.appendTo(document.body);
+                        $('.popup').show();
+                    });
+                </script>";
+        return true;
+    }
+    return false;
 }
 
 add_action('wp_ajax_detect_new_order', 'detect_new_order');

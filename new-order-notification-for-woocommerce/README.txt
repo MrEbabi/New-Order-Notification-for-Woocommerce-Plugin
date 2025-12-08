@@ -53,7 +53,8 @@ Yes. You can still use the default WooCommerce Orders page. The popup and sound 
 
 1. New Order Notification recent orders table.
 2. Popup notification preview when a new order is received.
-3. Settings page for notifications.
+3. Quick View / Status Update for recent orders.
+4. Settings page for notifications.
 
 == Changelog ==
 
